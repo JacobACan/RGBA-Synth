@@ -8,7 +8,8 @@
     your controls and content.
 */
 class MainComponent  : public juce::AudioAppComponent,
-                       public juce::Button::Listener
+                       public juce::Button::Listener,
+                       public juce::Slider::Listener
 {
 public:
     //==============================================================================
@@ -25,21 +26,27 @@ public:
     void resized() override;
 
     void buttonClicked(juce::Button*) override;
+    void sliderValueChanged(juce::Slider*) override;
     
 
 private:
     //==============================================================================
 
     //Noise Generation Variables
-    float angleDelta = 0.0;
-    float currentAngle = 0.0;
-    float frequency = 220;
-    bool mute = true;
-    bool combine = false;
+    float angleDelta;
+    float currentAngle;
+    float frequency;
+    bool mute;
+    bool combine;
+    float combineAmt;
+    float sqrWavPitch;
+
 
     //GUI Variables
     juce::ToggleButton muteBtn;
     juce::ToggleButton combineBtn;
+    juce::Slider combineAmtSld;
+    juce::Slider sqrPitchSld;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };
