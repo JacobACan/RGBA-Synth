@@ -7,9 +7,13 @@ MainComponent::MainComponent()
     setSize (800, 600);
 
     //Buttons
-    btn.setButtonText("Mute");
-    addAndMakeVisible(btn);
-    btn.addListener(this);
+    muteBtn.setButtonText("Mute");
+    addAndMakeVisible(muteBtn);
+    muteBtn.addListener(this);
+
+    combineBtn.setButtonText("Combine");
+    addAndMakeVisible(combineBtn);
+    combineBtn.addListener(this);
 
     // Some platforms require permissions to open input channels so request that here
     if (juce::RuntimePermissions::isRequired (juce::RuntimePermissions::recordAudio)
@@ -50,7 +54,20 @@ void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& buffe
         float sinWavSample = std::sin(currentAngle);
         float sqrWavSample;
         sinWavSample > 0 ? sqrWavSample = 1 : sqrWavSample = -1;
-        float writeSampleVal = sinWavSample * level;
+
+        float writeSampleVal;
+        
+        if (combine == false) 
+        {
+            writeSampleVal = sinWavSample * level;
+        } 
+        else
+        {
+            sinWavSample > 1 
+                ? writeSampleVal = (sinWavSample + sqrWavSample) / 2 * level 
+                : writeSampleVal = (sinWavSample - sqrWavSample) / 2 * level;
+        }
+
         leftBuffer[sample] = writeSampleVal;
         rightBuffer[sample] = writeSampleVal;
         currentAngle += angleDelta;
@@ -74,13 +91,19 @@ void MainComponent::paint (juce::Graphics& g)
 
 void MainComponent::resized()
 {
-    btn.setBounds(getWidth() / 4, getHeight() / 4, getWidth() / 2, getHeight() / 2);
+    muteBtn.setBounds(getWidth() / 4, getHeight() / 4, 70, 20);
+    combineBtn.setBounds(getWidth() / 4 * 2, getHeight() / 4, 70, 20);
 }
 
-void MainComponent::buttonClicked(juce::Button*) {
-    mute ? mute = false : mute = true;
-    juce::String msg;
-    msg << "Mute : " << (int)mute;
-    juce::Logger::getCurrentLogger()->writeToLog(msg);
+void MainComponent::buttonClicked(juce::Button* btn) {
+    if (btn->getButtonText() == "Mute") 
+    {
+        mute ? mute = false : mute = true;
+    }
+    else if (btn->getButtonText() == "Combine")
+    {
+        combine ? combine = false : combine = true;
+    }
+    
 
 }

@@ -29,14 +29,17 @@ public:
 
 private:
     //==============================================================================
-    // Your private member variables go here...
 
+    //Noise Generation Variables
     float angleDelta = 0.0;
     float currentAngle = 0.0;
     float frequency = 220;
     bool mute = true;
+    bool combine = false;
 
-    juce::ToggleButton btn;
+    //GUI Variables
+    juce::ToggleButton muteBtn;
+    juce::ToggleButton combineBtn;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };
