@@ -3,10 +3,8 @@
 //==============================================================================
 MainComponent::MainComponent()
 {
-    // Make sure you set the size of the component after
-    // you add any child components.
+    //Set size of Main Component
     setSize (800, 600);
-    angleDelta = 440 * juce::MathConstants<double>::twoPi;
 
     //Buttons
     btn.setButtonText("Mute");
@@ -36,16 +34,8 @@ MainComponent::~MainComponent()
 //==============================================================================
 void MainComponent::prepareToPlay (int samplesPerBlockExpected, double sampleRate)
 {
-    // This function will be called when the audio device is started, or when
-    // its settings (i.e. sample rate, block size, etc) are changed.
-
-    // You can use this function to initialise any resources you might need,
-    // but be careful - it will be called on the audio thread, not the GUI thread.
-
-    // For more details, see the help for AudioProcessor::prepareToPlay()
-    
     auto cyclesPerSample = frequency / sampleRate; // amount of wave in-between each sample
-    angleDelta = cyclesPerSample * juce::MathConstants<float>::twoPi; // amount of wave in-between each sample multiplied by 2 pi
+    angleDelta = cyclesPerSample * juce::MathConstants<float>::twoPi; // amount of wave in-between each sample multiplied by 2 pi (in radians)
 }
 
 void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill)
@@ -66,27 +56,11 @@ void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& buffe
         currentAngle += angleDelta;
     }
     
-    
-    
-    // Your audio-processing code goes here!
-
-    // For more details, see the help for AudioProcessor::getNextAudioBlock()
-
-    // Right now we are not producing any data, in which case we need to clear the buffer
-    // (to prevent the output of random noise)
     if (mute) bufferToFill.clearActiveBufferRegion();
-}
-
-void MainComponent::updateAngleDelta() {
-    
 }
 
 void MainComponent::releaseResources()
 {
-    // This will be called when the audio device stops, or when it is being
-    // restarted due to a setting change.
-
-    // For more details, see the help for AudioProcessor::releaseResources()
 }
 
 //==============================================================================
@@ -101,9 +75,6 @@ void MainComponent::paint (juce::Graphics& g)
 void MainComponent::resized()
 {
     btn.setBounds(getWidth() / 4, getHeight() / 4, getWidth() / 2, getHeight() / 2);
-    // This is called when the MainContentComponent is resized.
-    // If you add any child components, this is where you should
-    // update their positions.
 }
 
 void MainComponent::buttonClicked(juce::Button*) {

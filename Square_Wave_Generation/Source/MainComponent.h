@@ -30,7 +30,6 @@ public:
 private:
     //==============================================================================
     // Your private member variables go here...
-    void updateAngleDelta();
 
     float angleDelta = 0.0;
     float currentAngle = 0.0;
