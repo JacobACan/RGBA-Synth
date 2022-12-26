@@ -43,10 +43,12 @@ private:
 
 
     //GUI Variables
-    juce::ToggleButton muteBtn;
-    juce::ToggleButton combineBtn;
-    juce::Slider combineAmtSld;
-    juce::Slider sqrPitchSld;
+    juce::Slider red;
+    juce::Slider green;
+    juce::Slider blue;
+    juce::Slider alpha;
+
+    juce::Colour backgroundColor;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

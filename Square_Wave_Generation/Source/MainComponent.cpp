@@ -10,29 +10,38 @@ MainComponent::MainComponent()
     mute = true;
     combine = false;
 
-    //Set size of Main Component
-    setSize (800, 600);
+    // Make sure that before the constructor has finished, you've set the
+    // editor's size to whatever you need it to be.
+    setSize(800, 600);
 
-    //Buttons
-    muteBtn.setButtonText("Un-Mute");
-    addAndMakeVisible(muteBtn);
-    muteBtn.addListener(this);
+    //Set Initial Background Color
+    backgroundColor = juce::Colour::fromRGB(0, 0, 0);
 
-    combineBtn.setButtonText("Combine");
-    addAndMakeVisible(combineBtn);
-    combineBtn.addListener(this);
+    //red slider
+    red.setRange(juce::Range<double>(0, 255), 1);
+    red.setSliderStyle(juce::Slider::LinearBarVertical);
+    red.addListener(this);
 
-    combineAmtSld.setSliderStyle(juce::Slider::LinearBarVertical);
-    addAndMakeVisible(combineAmtSld);
-    combineAmtSld.addListener(this);
-    combineAmtSld.setRange(.01, 1, .01);
-    combineAmt = combineAmtSld.getValue();
+    //green slider
+    green.setRange(juce::Range<double>(0, 255), 1);
+    green.setSliderStyle(juce::Slider::LinearBarVertical);
+    green.addListener(this);
 
-    sqrPitchSld.setSliderStyle(juce::Slider::LinearBarVertical);
-    addAndMakeVisible(sqrPitchSld);
-    sqrPitchSld.addListener(this);
-    sqrPitchSld.setRange(1, 5, .1);
-    sqrWavPitch = sqrPitchSld.getValue();
+    //blue slider
+    blue.setRange(juce::Range<double>(0, 255), 1);
+    blue.setSliderStyle(juce::Slider::LinearBarVertical);
+    blue.addListener(this);
+
+    //blue slider
+    alpha.setRange(juce::Range<double>(0, 255), 1);
+    alpha.setSliderStyle(juce::Slider::LinearBarVertical);
+    alpha.addListener(this);
+
+
+    addAndMakeVisible(red);
+    addAndMakeVisible(green);
+    addAndMakeVisible(blue);
+    addAndMakeVisible(alpha);
 
 
 
@@ -108,23 +117,33 @@ void MainComponent::releaseResources()
 void MainComponent::paint (juce::Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
-    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
+    g.fillAll (backgroundColor);
 
     // You can add your drawing code here!
 }
 
 void MainComponent::resized()
 {
-    muteBtn.setBounds(getWidth() / 5, getHeight() / 4, 70, 20);
-    combineBtn.setBounds(getWidth() / 5 * 2, getHeight() / 4, 70, 20);
-    combineAmtSld.setBounds(getWidth() / 5 * 3, getHeight() / 4, 30, getHeight() / 2);
-    sqrPitchSld.setBounds(getWidth() / 5 * 4, getHeight() / 4, 30, getHeight() / 2);
+    int fourthHeight = getHeight() / 4;
+    int width = 30;
+    int offset = getWidth() / 12 - width / 2;
+    juce::Rectangle<int> sliderRect(getWidth() / 6 + offset, fourthHeight, width, getHeight() / 2);
+    red.setBounds(sliderRect);
+
+    sliderRect.setPosition(getWidth() / 6 * 2 + offset, fourthHeight);
+    green.setBounds(sliderRect);
+
+    sliderRect.setPosition(getWidth() / 6 * 3 + offset, fourthHeight);
+    blue.setBounds(sliderRect);
+
+    sliderRect.setPosition(getWidth() / 6 * 4 + offset, fourthHeight);
+    alpha.setBounds(sliderRect);
 }
 
 void MainComponent::sliderValueChanged(juce::Slider* slider)
 {
-    combineAmt = combineAmtSld.getValue();
-    sqrWavPitch = sqrPitchSld.getValue();
+    backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), alpha.getValue());
+    repaint();
 }
 
 void MainComponent::buttonClicked(juce::Button* btn) {
