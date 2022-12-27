@@ -7,8 +7,6 @@ MainComponent::MainComponent()
     angleDelta = 0.0;
     currentAngle = 0.0;
     frequency = 500;
-    mute = true;
-    combine = false;
 
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -78,8 +76,6 @@ void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& buffe
     auto * leftBuffer = bufferToFill.buffer->getWritePointer(0, bufferToFill.startSample);
     auto * rightBuffer = bufferToFill.buffer->getWritePointer(1, bufferToFill.startSample);
 
-    float level = .08;
-
     for (auto sample = 0; sample < bufferToFill.numSamples; sample++)
     {
         float sinWavSample = std::sin(currentAngle);
@@ -90,23 +86,16 @@ void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& buffe
 
         float writeSampleVal;
         
-        if (combine == false) 
-        {
-            writeSampleVal = sinWavSample * level;
-        } 
-        else
-        {
-            sinWavSample > 1 
-                ? writeSampleVal = (sinWavSample + (sqrWavSample * combineAmt)) / 2 * level
-                : writeSampleVal = (sinWavSample - (sqrWavSample * combineAmt)) / 2 * level;
-        }
+        
+        sinWavSample > 1 
+            ? writeSampleVal = (sinWavSample + (sqrWavSample * combineAmt)) / 2 * level
+            : writeSampleVal = (sinWavSample - (sqrWavSample * combineAmt)) / 2 * level;
+        
 
         leftBuffer[sample] = writeSampleVal;
         rightBuffer[sample] = writeSampleVal;
         currentAngle += angleDelta;
     }
-    
-    if (mute) bufferToFill.clearActiveBufferRegion();
 }
 
 void MainComponent::releaseResources()
@@ -143,18 +132,11 @@ void MainComponent::resized()
 void MainComponent::sliderValueChanged(juce::Slider* slider)
 {
     backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), alpha.getValue());
+    level = (alpha.getValue() / 255) * .4;
+    combineAmt = (blue.getValue() / 255);
+    sqrWavPitch = (green.getValue() / 255);
+    frequency = (red.getValue() * 2);
     repaint();
 }
 
-void MainComponent::buttonClicked(juce::Button* btn) {
-    if (btn->getButtonText() == "Un-Mute") 
-    {
-        mute ? mute = false : mute = true;
-    }
-    else if (btn->getButtonText() == "Combine")
-    {
-        combine ? combine = false : combine = true;
-    }
-    
-
-}
+\

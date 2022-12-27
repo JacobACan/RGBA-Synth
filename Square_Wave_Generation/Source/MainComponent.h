@@ -8,7 +8,6 @@
     your controls and content.
 */
 class MainComponent  : public juce::AudioAppComponent,
-                       public juce::Button::Listener,
                        public juce::Slider::Listener
 {
 public:
@@ -25,7 +24,6 @@ public:
     void paint (juce::Graphics& g) override;
     void resized() override;
 
-    void buttonClicked(juce::Button*) override;
     void sliderValueChanged(juce::Slider*) override;
     
 
@@ -36,8 +34,7 @@ private:
     float angleDelta;
     float currentAngle;
     float frequency;
-    bool mute;
-    bool combine;
+    float level;
     float combineAmt;
     float sqrWavPitch;
 

@@ -68,9 +68,6 @@ void NewProjectAudioProcessorEditor::paint (juce::Graphics& g)
 void NewProjectAudioProcessorEditor::sliderValueChanged(juce::Slider * slider)
 {
     backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), alpha.getValue());
-    /*red.setColour(juce::Slider::ColourIds::backgroundColourId, juce::Colour::fromRGB(red.getValue(), 0, 0));
-    green.setColour(juce::Slider::ColourIds::backgroundColourId,juce::Colour::fromRGB(0, green.getValue(), 0));
-    blue.setColour(juce::Slider::ColourIds::backgroundColourId, juce::Colour::fromRGB(0, 0, blue.getValue()));*/
     repaint();
 }
 
@@ -90,7 +87,4 @@ void NewProjectAudioProcessorEditor::resized()
 
     sliderRect.setPosition(getWidth() / 6 * 4 + offset, fourthHeight);
     alpha.setBounds(sliderRect);
-
-    // This is generally where you'll want to lay out the positions of any
-    // subcomponents in your editor..
 }
