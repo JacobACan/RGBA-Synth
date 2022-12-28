@@ -8,6 +8,7 @@ MainComponent::MainComponent()
     currentAngle = 0.0;
     frequency = 500;
 
+
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     setSize(800, 600);
@@ -21,8 +22,12 @@ MainComponent::MainComponent()
     red.onValueChange = [this]
     {
         backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), alpha.getValue());
-        frequency = (red.getValue() * 2);
         repaint();
+        if (red.getValue() > 1) 
+        {
+            frequency = (red.getValue() * 2);
+            updateAngleDelta();
+        }
     };
 
     //green slider
@@ -31,7 +36,6 @@ MainComponent::MainComponent()
     green.onValueChange = [this]
     {
         backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), alpha.getValue());
-        sqrWavPitch = (green.getValue() / 255);
         repaint();
     };
 
@@ -41,7 +45,6 @@ MainComponent::MainComponent()
     blue.onValueChange = [this]
     {
         backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), alpha.getValue());
-        combineAmt = (blue.getValue() / 255);
         repaint();
     };
 
@@ -51,7 +54,7 @@ MainComponent::MainComponent()
     alpha.onValueChange = [this]
     {
         backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), alpha.getValue());
-        targetLevel = (alpha.getValue() / 255) * .4;
+        targetLevel = (alpha.getValue() / 255) * .6;
         repaint();
     };
 
@@ -87,40 +90,56 @@ MainComponent::~MainComponent()
 //==============================================================================
 void MainComponent::prepareToPlay (int samplesPerBlockExpected, double sampleRate)
 {
-    auto cyclesPerSample = frequency / sampleRate; // amount of wave in-between each sample
-    angleDelta = cyclesPerSample * juce::MathConstants<float>::twoPi; // amount of wave in-between each sample multiplied by 2 pi (in radians)
+    currentSampleRate = sampleRate;
+    updateAngleDelta();
 }
 
 void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill)
 {
     auto * leftBuffer = bufferToFill.buffer->getWritePointer(0, bufferToFill.startSample);
     auto * rightBuffer = bufferToFill.buffer->getWritePointer(1, bufferToFill.startSample);
-    float levelIncrement = (targetLevel - level) / bufferToFill.numSamples;
 
-    for (auto sample = 0; sample < bufferToFill.numSamples; sample++)
+
+    if (level != targetLevel || frequency != targetFrequency)
     {
-        level += levelIncrement;
+        // If the buffer size is too small the increment amount will still make artifacts.  
+        // Splitting the smoothing between multiple buffers could fix this.
+        float levelIncrement = (targetLevel - level) / bufferToFill.numSamples;
+        float frequencyIncrement = (targetFrequency - frequency) / bufferToFill.numSamples;
 
-        float sinWavSample = std::sin(currentAngle);
-        float sinWavSample2 = std::sin(sqrWavPitch * currentAngle);
+        for (auto sample = 0; sample < bufferToFill.numSamples; sample++)
+        {
+            level += levelIncrement;
+            frequency += frequencyIncrement;
 
-        float sqrWavSample;
-        sinWavSample2 > 0 ? sqrWavSample = 1 : sqrWavSample = -1;
+            float sinWavSample = std::sin(currentAngle);
 
-        float writeSampleVal;
-        
-        
-        sinWavSample > 1 
-            ? writeSampleVal = (sinWavSample + (sqrWavSample * combineAmt)) / 2 * level
-            : writeSampleVal = (sinWavSample - (sqrWavSample * combineAmt)) / 2 * level;
-        
+            float writeSampleVal;
+            writeSampleVal = sinWavSample * level;
 
-        leftBuffer[sample] = writeSampleVal;
-        rightBuffer[sample] = writeSampleVal;
-        currentAngle += angleDelta;
+            leftBuffer[sample] = writeSampleVal;
+            rightBuffer[sample] = writeSampleVal;
+            currentAngle += angleDelta;
+        }
+
+        level = targetLevel;
+        frequency = targetFrequency;
+    }
+    else
+    {
+        for (auto sample = 0; sample < bufferToFill.numSamples; sample++)
+        {
+            float sinWavSample = std::sin(currentAngle);
+
+            float writeSampleVal;
+            writeSampleVal = sinWavSample * level;
+
+            leftBuffer[sample] = writeSampleVal;
+            rightBuffer[sample] = writeSampleVal;
+            currentAngle += angleDelta;
+        }
     }
 
-    level = targetLevel;
 }
 
 void MainComponent::releaseResources()
@@ -152,4 +171,10 @@ void MainComponent::resized()
 
     sliderRect.setPosition(getWidth() / 6 * 4 + offset, fourthHeight);
     alpha.setBounds(sliderRect);
+}
+
+void MainComponent::updateAngleDelta() 
+{
+    auto cyclesPerSample = frequency / currentSampleRate; // amount of wave in-between each sample
+    angleDelta = cyclesPerSample * juce::MathConstants<float>::twoPi; // amount of wave in-between each sample multiplied by 2 pi (in radians)
 }

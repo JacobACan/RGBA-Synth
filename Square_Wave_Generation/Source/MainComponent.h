@@ -28,14 +28,20 @@ public:
 private:
     //==============================================================================
 
+    //Functions
+    void updateAngleDelta();
+
     //Noise Generation Variables
-    float angleDelta;
+    float currentSampleRate;
+
     float currentAngle;
-    float frequency;
+    float angleDelta;
+
     float level;
     float targetLevel;
-    float combineAmt;
-    float sqrWavPitch;
+
+    float frequency;
+    float targetFrequency;
 
 
     //GUI Variables
