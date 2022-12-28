@@ -18,22 +18,42 @@ MainComponent::MainComponent()
     //red slider
     red.setRange(juce::Range<double>(0, 255), 1);
     red.setSliderStyle(juce::Slider::LinearBarVertical);
-    red.addListener(this);
+    red.onValueChange = [this]
+    {
+        backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), alpha.getValue());
+        frequency = (red.getValue() * 2);
+        repaint();
+    };
 
     //green slider
     green.setRange(juce::Range<double>(0, 255), 1);
     green.setSliderStyle(juce::Slider::LinearBarVertical);
-    green.addListener(this);
+    green.onValueChange = [this]
+    {
+        backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), alpha.getValue());
+        sqrWavPitch = (green.getValue() / 255);
+        repaint();
+    };
 
     //blue slider
     blue.setRange(juce::Range<double>(0, 255), 1);
     blue.setSliderStyle(juce::Slider::LinearBarVertical);
-    blue.addListener(this);
+    blue.onValueChange = [this]
+    {
+        backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), alpha.getValue());
+        combineAmt = (blue.getValue() / 255);
+        repaint();
+    };
 
-    //blue slider
+    //alpha slider
     alpha.setRange(juce::Range<double>(0, 255), 1);
     alpha.setSliderStyle(juce::Slider::LinearBarVertical);
-    alpha.addListener(this);
+    alpha.onValueChange = [this]
+    {
+        backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), alpha.getValue());
+        targetLevel = (alpha.getValue() / 255) * .4;
+        repaint();
+    };
 
 
     addAndMakeVisible(red);
@@ -75,9 +95,12 @@ void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& buffe
 {
     auto * leftBuffer = bufferToFill.buffer->getWritePointer(0, bufferToFill.startSample);
     auto * rightBuffer = bufferToFill.buffer->getWritePointer(1, bufferToFill.startSample);
+    float levelIncrement = (targetLevel - level) / bufferToFill.numSamples;
 
     for (auto sample = 0; sample < bufferToFill.numSamples; sample++)
     {
+        level += levelIncrement;
+
         float sinWavSample = std::sin(currentAngle);
         float sinWavSample2 = std::sin(sqrWavPitch * currentAngle);
 
@@ -96,6 +119,8 @@ void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& buffe
         rightBuffer[sample] = writeSampleVal;
         currentAngle += angleDelta;
     }
+
+    level = targetLevel;
 }
 
 void MainComponent::releaseResources()
@@ -128,15 +153,3 @@ void MainComponent::resized()
     sliderRect.setPosition(getWidth() / 6 * 4 + offset, fourthHeight);
     alpha.setBounds(sliderRect);
 }
-
-void MainComponent::sliderValueChanged(juce::Slider* slider)
-{
-    backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), alpha.getValue());
-    level = (alpha.getValue() / 255) * .4;
-    combineAmt = (blue.getValue() / 255);
-    sqrWavPitch = (green.getValue() / 255);
-    frequency = (red.getValue() * 2);
-    repaint();
-}
-
-\
