@@ -1,4 +1,4 @@
 # Improvements
 
-- Crackling in sin generation
-- Add granularity to pitch slider
+- textToDecibel override functionality
+- Crackling in sin generation / Wave table for sin generation
