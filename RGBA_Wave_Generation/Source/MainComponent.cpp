@@ -104,17 +104,17 @@ void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& buffe
     {
         // If the buffer size is too small the increment amount will still make artifacts.  
         // Splitting the smoothing between multiple buffers could fix this.
-        float levelIncrement = (targetLevel - level) / bufferToFill.numSamples;
-        float frequencyIncrement = (targetFrequency - frequency) / bufferToFill.numSamples;
+        double levelIncrement = (targetLevel - level) / bufferToFill.numSamples;
+        double frequencyIncrement = (targetFrequency - frequency) / bufferToFill.numSamples;
 
         for (auto sample = 0; sample < bufferToFill.numSamples; sample++)
         {
             level += levelIncrement;
             frequency += frequencyIncrement;
 
-            float sinWavSample = (float) std::sin(currentAngle);
+            double sinWavSample = (double) std::sin(currentAngle);
 
-            float writeSampleVal = sinWavSample * level;
+            double writeSampleVal = sinWavSample * level;
 
             leftBuffer[sample] = writeSampleVal;
             rightBuffer[sample] = writeSampleVal;
@@ -128,9 +128,9 @@ void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& buffe
     {
         for (auto sample = 0; sample < bufferToFill.numSamples; sample++)
         {
-            float sinWavSample = std::sin(currentAngle);
+            double sinWavSample = std::sin(currentAngle);
 
-            float writeSampleVal;
+            double writeSampleVal;
             writeSampleVal = sinWavSample * level;
 
             leftBuffer[sample] = writeSampleVal;

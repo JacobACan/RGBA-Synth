@@ -33,16 +33,16 @@ private:
     void updateAngleDelta();
 
     //Noise Generation Variables
-    float currentSampleRate;
+    double currentSampleRate;
 
-    float currentAngle;
-    float angleDelta;
+    double currentAngle;
+    double angleDelta;
 
-    float level;
-    float targetLevel;
+    double level;
+    double targetLevel;
 
-    float frequency;
-    float targetFrequency;
+    double frequency;
+    double targetFrequency;
 
 
     //GUI Variables
