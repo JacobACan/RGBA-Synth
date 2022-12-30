@@ -15,14 +15,14 @@ MainComponent::MainComponent()
     setSize(800, 600);
 
     //Set Initial Background Color
-    backgroundColor = juce::Colour::fromRGB(0, 0, 0);
+    backgroundColor = juce::Colour::fromFloatRGBA(0, 0, 0, 0);
 
     //red slider
     red.setRange(juce::Range<double>(0, 255), 1);
     red.setSliderStyle(juce::Slider::LinearBarVertical);
     red.onValueChange = [this]
     {
-        backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), RGBDecibelSlider::getRGBvalue(alpha));
+        backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), RGBADecibelSlider::getRGBvalue(alpha));
         repaint();
         if (red.getValue() > 1) 
         {
@@ -36,7 +36,7 @@ MainComponent::MainComponent()
     green.setSliderStyle(juce::Slider::LinearBarVertical);
     green.onValueChange = [this]
     {
-        backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), RGBDecibelSlider::getRGBvalue(alpha));
+        backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), RGBADecibelSlider::getRGBvalue(alpha));
         repaint();
     };
 
@@ -45,7 +45,7 @@ MainComponent::MainComponent()
     blue.setSliderStyle(juce::Slider::LinearBarVertical);
     blue.onValueChange = [this]
     {
-        backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), RGBDecibelSlider::getRGBvalue(alpha));
+        backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), RGBADecibelSlider::getRGBvalue(alpha));
         repaint();
     };
 
@@ -54,8 +54,8 @@ MainComponent::MainComponent()
     alpha.setSliderStyle(juce::Slider::LinearBarVertical);
     alpha.onValueChange = [this]
     {
-        backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), RGBDecibelSlider::getRGBvalue(alpha));
-        targetLevel = RGBDecibelSlider::getLevelValue(alpha);
+        backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), RGBADecibelSlider::getRGBvalue(alpha));
+        targetLevel = RGBADecibelSlider::getLevelValue(alpha);
         repaint();
     };
 
@@ -149,10 +149,23 @@ void MainComponent::releaseResources()
 //==============================================================================
 void MainComponent::paint (juce::Graphics& g)
 {
-    // (Our component is opaque, so we must completely fill the background with a solid colour)
-    g.fillAll (backgroundColor);
+    int titleHeight = 50;
+    int darkThreshold = 120;
+    int lightThreshold = 210;
 
-    // You can add your drawing code here!
+    g.fillAll (backgroundColor);
+    g.setFont(juce::Font("Titillium Web", titleHeight, juce::Font::plain));
+
+        (RGBADecibelSlider::getRGBvalue(alpha) > lightThreshold
+            && red.getValue() > lightThreshold
+            && green.getValue() > lightThreshold &&
+            blue.getValue() > lightThreshold)
+        ? g.setColour(juce::Colours::black) 
+        : RGBADecibelSlider::getRGBvalue(alpha) > darkThreshold
+        ? g.setColour(juce::Colours::white)
+        : g.setColour(juce::Colours::black);
+
+    g.drawText("RGBA Synth", 0, 0, getWidth(), getHeight(), juce::Justification::centredTop);
 }
 
 void MainComponent::resized()

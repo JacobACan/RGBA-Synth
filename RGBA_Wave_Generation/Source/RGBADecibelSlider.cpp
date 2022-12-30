@@ -8,15 +8,15 @@
   ==============================================================================
 */
 
-#include "RGBDecibelsSlider.h"
+#include "RGBADecibelSlider.h"
 
-juce::String RGBDecibelSlider::getTextFromValue(double value)
+juce::String RGBADecibelSlider::getTextFromValue(double value)
 {
     return juce::Decibels::toString(value);
 
 }
 
-double RGBDecibelSlider::getValueFromText(const juce::String& text)
+double RGBADecibelSlider::getValueFromText(const juce::String& text)
 {
     double minusInfDb = -100;
 
@@ -26,13 +26,13 @@ double RGBDecibelSlider::getValueFromText(const juce::String& text)
                                         : decibelText.getDoubleValue(); 
 }
 
-double RGBDecibelSlider::getRGBvalue(RGBDecibelSlider& slider) {
+double RGBADecibelSlider::getRGBvalue(RGBADecibelSlider& slider) {
     double maxValue = slider.getMaximum();
     double scale = 255 / maxValue;
     return slider.getValue()* scale;
 }
 
-double RGBDecibelSlider::getLevelValue(RGBDecibelSlider& slider) {
+double RGBADecibelSlider::getLevelValue(RGBADecibelSlider& slider) {
     double maxValue = slider.getMaximum();
     double scale = maxValue * 64;
     return slider.getValue() / scale; // Return a value that is a fraction of the value from 0 to 1
