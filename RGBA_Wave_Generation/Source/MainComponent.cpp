@@ -22,7 +22,7 @@ MainComponent::MainComponent()
     red.setSliderStyle(juce::Slider::LinearBarVertical);
     red.onValueChange = [this]
     {
-        backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), alpha.getValue() * 21.25);
+        backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), RGBDecibelSlider::getRGBvalue(alpha));
         repaint();
         if (red.getValue() > 1) 
         {
@@ -36,7 +36,7 @@ MainComponent::MainComponent()
     green.setSliderStyle(juce::Slider::LinearBarVertical);
     green.onValueChange = [this]
     {
-        backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), alpha.getValue() * 21.25);
+        backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), RGBDecibelSlider::getRGBvalue(alpha));
         repaint();
     };
 
@@ -45,7 +45,7 @@ MainComponent::MainComponent()
     blue.setSliderStyle(juce::Slider::LinearBarVertical);
     blue.onValueChange = [this]
     {
-        backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), alpha.getValue() * 21.25);
+        backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), RGBDecibelSlider::getRGBvalue(alpha));
         repaint();
     };
 
@@ -54,8 +54,8 @@ MainComponent::MainComponent()
     alpha.setSliderStyle(juce::Slider::LinearBarVertical);
     alpha.onValueChange = [this]
     {
-        backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), alpha.getValue() * 21.25);
-        targetLevel = (alpha.getValue() / 768);
+        backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), RGBDecibelSlider::getRGBvalue(alpha));
+        targetLevel = RGBDecibelSlider::getLevelValue(alpha);
         repaint();
     };
 

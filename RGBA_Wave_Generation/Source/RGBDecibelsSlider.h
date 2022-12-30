@@ -12,11 +12,16 @@
 
 #include <JuceHeader.h>
 
-class DecibelSlider : public juce::Slider
+class RGBDecibelSlider : public juce::Slider
 {
 public:
     juce::String getTextFromValue(double value) override;
+
     double getValueFromText(const juce::String& text) override;
+
+    static double getRGBvalue(RGBDecibelSlider& slider);
+
+    static double getLevelValue(RGBDecibelSlider& slider);
     
 private:
 

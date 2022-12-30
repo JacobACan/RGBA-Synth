@@ -1,7 +1,7 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "DecibelsSlider.h" 
+#include "RGBDecibelsSlider.h" 
 
 //==============================================================================
 /*
@@ -49,7 +49,7 @@ private:
     juce::Slider red;
     juce::Slider green;
     juce::Slider blue;
-    DecibelSlider alpha;
+    RGBDecibelSlider alpha;
 
     juce::Colour backgroundColor;
 
