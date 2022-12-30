@@ -5,10 +5,10 @@
               companyName="Audio Vision">
   <MAINGROUP id="FlThVo" name="Noise Generation">
     <GROUP id="{079425D3-06C0-3FA3-150A-044C875FDDD8}" name="Audio Vision Util">
-      <FILE id="SA8xPy" name="DecibelSlider.cpp" compile="1" resource="0"
-            file="Source/DecibelSlider.cpp"/>
-      <FILE id="kGoiJn" name="DecibelsSlider.h" compile="0" resource="0"
-            file="Source/DecibelsSlider.h"/>
+      <FILE id="N3gU4t" name="RGBADecibelSlider.h" compile="0" resource="0"
+            file="Source/RGBADecibelSlider.h"/>
+      <FILE id="vJNkZa" name="RGBADecibelSlider.cpp" compile="1" resource="0"
+            file="Source/RGBADecibelSlider.cpp"/>
     </GROUP>
     <GROUP id="{940C23DE-E1AF-1A93-86B6-33CDE8F90B19}" name="Source">
       <FILE id="uKG0ei" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
