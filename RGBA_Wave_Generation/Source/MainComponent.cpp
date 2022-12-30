@@ -7,6 +7,7 @@ MainComponent::MainComponent()
     angleDelta = 0.f;
     currentAngle = 0.f;
     frequency = 1.f;
+    level = 0;
 
 
     // Make sure that before the constructor has finished, you've set the
@@ -16,12 +17,12 @@ MainComponent::MainComponent()
     //Set Initial Background Color
     backgroundColor = juce::Colour::fromRGB(0, 0, 0);
 
-    //red decibel slider
+    //red slider
     red.setRange(juce::Range<double>(0, 255), 1);
     red.setSliderStyle(juce::Slider::LinearBarVertical);
     red.onValueChange = [this]
     {
-        backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), alpha.getValue());
+        backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), alpha.getValue() * 21.25);
         repaint();
         if (red.getValue() > 1) 
         {
@@ -35,7 +36,7 @@ MainComponent::MainComponent()
     green.setSliderStyle(juce::Slider::LinearBarVertical);
     green.onValueChange = [this]
     {
-        backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), alpha.getValue());
+        backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), alpha.getValue() * 21.25);
         repaint();
     };
 
@@ -44,17 +45,17 @@ MainComponent::MainComponent()
     blue.setSliderStyle(juce::Slider::LinearBarVertical);
     blue.onValueChange = [this]
     {
-        backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), alpha.getValue());
+        backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), alpha.getValue() * 21.25);
         repaint();
     };
 
-    //alpha slider
-    alpha.setRange(juce::Range<double>(0, 255), 1);
+    //alpha decibel slider
+    alpha.setRange(juce::Range<double>(0, 12), 1);
     alpha.setSliderStyle(juce::Slider::LinearBarVertical);
     alpha.onValueChange = [this]
     {
-        backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), alpha.getValue());
-        targetLevel = (alpha.getValue() / 255) * .6;
+        backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), alpha.getValue() * 21.25);
+        targetLevel = (alpha.getValue() / 768);
         repaint();
     };
 
