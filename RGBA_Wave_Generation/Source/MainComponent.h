@@ -45,6 +45,11 @@ private:
 
     double frequency;
 
+    double swtLevel;
+    double sawLevel;
+    double sqrLevel;
+    float maxWaveHeight;
+
 
     //GUI Variables
     juce::Slider red;

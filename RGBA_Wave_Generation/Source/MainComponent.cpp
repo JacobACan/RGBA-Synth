@@ -6,7 +6,11 @@ currentAngle(0),
 frequency(1),
 level(0),
 noteOn(false),
-keyboardComponent(keyboardState, juce::KeyboardComponentBase::horizontalKeyboard)
+keyboardComponent(keyboardState, juce::KeyboardComponentBase::horizontalKeyboard),
+maxWaveHeight (1),
+swtLevel(0),
+sawLevel(0),
+sqrLevel (0)
 {
 
     setSize(800, 600);
@@ -20,6 +24,9 @@ keyboardComponent(keyboardState, juce::KeyboardComponentBase::horizontalKeyboard
     {
         backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), RGBADecibelSlider::getRGBvalue(alpha));
         repaint();
+
+        swtLevel = red.getValue() / 255;
+        maxWaveHeight = swtLevel + sawLevel + sqrLevel + 1;
     };
 
     //green slider
@@ -29,6 +36,9 @@ keyboardComponent(keyboardState, juce::KeyboardComponentBase::horizontalKeyboard
     {
         backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), RGBADecibelSlider::getRGBvalue(alpha));
         repaint();
+
+        sawLevel = green.getValue() / 255;
+        maxWaveHeight = swtLevel + sawLevel + sqrLevel + 1;
     };
 
     //blue slider
@@ -38,6 +48,9 @@ keyboardComponent(keyboardState, juce::KeyboardComponentBase::horizontalKeyboard
     {
         backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), RGBADecibelSlider::getRGBvalue(alpha));
         repaint();
+
+        sqrLevel = blue.getValue() / 255;
+        maxWaveHeight = swtLevel + sawLevel + sqrLevel + 1;
     };
 
     //alpha decibel slider
@@ -126,9 +139,17 @@ void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& buffe
             for (auto sample = 0; sample < bufferToFill.numSamples; sample++)
             {
                 double sinWavSample = std::sin(currentAngle);
+                double swtnWavSample = WaveGen::swt(currentAngle);
+                double sawWavSample = WaveGen::saw(currentAngle);
+                double sqrWavSample = WaveGen::sqr(currentAngle);
 
                 double writeSampleVal;
-                writeSampleVal = sinWavSample * level;
+
+                sinWavSample > 0
+                    ? writeSampleVal = (sinWavSample + (swtnWavSample * swtLevel) + (sawWavSample * sawLevel) + (sqrWavSample * sqrLevel)) / maxWaveHeight
+                    : writeSampleVal = (sinWavSample - (swtnWavSample * swtLevel) - (sawWavSample * sawLevel) - (sqrWavSample * sqrLevel)) / maxWaveHeight;
+
+                writeSampleVal *= level;
 
                 leftBuffer[sample] = writeSampleVal;
                 rightBuffer[sample] = writeSampleVal;
