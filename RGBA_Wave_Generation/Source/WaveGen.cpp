@@ -27,9 +27,11 @@ double WaveGen::saw(double angle) {
     double sample = 0;
     angle = std::fmod(angle, juce::MathConstants<double>::twoPi);
 
-    angle < juce::MathConstants<float>::pi
-        ? sample = ((2 * angle) / juce::MathConstants<double>::pi) - 1
-        : sample = ((-2 * angle) / juce::MathConstants<double>::pi) + 3;
+    angle < juce::MathConstants<float>::halfPi
+        ? sample = (2 * angle) / juce::MathConstants<double>::pi
+        : angle < (juce::MathConstants<double>::pi * 3) / 2
+        ? sample = ((-2 * angle) / juce::MathConstants<double>::pi) + 2
+        : sample = ((2 * angle) / juce::MathConstants<double>::pi) - 4;
 
     return sample;
 }
@@ -39,7 +41,10 @@ double WaveGen::swt(double angle) {
     double sample = 0;
     angle = std::fmod(angle, juce::MathConstants<double>::twoPi);
 
-    sample = (angle / juce::MathConstants<double>::pi) - 1;
+    angle < juce::MathConstants<float>::pi
+        ? sample = angle / juce::MathConstants<double>::pi
+        : sample = (angle / juce::MathConstants<double>::pi) - 2;
+    
 
     return sample;
 }

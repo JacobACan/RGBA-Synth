@@ -145,9 +145,7 @@ void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& buffe
 
                 double writeSampleVal;
 
-                sinWavSample > 0
-                    ? writeSampleVal = (sinWavSample + (swtnWavSample * swtLevel) + (sawWavSample * sawLevel) + (sqrWavSample * sqrLevel)) / maxWaveHeight
-                    : writeSampleVal = (sinWavSample - (swtnWavSample * swtLevel) - (sawWavSample * sawLevel) - (sqrWavSample * sqrLevel)) / maxWaveHeight;
+                writeSampleVal = (sinWavSample + (swtnWavSample * swtLevel) + (sawWavSample * sawLevel) + (sqrWavSample * sqrLevel)) / maxWaveHeight;
 
                 writeSampleVal *= level;
 
