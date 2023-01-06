@@ -3,12 +3,9 @@
 #include <JuceHeader.h>
 #include "RGBADecibelSlider.h"
 
-//==============================================================================
-/*
-    This component lives inside our window, and this is where you should put all
-    your controls and content.
-*/
-class MainComponent  : public juce::AudioAppComponent
+
+class MainComponent  : public juce::AudioAppComponent,
+                       public juce::MidiKeyboardState::Listener
 {
 public:
     //==============================================================================
@@ -24,7 +21,11 @@ public:
     void paint (juce::Graphics& g) override;
     void resized() override;
 
-    
+    //===============================================================================
+    void handleNoteOn(juce::MidiKeyboardState* source,
+        int midiChannel, int midiNoteNumber, float velocity) override;
+    void handleNoteOff(juce::MidiKeyboardState* source,
+        int midiChannel, int midiNoteNumber, float velocity) override;
 
 private:
     //==============================================================================
@@ -52,6 +53,11 @@ private:
     RGBADecibelSlider alpha;
 
     juce::Colour backgroundColor;
+
+    //Midi Keyboard
+    juce::MidiKeyboardState keyboardState;
+    juce::MidiKeyboardComponent keyboardComponent;
+    bool noteOn;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

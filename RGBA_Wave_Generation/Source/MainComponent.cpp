@@ -1,20 +1,16 @@
 #include "MainComponent.h"
 
 //==============================================================================
-MainComponent::MainComponent()
+MainComponent::MainComponent() : angleDelta(0),
+currentAngle(0),
+frequency(1),
+level(0),
+noteOn(false),
+keyboardComponent(keyboardState, juce::KeyboardComponentBase::horizontalKeyboard)
 {
-    //variable initialization
-    angleDelta = 0.f;
-    currentAngle = 0.f;
-    frequency = 1.f;
-    level = 0;
 
-
-    // Make sure that before the constructor has finished, you've set the
-    // editor's size to whatever you need it to be.
     setSize(800, 600);
 
-    //Set Initial Background Color
     backgroundColor = juce::Colour::fromFloatRGBA(0, 0, 0, 0);
 
     //red slider
@@ -59,6 +55,12 @@ MainComponent::MainComponent()
         repaint();
     };
 
+   //keyboardState
+    keyboardState.addListener(this);
+
+   //keyboardComponent
+    addAndMakeVisible(keyboardComponent);
+
 
     addAndMakeVisible(red);
     addAndMakeVisible(green);
@@ -100,44 +102,49 @@ void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& buffe
     auto * leftBuffer = bufferToFill.buffer->getWritePointer(0, bufferToFill.startSample);
     auto * rightBuffer = bufferToFill.buffer->getWritePointer(1, bufferToFill.startSample);
 
-
-    if (level != targetLevel || frequency != targetFrequency)
+    if (noteOn) 
     {
-        // If the buffer size is too small the increment amount will still make artifacts.  
-        // Splitting the smoothing between multiple buffers could fix this.
-        double levelIncrement = (targetLevel - level) / bufferToFill.numSamples;
-        double frequencyIncrement = (targetFrequency - frequency) / bufferToFill.numSamples;
-
-        for (auto sample = 0; sample < bufferToFill.numSamples; sample++)
+        //Create Sound
+        if (level != targetLevel || frequency != targetFrequency)
         {
-            level += levelIncrement;
-            frequency += frequencyIncrement;
+            // If the buffer size is too small the increment amount will still make artifacts.  
+            // Splitting the smoothing between multiple buffers could fix this.
+            double levelIncrement = (targetLevel - level) / bufferToFill.numSamples;
 
-            double sinWavSample = (double) std::sin(currentAngle);
+            for (auto sample = 0; sample < bufferToFill.numSamples; sample++)
+            {
+                level += levelIncrement;
 
-            double writeSampleVal = sinWavSample * level;
+                double sinWavSample = (double) std::sin(currentAngle);
 
-            leftBuffer[sample] = writeSampleVal;
-            rightBuffer[sample] = writeSampleVal;
-            currentAngle += angleDelta;
+                double writeSampleVal = sinWavSample * level;
+
+                leftBuffer[sample] = writeSampleVal;
+                rightBuffer[sample] = writeSampleVal;
+                currentAngle += angleDelta;
+            }
+
+            level = targetLevel;
+            frequency = targetFrequency;
         }
+        else
+        {
+            for (auto sample = 0; sample < bufferToFill.numSamples; sample++)
+            {
+                double sinWavSample = std::sin(currentAngle);
 
-        level = targetLevel;
-        frequency = targetFrequency;
+                double writeSampleVal;
+                writeSampleVal = sinWavSample * level;
+
+                leftBuffer[sample] = writeSampleVal;
+                rightBuffer[sample] = writeSampleVal;
+                currentAngle += angleDelta;
+            }
+        }
     }
-    else
+    else 
     {
-        for (auto sample = 0; sample < bufferToFill.numSamples; sample++)
-        {
-            double sinWavSample = std::sin(currentAngle);
-
-            double writeSampleVal;
-            writeSampleVal = sinWavSample * level;
-
-            leftBuffer[sample] = writeSampleVal;
-            rightBuffer[sample] = writeSampleVal;
-            currentAngle += angleDelta;
-        }
+        bufferToFill.clearActiveBufferRegion();
     }
 
 }
@@ -173,6 +180,8 @@ void MainComponent::resized()
     int fourthHeight = getHeight() / 4;
     int width = 50;
     int offset = getWidth() / 12 - width / 2;
+
+    //Sliders
     juce::Rectangle<int> sliderRect(getWidth() / 6 + offset, fourthHeight, width, getHeight() / 2);
     red.setBounds(sliderRect);
 
@@ -184,10 +193,29 @@ void MainComponent::resized()
 
     sliderRect.setPosition(getWidth() / 6 * 4 + offset, fourthHeight);
     alpha.setBounds(sliderRect);
+
+
+    //Keyboard Component
+    keyboardComponent.setBounds(getWidth() / 6, getHeight() * 3 / 4, getWidth() * 4 / 6, fourthHeight);
 }
 
+// ===============================================================================
 void MainComponent::updateAngleDelta() 
 {
     float cyclesPerSample = frequency / currentSampleRate; // amount of wave in-between each sample
     angleDelta = cyclesPerSample * juce::MathConstants<float>::twoPi; // amount of wave in-between each sample multiplied by 2 pi (in radians)
+}
+
+//================================================================================
+void MainComponent::handleNoteOn(juce::MidiKeyboardState* source,
+    int midiChannel, int midiNoteNumber, float velocity) {
+    
+    frequency = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
+    updateAngleDelta();
+    noteOn = true;
+}
+void MainComponent::handleNoteOff(juce::MidiKeyboardState* source,
+    int midiChannel, int midiNoteNumber, float velocity) {
+
+    noteOn = false;
 }
