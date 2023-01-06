@@ -2,6 +2,7 @@
 
 #include <JuceHeader.h>
 #include "RGBADecibelSlider.h"
+#include "WaveGen.h"
 
 
 class MainComponent  : public juce::AudioAppComponent,
@@ -43,7 +44,6 @@ private:
     double targetLevel;
 
     double frequency;
-    double targetFrequency;
 
 
     //GUI Variables

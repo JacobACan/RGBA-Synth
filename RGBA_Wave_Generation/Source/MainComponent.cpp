@@ -20,11 +20,6 @@ keyboardComponent(keyboardState, juce::KeyboardComponentBase::horizontalKeyboard
     {
         backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), RGBADecibelSlider::getRGBvalue(alpha));
         repaint();
-        if (red.getValue() > 1) 
-        {
-            frequency = (red.getValue() * 2);
-            updateAngleDelta();
-        }
     };
 
     //green slider
@@ -105,7 +100,7 @@ void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& buffe
     if (noteOn) 
     {
         //Create Sound
-        if (level != targetLevel || frequency != targetFrequency)
+        if (level != targetLevel)
         {
             // If the buffer size is too small the increment amount will still make artifacts.  
             // Splitting the smoothing between multiple buffers could fix this.
@@ -125,7 +120,6 @@ void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& buffe
             }
 
             level = targetLevel;
-            frequency = targetFrequency;
         }
         else
         {
@@ -163,14 +157,12 @@ void MainComponent::paint (juce::Graphics& g)
     g.fillAll (backgroundColor);
     g.setFont(juce::Font("Titillium Web", titleHeight, juce::Font::plain));
 
-        (RGBADecibelSlider::getRGBvalue(alpha) > lightThreshold
-            && red.getValue() > lightThreshold
-            && green.getValue() > lightThreshold &&
-            blue.getValue() > lightThreshold)
-        ? g.setColour(juce::Colours::black) 
-        : RGBADecibelSlider::getRGBvalue(alpha) > darkThreshold
-        ? g.setColour(juce::Colours::white)
-        : g.setColour(juce::Colours::black);
+    (RGBADecibelSlider::getRGBvalue(alpha) > lightThreshold
+        && red.getValue() > lightThreshold
+        && green.getValue() > lightThreshold &&
+        blue.getValue() > lightThreshold)
+        ? g.setColour(juce::Colours::black)
+        : g.setColour(juce::Colours::white);
 
     g.drawText("RGBA Synth", 0, 0, getWidth(), getHeight(), juce::Justification::centredTop);
 }
