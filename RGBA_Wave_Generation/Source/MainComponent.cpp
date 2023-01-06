@@ -5,7 +5,7 @@ MainComponent::MainComponent() : angleDelta(0),
 currentAngle(0),
 frequency(1),
 level(0),
-noteOn(false),
+notesOn(0),
 keyboardComponent(keyboardState, juce::KeyboardComponentBase::horizontalKeyboard),
 maxWaveHeight (1),
 swtLevel(0),
@@ -110,7 +110,7 @@ void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& buffe
     auto * leftBuffer = bufferToFill.buffer->getWritePointer(0, bufferToFill.startSample);
     auto * rightBuffer = bufferToFill.buffer->getWritePointer(1, bufferToFill.startSample);
 
-    if (noteOn) 
+    if (notesOn > 0) 
     {
         //Create Sound
         if (level != targetLevel)
@@ -122,10 +122,16 @@ void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& buffe
             for (auto sample = 0; sample < bufferToFill.numSamples; sample++)
             {
                 level += levelIncrement;
+                double sinWavSample = std::sin(currentAngle);
+                double swtnWavSample = WaveGen::swt(currentAngle);
+                double sawWavSample = WaveGen::saw(currentAngle);
+                double sqrWavSample = WaveGen::sqr(currentAngle);
 
-                double sinWavSample = (double) std::sin(currentAngle);
+                double writeSampleVal;
 
-                double writeSampleVal = sinWavSample * level;
+                writeSampleVal = (sinWavSample + (swtnWavSample * swtLevel) + (sawWavSample * sawLevel) + (sqrWavSample * sqrLevel)) / maxWaveHeight;
+
+                writeSampleVal *= level;
 
                 leftBuffer[sample] = writeSampleVal;
                 rightBuffer[sample] = writeSampleVal;
@@ -223,10 +229,13 @@ void MainComponent::handleNoteOn(juce::MidiKeyboardState* source,
     
     frequency = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
     updateAngleDelta();
-    noteOn = true;
+    notesOn += 1;
+    DBG(notesOn);
 }
 void MainComponent::handleNoteOff(juce::MidiKeyboardState* source,
     int midiChannel, int midiNoteNumber, float velocity) {
 
-    noteOn = false;
+    notesOn -= 1;
+    DBG(notesOn);
+
 }
