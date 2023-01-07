@@ -13,4 +13,4 @@
 	- change slider colour on slide
 	- custom Grapics
 
-- Wave table synthesis
+- Wave table synthesis.
