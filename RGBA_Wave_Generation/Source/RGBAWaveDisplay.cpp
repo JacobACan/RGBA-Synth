@@ -50,13 +50,24 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
     float prevXSqr = offsetX;
     float prevYSqr = yPosAmplitudeSqr / amplitudeToRadians;
 
-    float yPosAmplitudeResult = (std::sin(offsetX * widthToRadiansFactor) * level + offsetAmplitudeY);
+    float yPosAmplitudeResult = (std::sin(offsetX * widthToRadiansFactor)
+        + (WaveGen::sqr(offsetX * widthToRadiansFactor) * sqrLevel)
+        + (WaveGen::saw(offsetX * widthToRadiansFactor) * sawLevel)
+        + (WaveGen::swt(offsetX * widthToRadiansFactor) * swtLevel))
+        / maxWaveHeight + offsetAmplitudeY;
+    float prevYResult = (yPosAmplitudeResult / amplitudeToRadians);;
     float prevXResult = offsetX;
-    float prevYResult = yPosAmplitudeResult / amplitudeToRadians;
 
-    juce::Colour red = juce::Colour::fromFloatRGBA(1, 0, 0, swtLevel);
-    juce::Colour green = juce::Colour::fromFloatRGBA(0, 1, 0, sawLevel);
-    juce::Colour blue = juce::Colour::fromFloatRGBA(0, 0, 1, sqrLevel);
+    float opacityFactor = .3;
+
+    juce::Colour red = juce::Colour::fromFloatRGBA(1, 0, 0, swtLevel * opacityFactor);
+    juce::Colour green = juce::Colour::fromFloatRGBA(0, 1, 0, sawLevel * opacityFactor);
+    juce::Colour blue = juce::Colour::fromFloatRGBA(0, 0, 1, sqrLevel * opacityFactor);
+
+    auto redPath = new juce::Path();
+    auto greenPath = new juce::Path();
+    auto bluePath = new juce::Path();
+    auto resultPath = new juce::Path();
 
     for (float i = 0; i <= resolution; i++)
     {
@@ -64,7 +75,7 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
 
         float xPosRadiads = xPos * widthToRadiansFactor;
 
-        int thickness = 2;
+        int thickness = 1;
         int interval = 4;
         int z = 0;
         z += interval;
@@ -73,7 +84,8 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
         yPosAmplitudeSwt = (WaveGen::swt(xPosRadiads) * swtLevel + offsetAmplitudeY);
         float yPos = (yPosAmplitudeSwt / amplitudeToRadians) ;
         g.setColour(red);
-        g.drawLine(prevXSwt + z, prevYSwt + z, xPos + z, yPos + z, thickness);
+        juce::Line<float> swtLine (prevXSwt + z, prevYSwt + z, xPos + z, yPos + z);
+        redPath->addLineSegment(swtLine, thickness);
         prevXSwt = xPos;
         prevYSwt = yPos;
 
@@ -81,20 +93,19 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
         z += interval;
         yPosAmplitudeSaw = (WaveGen::saw(xPosRadiads) * sawLevel + offsetAmplitudeY);
         yPos = (yPosAmplitudeSaw / amplitudeToRadians) ;
-        g.setColour(green);
-        g.drawLine(prevXSaw + z, prevYSaw + z, xPos + z, yPos + z, thickness);
+        juce::Line<float> sawLine(prevXSaw + z, prevYSaw + z, xPos + z, yPos + z);
+        greenPath->addLineSegment(sawLine, thickness);
         prevXSaw = xPos;
         prevYSaw = yPos;
         
         z += interval;
         yPosAmplitudeSqr = (WaveGen::sqr(xPosRadiads) * sqrLevel + offsetAmplitudeY);
         yPos = (yPosAmplitudeSqr / amplitudeToRadians);
-        g.setColour(blue);
-        g.drawLine(prevXSqr + z, prevYSqr + z, xPos + z, yPos + z, thickness);
+        juce::Line<float> sqrLine(prevXSqr + z, prevYSqr + z, xPos + z, yPos + z);
+        bluePath->addLineSegment(sqrLine, thickness);
         prevXSqr = xPos;
         prevYSqr = yPos;
 
-        g.setOpacity(1);
         z += interval;
         yPosAmplitudeResult = (std::sin(xPosRadiads) 
             + (WaveGen::sqr(xPosRadiads) * sqrLevel)
@@ -102,11 +113,26 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
             + (WaveGen::swt(xPosRadiads) * swtLevel)) 
                 / maxWaveHeight + offsetAmplitudeY;
         yPos = (yPosAmplitudeResult / amplitudeToRadians);
-        g.setColour(juce::Colours::white);
-        g.drawLine(prevXResult + z, prevYResult + z, xPos + z, yPos + z, 5);
+        juce::Line<float> resultLine(prevXResult + z, prevYResult + z, xPos + z, yPos + z);
+        resultPath->addLineSegment(resultLine, thickness);
         prevXResult = xPos;
         prevYResult = yPos;
+
+        
     }
+    juce::PathStrokeType strokeType(3, juce::PathStrokeType::curved);
+
+    g.setColour(red);
+    g.strokePath(*redPath, strokeType);
+
+    g.setColour(green);
+    g.strokePath(*greenPath, strokeType);
+
+    g.setColour(blue);
+    g.strokePath(*bluePath, strokeType);
+
+    g.setColour(juce::Colours::white);
+    g.strokePath(*resultPath, strokeType);
 
     g.drawRoundedRectangle(bounds, 10, 10);
 
