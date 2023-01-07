@@ -7,7 +7,7 @@
 */
 
 #include <JuceHeader.h>
-#include "MainComponent.h"
+#include "RGBASynth.h"
 
 //==============================================================================
 class NewProjectApplication  : public juce::JUCEApplication
@@ -64,7 +64,8 @@ public:
                               DocumentWindow::allButtons)
         {
             setUsingNativeTitleBar (false);
-            setContentOwned (new MainComponent(), true);
+            setContentOwned (new RGBASynth(), true);
+            setResizeLimits(735, 410, INT_MAX, INT_MAX);
 
            #if JUCE_IOS || JUCE_ANDROID
             setFullScreen (true);

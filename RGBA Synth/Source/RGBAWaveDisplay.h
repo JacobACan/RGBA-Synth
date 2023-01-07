@@ -28,8 +28,6 @@ public:
     void setMaxWaveHeight(double newMaxWaveHeight);
 
 private:
-    int quality;
-
     double level;
 
     double swtLevel;

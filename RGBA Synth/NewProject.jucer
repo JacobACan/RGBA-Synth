@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="w9vYLt" name="RGBA Color Picker" projectType="audioplug"
-              useAppConfig="0" addUsingNamespaceToJuceHeader="0" displaySplashScreen="1"
-              jucerFormatVersion="1" companyName="Audio Vision">
-  <MAINGROUP id="mLIH0f" name="RGBA Color Picker">
-    <GROUP id="{439AE57C-ECF2-6274-54D6-692129E3F340}" name="Source">
-      <FILE id="Zzzym0" name="PluginProcessor.cpp" compile="1" resource="0"
-            file="Source/PluginProcessor.cpp"/>
-      <FILE id="oN3GSg" name="PluginProcessor.h" compile="0" resource="0"
-            file="Source/PluginProcessor.h"/>
-      <FILE id="UxLy9p" name="PluginEditor.cpp" compile="1" resource="0"
-            file="Source/PluginEditor.cpp"/>
-      <FILE id="DcbGqv" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+<JUCERPROJECT id="A5lVy3" name="RGBA Synth" projectType="guiapp" useAppConfig="0"
+              addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
+              companyName="JAC Audio" companyWebsite="https://jacobacan.github.io/"
+              version="0.5">
+  <MAINGROUP id="FlThVo" name="RGBA Synth">
+    <GROUP id="{079425D3-06C0-3FA3-150A-044C875FDDD8}" name="RGBA Util">
+      <FILE id="shiVQs" name="RGBAWaveDisplay.cpp" compile="1" resource="0"
+            file="Source/RGBAWaveDisplay.cpp"/>
+      <FILE id="hZ6num" name="WaveGen.cpp" compile="1" resource="0" file="Source/WaveGen.cpp"/>
+      <FILE id="hOAvKe" name="RGBAWaveDisplay.h" compile="0" resource="0"
+            file="Source/RGBAWaveDisplay.h"/>
+      <FILE id="NmeRSA" name="WaveGen.h" compile="0" resource="0" file="Source/WaveGen.h"/>
+      <FILE id="N3gU4t" name="RGBADecibelSlider.h" compile="0" resource="0"
+            file="Source/RGBADecibelSlider.h"/>
+      <FILE id="vJNkZa" name="RGBADecibelSlider.cpp" compile="1" resource="0"
+            file="Source/RGBADecibelSlider.cpp"/>
+    </GROUP>
+    <GROUP id="{940C23DE-E1AF-1A93-86B6-33CDE8F90B19}" name="Source">
+      <FILE id="uKG0ei" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+      <FILE id="LAEUK0" name="RGBASynth.h" compile="0" resource="0" file="Source/RGBASynth.h"/>
+      <FILE id="Z9mr6w" name="RGBASynth.cpp" compile="1" resource="0" file="Source/RGBASynth.cpp"/>
     </GROUP>
   </MAINGROUP>
-  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1"/>
   <EXPORTFORMATS>
     <VS2022 targetFolder="Builds/VisualStudio2022">
       <CONFIGURATIONS>
@@ -25,7 +34,6 @@
         <MODULEPATH id="juce_audio_basics" path="../../JUCE/modules"/>
         <MODULEPATH id="juce_audio_devices" path="../../JUCE/modules"/>
         <MODULEPATH id="juce_audio_formats" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_plugin_client" path="../../JUCE/modules"/>
         <MODULEPATH id="juce_audio_processors" path="../../JUCE/modules"/>
         <MODULEPATH id="juce_audio_utils" path="../../JUCE/modules"/>
         <MODULEPATH id="juce_core" path="../../JUCE/modules"/>
@@ -41,8 +49,6 @@
     <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
-    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"
-            useGlobalPath="1"/>
     <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>

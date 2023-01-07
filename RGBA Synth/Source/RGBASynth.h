@@ -6,13 +6,13 @@
 #include "RGBAWaveDisplay.h"
 
 
-class MainComponent  : public juce::AudioAppComponent,
+class RGBASynth : public juce::AudioAppComponent,
                        public juce::MidiKeyboardState::Listener
 {
 public:
     //==============================================================================
-    MainComponent();
-    ~MainComponent() override;
+    RGBASynth();
+    ~RGBASynth() override;
 
     //==============================================================================
     void prepareToPlay (int samplesPerBlockExpected, double sampleRate) override;
@@ -39,7 +39,7 @@ private:
     double currentSampleRate;
 
     double currentAngle;
-    double angleDelta;
+    float angleDelta;
 
     double level;
     double targetLevel;
@@ -49,7 +49,7 @@ private:
     double swtLevel;
     double sawLevel;
     double sqrLevel;
-    float maxWaveHeight;
+    double maxWaveHeight;
 
 
     //GUI Variables
@@ -68,5 +68,5 @@ private:
     //WaveDisplay
     RGBAWaveDisplay waveDisplay;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (RGBASynth)
 };

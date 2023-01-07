@@ -1,7 +1,7 @@
-#include "MainComponent.h"
+#include "RGBASynth.h"
 
 //==============================================================================
-MainComponent::MainComponent() : angleDelta(0),
+RGBASynth::RGBASynth() : angleDelta(0),
 currentAngle(0),
 frequency(1),
 level(0),
@@ -14,7 +14,8 @@ sqrLevel (0),
 waveDisplay()
 {
 
-    setSize(800, 600);
+    setSize(735, 410);
+    
 
     backgroundColor = juce::Colour::fromFloatRGBA(0, 0, 0, 0);
 
@@ -106,20 +107,19 @@ waveDisplay()
     }
 }
 
-MainComponent::~MainComponent()
+RGBASynth::~RGBASynth()
 {
-    // This shuts down the audio device and clears the audio source.
     shutdownAudio();
 }
 
 //==============================================================================
-void MainComponent::prepareToPlay (int samplesPerBlockExpected, double sampleRate)
+void RGBASynth::prepareToPlay (int samplesPerBlockExpected, double sampleRate)
 {
     currentSampleRate = sampleRate;
     updateAngleDelta();
 }
 
-void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill)
+void RGBASynth::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill)
 {
     auto * leftBuffer = bufferToFill.buffer->getWritePointer(0, bufferToFill.startSample);
     auto * rightBuffer = bufferToFill.buffer->getWritePointer(1, bufferToFill.startSample);
@@ -182,15 +182,14 @@ void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& buffe
 
 }
 
-void MainComponent::releaseResources()
+void RGBASynth::releaseResources()
 {
 }
 
 //==============================================================================
-void MainComponent::paint (juce::Graphics& g)
+void RGBASynth::paint (juce::Graphics& g)
 {
     int titleHeight = 50;
-    int darkThreshold = 120;
     int lightThreshold = 210;
 
     g.fillAll (backgroundColor);
@@ -215,21 +214,23 @@ void MainComponent::paint (juce::Graphics& g)
     
 }
 
-void MainComponent::resized()
+void RGBASynth::resized()
 {
+
     int titleHeight = 80;
 
-    int leftSideOfWaveDisplay = getWidth() / 4;
-    int rightSideOfWaveDisplay = (3 * getWidth()) / 4;
-    int waveDisplayWidth = getWidth() / 2;
-    int waveDisplayHeight = getHeight() / 3;
+    int waveDisplayWidth = getWidth() * .8;
+    int keyboardWidth = waveDisplayWidth * .1;
+
+    int leftSideOfWaveDisplay = getWidth() * .1 + keyboardWidth / 2;
+    int rightSideOfWaveDisplay = leftSideOfWaveDisplay + waveDisplayWidth;
+    int waveDisplayHeight = getHeight() * .5;
     int bottomOfWaveDisplay = titleHeight + waveDisplayHeight;
 
-    int volumeSliderWidth = waveDisplayWidth / 20;
+    int volumeSliderWidth = waveDisplayWidth * .05;
     int rgbSliderWidth = waveDisplayWidth;
     int rgbSliderHieght = 40;
 
-    int keyboardWidth = waveDisplayWidth / 10;
 
     //Sliders
     juce::Rectangle<int> rgbSliderRect(leftSideOfWaveDisplay, bottomOfWaveDisplay, waveDisplayWidth, rgbSliderHieght);
@@ -250,27 +251,27 @@ void MainComponent::resized()
     keyboardComponent.setBounds(leftSideOfWaveDisplay - keyboardWidth, titleHeight, keyboardWidth, waveDisplayHeight);
 
 
-    waveDisplay.setBounds(getWidth()/4, titleHeight, waveDisplayWidth, waveDisplayHeight);
+    waveDisplay.setBounds(leftSideOfWaveDisplay, titleHeight, waveDisplayWidth, waveDisplayHeight);
 }
 
 // ===============================================================================
-void MainComponent::updateAngleDelta() 
+void RGBASynth::updateAngleDelta()
 {
     float cyclesPerSample = frequency / currentSampleRate; // amount of wave in-between each sample
     angleDelta = cyclesPerSample * juce::MathConstants<float>::twoPi; // amount of wave in-between each sample multiplied by 2 pi (in radians)
 }
 
 //================================================================================
-void MainComponent::handleNoteOn(juce::MidiKeyboardState* source,
+void RGBASynth::handleNoteOn(juce::MidiKeyboardState* source,
     int midiChannel, int midiNoteNumber, float velocity) {
     
     frequency = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
     updateAngleDelta();
     notesOn += 1;
 }
-void MainComponent::handleNoteOff(juce::MidiKeyboardState* source,
+void RGBASynth::handleNoteOff(juce::MidiKeyboardState* source,
     int midiChannel, int midiNoteNumber, float velocity) {
-
+    
     notesOn -= 1;
 
 }
