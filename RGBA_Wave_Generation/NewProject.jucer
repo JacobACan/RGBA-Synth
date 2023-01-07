@@ -4,8 +4,12 @@
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
               companyName="Audio Vision">
   <MAINGROUP id="FlThVo" name="Noise Generation">
-    <GROUP id="{079425D3-06C0-3FA3-150A-044C875FDDD8}" name="Audio Vision Util">
+    <GROUP id="{079425D3-06C0-3FA3-150A-044C875FDDD8}" name="RGBA Util">
+      <FILE id="shiVQs" name="RGBAWaveDisplay.cpp" compile="1" resource="0"
+            file="Source/RGBAWaveDisplay.cpp"/>
       <FILE id="hZ6num" name="WaveGen.cpp" compile="1" resource="0" file="Source/WaveGen.cpp"/>
+      <FILE id="hOAvKe" name="RGBAWaveDisplay.h" compile="0" resource="0"
+            file="Source/RGBAWaveDisplay.h"/>
       <FILE id="NmeRSA" name="WaveGen.h" compile="0" resource="0" file="Source/WaveGen.h"/>
       <FILE id="N3gU4t" name="RGBADecibelSlider.h" compile="0" resource="0"
             file="Source/RGBADecibelSlider.h"/>

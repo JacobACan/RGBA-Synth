@@ -3,6 +3,7 @@
 #include <JuceHeader.h>
 #include "RGBADecibelSlider.h"
 #include "WaveGen.h"
+#include "RGBAWaveDisplay.h"
 
 
 class MainComponent  : public juce::AudioAppComponent,
@@ -63,6 +64,9 @@ private:
     juce::MidiKeyboardState keyboardState;
     juce::MidiKeyboardComponent keyboardComponent;
     int notesOn;
+
+    //WaveDisplay
+    RGBAWaveDisplay waveDisplay;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

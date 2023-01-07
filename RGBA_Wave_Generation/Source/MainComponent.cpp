@@ -6,11 +6,12 @@ currentAngle(0),
 frequency(1),
 level(0),
 notesOn(0),
-keyboardComponent(keyboardState, juce::KeyboardComponentBase::horizontalKeyboard),
+keyboardComponent(keyboardState, juce::KeyboardComponentBase::verticalKeyboardFacingLeft),
 maxWaveHeight (1),
 swtLevel(0),
 sawLevel(0),
-sqrLevel (0)
+sqrLevel (0),
+waveDisplay()
 {
 
     setSize(800, 600);
@@ -19,7 +20,7 @@ sqrLevel (0)
 
     //red slider
     red.setRange(juce::Range<double>(0, 255), 1);
-    red.setSliderStyle(juce::Slider::LinearBarVertical);
+    red.setSliderStyle(juce::Slider::LinearHorizontal);
     red.onValueChange = [this]
     {
         backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), RGBADecibelSlider::getRGBvalue(alpha));
@@ -27,11 +28,14 @@ sqrLevel (0)
 
         swtLevel = red.getValue() / 255;
         maxWaveHeight = swtLevel + sawLevel + sqrLevel + 1;
+
+        waveDisplay.setMaxWaveHeight(maxWaveHeight);
+        waveDisplay.setSwtLevel(swtLevel);
     };
 
     //green slider
     green.setRange(juce::Range<double>(0, 255), 1);
-    green.setSliderStyle(juce::Slider::LinearBarVertical);
+    green.setSliderStyle(juce::Slider::LinearHorizontal);
     green.onValueChange = [this]
     {
         backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), RGBADecibelSlider::getRGBvalue(alpha));
@@ -39,11 +43,14 @@ sqrLevel (0)
 
         sawLevel = green.getValue() / 255;
         maxWaveHeight = swtLevel + sawLevel + sqrLevel + 1;
+
+        waveDisplay.setMaxWaveHeight(maxWaveHeight);
+        waveDisplay.setSawLevel(sawLevel);
     };
 
     //blue slider
     blue.setRange(juce::Range<double>(0, 255), 1);
-    blue.setSliderStyle(juce::Slider::LinearBarVertical);
+    blue.setSliderStyle(juce::Slider::LinearHorizontal);
     blue.onValueChange = [this]
     {
         backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), RGBADecibelSlider::getRGBvalue(alpha));
@@ -51,6 +58,9 @@ sqrLevel (0)
 
         sqrLevel = blue.getValue() / 255;
         maxWaveHeight = swtLevel + sawLevel + sqrLevel + 1;
+
+        waveDisplay.setMaxWaveHeight(maxWaveHeight);
+        waveDisplay.setSqrLevel(sqrLevel);
     };
 
     //alpha decibel slider
@@ -61,6 +71,8 @@ sqrLevel (0)
         backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), RGBADecibelSlider::getRGBvalue(alpha));
         targetLevel = RGBADecibelSlider::getLevelValue(alpha);
         repaint();
+
+        waveDisplay.setLevel(targetLevel);
     };
 
    //keyboardState
@@ -69,6 +81,8 @@ sqrLevel (0)
    //keyboardComponent
     addAndMakeVisible(keyboardComponent);
 
+    //WaveDisplay
+    addAndMakeVisible(waveDisplay);
 
     addAndMakeVisible(red);
     addAndMakeVisible(green);
@@ -203,26 +217,40 @@ void MainComponent::paint (juce::Graphics& g)
 
 void MainComponent::resized()
 {
-    int fourthHeight = getHeight() / 4;
-    int width = 50;
-    int offset = getWidth() / 12 - width / 2;
+    int titleHeight = 80;
+
+    int leftSideOfWaveDisplay = getWidth() / 4;
+    int rightSideOfWaveDisplay = (3 * getWidth()) / 4;
+    int waveDisplayWidth = getWidth() / 2;
+    int waveDisplayHeight = getHeight() / 3;
+    int bottomOfWaveDisplay = titleHeight + waveDisplayHeight;
+
+    int volumeSliderWidth = waveDisplayWidth / 20;
+    int rgbSliderWidth = waveDisplayWidth;
+    int rgbSliderHieght = 40;
+
+    int keyboardWidth = waveDisplayWidth / 10;
 
     //Sliders
-    juce::Rectangle<int> sliderRect(getWidth() / 6 + offset, fourthHeight, width, getHeight() / 2);
-    red.setBounds(sliderRect);
+    juce::Rectangle<int> rgbSliderRect(leftSideOfWaveDisplay, bottomOfWaveDisplay, waveDisplayWidth, rgbSliderHieght);
+    blue.setBounds(rgbSliderRect);
 
-    sliderRect.setPosition(getWidth() / 6 * 2 + offset, fourthHeight);
-    green.setBounds(sliderRect);
+    rgbSliderRect.setPosition(leftSideOfWaveDisplay, bottomOfWaveDisplay += rgbSliderHieght);
+    green.setBounds(rgbSliderRect);
 
-    sliderRect.setPosition(getWidth() / 6 * 3 + offset, fourthHeight);
-    blue.setBounds(sliderRect);
+    rgbSliderRect.setPosition(leftSideOfWaveDisplay, bottomOfWaveDisplay += rgbSliderHieght);
+    red.setBounds(rgbSliderRect);
 
-    sliderRect.setPosition(getWidth() / 6 * 4 + offset, fourthHeight);
-    alpha.setBounds(sliderRect);
+
+    juce::Rectangle<int> alphaSliderRect(rightSideOfWaveDisplay -= volumeSliderWidth, titleHeight, volumeSliderWidth, waveDisplayHeight);
+    alpha.setBounds(alphaSliderRect);
 
 
     //Keyboard Component
-    keyboardComponent.setBounds(getWidth() / 6, getHeight() * 3 / 4, getWidth() * 4 / 6, fourthHeight);
+    keyboardComponent.setBounds(leftSideOfWaveDisplay - keyboardWidth, titleHeight, keyboardWidth, waveDisplayHeight);
+
+
+    waveDisplay.setBounds(getWidth()/4, titleHeight, waveDisplayWidth, waveDisplayHeight);
 }
 
 // ===============================================================================
@@ -246,3 +274,5 @@ void MainComponent::handleNoteOff(juce::MidiKeyboardState* source,
     notesOn -= 1;
 
 }
+
+//================================================================================
