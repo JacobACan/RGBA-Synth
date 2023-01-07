@@ -1,7 +1,12 @@
 # Improvements
 
-- Wave Addition based on slider amount
-- Wave table for sin generation for green and blue sliders
-- Add Midi input options
-- Show Wave Table Visual for combinations
+- Wave Table Visual for combinations
+- Midi Input / Output Options
+	- play with midi keyboard
+	- records out to DAW
+- Make Production Version Available
 - Stylize Sliders
+	- change slider colour on slide
+	- arranged around Wave Visual
+
+- Wave table synthesis

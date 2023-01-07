@@ -180,7 +180,14 @@ void MainComponent::paint (juce::Graphics& g)
     int lightThreshold = 210;
 
     g.fillAll (backgroundColor);
-    g.setFont(juce::Font("Titillium Web", titleHeight, juce::Font::plain));
+    g.setFont(juce::Font("Press Start 2P", titleHeight, juce::Font::plain));
+
+    g.setColour(juce::Colours::red);
+    g.drawText("RGBA Synth", 0, 10, getWidth(), getHeight(), juce::Justification::centredTop);
+    g.setColour(juce::Colours::green);
+    g.drawText("RGBA Synth", 2, 12, getWidth(), getHeight(), juce::Justification::centredTop);
+    g.setColour(juce::Colours::blue);
+    g.drawText("RGBA Synth", 4, 14, getWidth(), getHeight(), juce::Justification::centredTop);
 
     (RGBADecibelSlider::getRGBvalue(alpha) > lightThreshold
         && red.getValue() > lightThreshold
@@ -189,7 +196,9 @@ void MainComponent::paint (juce::Graphics& g)
         ? g.setColour(juce::Colours::black)
         : g.setColour(juce::Colours::white);
 
-    g.drawText("RGBA Synth", 0, 0, getWidth(), getHeight(), juce::Justification::centredTop);
+    g.drawText("RGBA Synth", 6, 16, getWidth(), getHeight(), juce::Justification::centredTop);
+    
+    
 }
 
 void MainComponent::resized()
@@ -230,12 +239,10 @@ void MainComponent::handleNoteOn(juce::MidiKeyboardState* source,
     frequency = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
     updateAngleDelta();
     notesOn += 1;
-    DBG(notesOn);
 }
 void MainComponent::handleNoteOff(juce::MidiKeyboardState* source,
     int midiChannel, int midiNoteNumber, float velocity) {
 
     notesOn -= 1;
-    DBG(notesOn);
 
 }
