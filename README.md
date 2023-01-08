@@ -1,5 +1,5 @@
 # RGBA Synth Version (0.5.2)
-![image](https://user-images.githubusercontent.com/89418437/211160106-484af319-8f7e-4930-aed7-cca4b4984a35.png)
+![image](https://user-images.githubusercontent.com/89418437/211211903-e65e2506-1ecd-498a-83b1-77f0b0107dd6.png)
 
 ## What is RGBA Synth
 A wave synth with 4 controls for wave synthesis between a sin, square, sawtooth, and saw wave. 
