@@ -20,6 +20,8 @@ double WaveGen::sqr(double angle) {
 
     angle < juce::MathConstants<float>::pi ? sample = 1 : sample = -1;
 
+
+
     return sample;
 }
 
@@ -33,6 +35,10 @@ double WaveGen::saw(double angle) {
         ? sample = ((-2 * angle) / juce::MathConstants<double>::pi) + 2
         : sample = ((2 * angle) / juce::MathConstants<double>::pi) - 4;
 
+    //bitcrush
+    int n = ceil(sample * 10);
+    sample = (n + (n % 2)) / 10;
+
     return sample;
 }
 
@@ -45,6 +51,9 @@ double WaveGen::swt(double angle) {
         ? sample = angle / juce::MathConstants<double>::pi
         : sample = (angle / juce::MathConstants<double>::pi) - 2;
     
+    //bitcrush
+    int n = ceil(sample * 10);
+    sample = (n + (n % 2)) / 10;
 
     return sample;
 }

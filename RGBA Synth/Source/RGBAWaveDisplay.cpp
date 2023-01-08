@@ -58,7 +58,7 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
     float prevYResult = (yPosAmplitudeResult / amplitudeToRadians);;
     float prevXResult = offsetX;
 
-    float opacityFactor = .3;
+    float opacityFactor = .5;
 
     juce::Colour red = juce::Colour::fromFloatRGBA(1, 0, 0, swtLevel * opacityFactor);
     juce::Colour green = juce::Colour::fromFloatRGBA(0, 1, 0, sawLevel * opacityFactor);

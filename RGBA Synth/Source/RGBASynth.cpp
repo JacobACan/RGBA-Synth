@@ -189,7 +189,7 @@ void RGBASynth::releaseResources()
 //==============================================================================
 void RGBASynth::paint (juce::Graphics& g)
 {
-    int titleHeight = 50;
+    int titleHeight = 40;
     int lightThreshold = 210;
 
     g.fillAll (backgroundColor);
