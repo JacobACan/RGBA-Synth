@@ -30,7 +30,9 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
 
     g.setColour(juce::Colours::white);
 
-    float resolution = 64;
+    maxWaveHeight = 1 + swtLevel + sawLevel + sqrLevel;
+
+    float resolution = 128;
     float widthToRadiansFactor = juce::MathConstants<float>::twoPi / getWidth();
     float resolutionFactor = getWidth() / resolution;
     float amplitudeToRadians = juce::MathConstants<float>::twoPi / getHeight();
@@ -59,6 +61,8 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
     float prevXResult = offsetX;
 
     float opacityFactor = .5;
+    int thickness = 1;
+    int zInterval = 4;
 
     juce::Colour red = juce::Colour::fromFloatRGBA(1, 0, 0, swtLevel * opacityFactor);
     juce::Colour green = juce::Colour::fromFloatRGBA(0, 1, 0, sawLevel * opacityFactor);
@@ -75,10 +79,8 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
 
         float xPosRadiads = xPos * widthToRadiansFactor;
 
-        int thickness = 1;
-        int interval = 4;
         int z = 0;
-        z += interval;
+        z += zInterval;
 
 
         yPosAmplitudeSwt = (WaveGen::swt(xPosRadiads) * swtLevel + offsetAmplitudeY);
@@ -90,7 +92,7 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
         prevYSwt = yPos;
 
 
-        z += interval;
+        z += zInterval;
         yPosAmplitudeSaw = (WaveGen::saw(xPosRadiads) * sawLevel + offsetAmplitudeY);
         yPos = (yPosAmplitudeSaw / amplitudeToRadians) ;
         juce::Line<float> sawLine(prevXSaw + z, prevYSaw + z, xPos + z, yPos + z);
@@ -98,7 +100,7 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
         prevXSaw = xPos;
         prevYSaw = yPos;
         
-        z += interval;
+        z += zInterval;
         yPosAmplitudeSqr = (WaveGen::sqr(xPosRadiads) * sqrLevel + offsetAmplitudeY);
         yPos = (yPosAmplitudeSqr / amplitudeToRadians);
         juce::Line<float> sqrLine(prevXSqr + z, prevYSqr + z, xPos + z, yPos + z);
@@ -106,7 +108,7 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
         prevXSqr = xPos;
         prevYSqr = yPos;
 
-        z += interval;
+        z += zInterval;
         yPosAmplitudeResult = (std::sin(xPosRadiads) 
             + (WaveGen::sqr(xPosRadiads) * sqrLevel)
             + (WaveGen::saw(xPosRadiads) * sawLevel)
@@ -138,6 +140,8 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
 
 }
 
+
+//=============================================================================
 void RGBAWaveDisplay::setSwtLevel(double newSwtLevel)
 {
     swtLevel = newSwtLevel;

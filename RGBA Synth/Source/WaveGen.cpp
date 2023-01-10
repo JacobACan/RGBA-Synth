@@ -9,13 +9,18 @@
 */
 
 #include "WaveGen.h"
-
 #include "cmath"
 
 #include <JuceHeader.h>
 
+float WaveGen::swtPhase = 0;
+float WaveGen::sawPhase = 0;
+float WaveGen::sqrPhase = 0;
+float WaveGen::sinPhase = 0;
+
 double WaveGen::sqr(double angle) {
     auto sample = 0;
+    angle += sqrPhase;
     angle = std::fmod(angle, juce::MathConstants<double>::twoPi);
 
     angle < juce::MathConstants<float>::pi ? sample = 1 : sample = -1;
@@ -27,6 +32,7 @@ double WaveGen::sqr(double angle) {
 
 double WaveGen::saw(double angle) {
     double sample = 0;
+    angle += sawPhase;
     angle = std::fmod(angle, juce::MathConstants<double>::twoPi);
 
     angle < juce::MathConstants<float>::halfPi
@@ -45,6 +51,7 @@ double WaveGen::saw(double angle) {
 
 double WaveGen::swt(double angle) {
     double sample = 0;
+    angle += swtPhase;
     angle = std::fmod(angle, juce::MathConstants<double>::twoPi);
 
     angle < juce::MathConstants<float>::pi
@@ -57,3 +64,9 @@ double WaveGen::swt(double angle) {
 
     return sample;
 }
+
+void WaveGen::setSawPhase(float newSawPhase) { sawPhase = newSawPhase; }
+void WaveGen::setSwtPhase(float newSwtPhase) { swtPhase = newSwtPhase; }
+void WaveGen::setSqrPhase(float newSqrPhase) { sqrPhase = newSqrPhase; }
+void WaveGen::setSinPhase(float newSinPhase) { sinPhase = newSinPhase; }
+

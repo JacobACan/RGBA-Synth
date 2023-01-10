@@ -27,6 +27,8 @@ public:
     void setLevel(double newLevel);
     void setMaxWaveHeight(double newMaxWaveHeight);
 
+    //==========================================================================
+
 private:
     double level;
 
