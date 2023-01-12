@@ -43,4 +43,3 @@ double RGBADecibelSlider::getLevelValue(RGBADecibelSlider& slider) {
 
 
 
-

@@ -10,11 +10,11 @@
 
 #include "RGBAWaveDisplay.h"
 
-RGBAWaveDisplay::RGBAWaveDisplay() : swtLevel (0),
-                             sawLevel (0),
-                             sqrLevel (0),
-                             level (1), 
-                             maxWaveHeight (1)
+RGBAWaveDisplay::RGBAWaveDisplay() : swtLevel(0),
+sawLevel(0),
+sqrLevel(0),
+level(1),
+maxWaveHeight(1)
 {
 }
 
@@ -40,11 +40,11 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
     float offsetAmplitudeY = 3;
     float offsetX = -8;
 
-    float yPosAmplitudeSwt = (WaveGen::swt(offsetX * widthToRadiansFactor ) * swtLevel + offsetAmplitudeY);
+    float yPosAmplitudeSwt = (WaveGen::swt(offsetX * widthToRadiansFactor) * swtLevel + offsetAmplitudeY);
     float prevXSwt = offsetX;
     float prevYSwt = yPosAmplitudeSwt / amplitudeToRadians;
 
-    float yPosAmplitudeSaw = (WaveGen::saw(offsetX * widthToRadiansFactor ) * sawLevel + offsetAmplitudeY);
+    float yPosAmplitudeSaw = (WaveGen::saw(offsetX * widthToRadiansFactor) * sawLevel + offsetAmplitudeY);
     float prevXSaw = offsetX;
     float prevYSaw = yPosAmplitudeSaw / amplitudeToRadians;
 
@@ -84,9 +84,9 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
 
 
         yPosAmplitudeSwt = (WaveGen::swt(xPosRadiads) * swtLevel + offsetAmplitudeY);
-        float yPos = (yPosAmplitudeSwt / amplitudeToRadians) ;
+        float yPos = (yPosAmplitudeSwt / amplitudeToRadians);
         g.setColour(red);
-        juce::Line<float> swtLine (prevXSwt + z, prevYSwt + z, xPos + z, yPos + z);
+        juce::Line<float> swtLine(prevXSwt + z, prevYSwt + z, xPos + z, yPos + z);
         redPath.addLineSegment(swtLine, thickness);
         prevXSwt = xPos;
         prevYSwt = yPos;
@@ -94,12 +94,12 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
 
         z += zInterval;
         yPosAmplitudeSaw = (WaveGen::saw(xPosRadiads) * sawLevel + offsetAmplitudeY);
-        yPos = (yPosAmplitudeSaw / amplitudeToRadians) ;
+        yPos = (yPosAmplitudeSaw / amplitudeToRadians);
         juce::Line<float> sawLine(prevXSaw + z, prevYSaw + z, xPos + z, yPos + z);
         greenPath.addLineSegment(sawLine, thickness);
         prevXSaw = xPos;
         prevYSaw = yPos;
-        
+
         z += zInterval;
         yPosAmplitudeSqr = (WaveGen::sqr(xPosRadiads) * sqrLevel + offsetAmplitudeY);
         yPos = (yPosAmplitudeSqr / amplitudeToRadians);
@@ -109,18 +109,18 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
         prevYSqr = yPos;
 
         z += zInterval;
-        yPosAmplitudeResult = (std::sin(xPosRadiads) 
+        yPosAmplitudeResult = (std::sin(xPosRadiads)
             + (WaveGen::sqr(xPosRadiads) * sqrLevel)
             + (WaveGen::saw(xPosRadiads) * sawLevel)
-            + (WaveGen::swt(xPosRadiads) * swtLevel)) 
-                / maxWaveHeight + offsetAmplitudeY;
+            + (WaveGen::swt(xPosRadiads) * swtLevel))
+            / maxWaveHeight + offsetAmplitudeY;
         yPos = (yPosAmplitudeResult / amplitudeToRadians);
         juce::Line<float> resultLine(prevXResult + z, prevYResult + z, xPos + z, yPos + z);
         resultPath.addLineSegment(resultLine, thickness);
         prevXResult = xPos;
         prevYResult = yPos;
 
-        
+
     }
     juce::PathStrokeType strokeType(3, juce::PathStrokeType::curved);
 
