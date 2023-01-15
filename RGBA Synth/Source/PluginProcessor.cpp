@@ -1,10 +1,4 @@
-/*
-  ==============================================================================
 
-    This file contains the basic framework code for a JUCE plugin processor.
-
-  ==============================================================================
-*/
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
@@ -160,6 +154,7 @@ void PluginRGBASynthProcessor::processBlock(juce::AudioBuffer<float>& buffer, ju
     auto* leftBuffer = buffer.getWritePointer(0, 0);
     auto* rightBuffer = buffer.getWritePointer(1, 0);
 
+
     if (notesOn > 0)
     {
         //Create Sound
@@ -179,6 +174,8 @@ void PluginRGBASynthProcessor::processBlock(juce::AudioBuffer<float>& buffer, ju
                 noteSample2 = getNoteSample(noteNumber2, currentAngle);
                 noteSample3 = getNoteSample(noteNumber3, currentAngle);
                 noteSample4 = getNoteSample(noteNumber4, currentAngle);
+
+                
 
                 writeSampleVal = (noteSample1 + noteSample2 + noteSample3 + noteSample4);
                 writeSampleVal *= level;
@@ -201,6 +198,8 @@ void PluginRGBASynthProcessor::processBlock(juce::AudioBuffer<float>& buffer, ju
                 noteSample2 = getNoteSample(noteNumber2, currentAngle);
                 noteSample3 = getNoteSample(noteNumber3, currentAngle);
                 noteSample4 = getNoteSample(noteNumber4, currentAngle);
+
+                
 
                 writeSampleVal = (noteSample1 + noteSample2 + noteSample3 + noteSample4);
                 writeSampleVal *= level;

@@ -1,10 +1,3 @@
-/*
-  ==============================================================================
-
-    This file contains the basic framework code for a JUCE plugin editor.
-
-  ==============================================================================
-*/
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
@@ -231,9 +224,11 @@ void PluginRGBASynthProcessorEditor::handleNoteOn(juce::MidiKeyboardState* sourc
         : correctNoteNumber;
 
 }
+
 void PluginRGBASynthProcessorEditor::handleNoteOff(juce::MidiKeyboardState* source,
     int midiChannel, int midiNoteNumber, float velocity) {
     audioProcessor.decrementNotesOn();
+
 
 
     int correctNoteNumber = midiNoteNumber - 33;
