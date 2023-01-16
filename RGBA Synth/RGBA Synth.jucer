@@ -7,6 +7,10 @@
     <GROUP id="{52D4325F-21E4-0C7F-FFDF-A233B014DF08}" name="RGBA Util">
       <FILE id="NJS5S7" name="RGBADecibelSlider.cpp" compile="1" resource="0"
             file="Source/RGBADecibelSlider.cpp"/>
+      <FILE id="NRD8gn" name="RGBASynthesizer.cpp" compile="1" resource="0"
+            file="Source/RGBASynthesizer.cpp"/>
+      <FILE id="KUPXC7" name="RGBASynthesizer.h" compile="0" resource="0"
+            file="Source/RGBASynthesizer.h"/>
       <FILE id="k3MeaC" name="RGBADecibelSlider.h" compile="0" resource="0"
             file="Source/RGBADecibelSlider.h"/>
       <FILE id="NOgCuK" name="RGBAWaveDisplay.cpp" compile="1" resource="0"

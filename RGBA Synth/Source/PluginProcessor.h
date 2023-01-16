@@ -103,5 +103,7 @@ private:
     double detuneAmount;
     int extraVoices;
 
+    juce::MidiMessageCollector midiCollector;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginRGBASynthProcessor)
 };
