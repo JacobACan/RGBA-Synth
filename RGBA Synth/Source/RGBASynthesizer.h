@@ -11,6 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "RGBASynthSounds.h"
 
 class RGBASynthesizer : public juce::Synthesiser
 {
@@ -23,5 +24,7 @@ public:
 
 private:
 
+    //Sounds this synth can make
+    
 
 };

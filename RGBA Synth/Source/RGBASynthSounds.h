@@ -16,6 +16,7 @@ class RGBASin : public juce::SynthesiserVoice
 {
 public:
     RGBASin();
+    ~RGBASin() override;
 
     void renderNextBlock(juce::AudioBuffer<double>& outputBuffer, int startSample, int numSamples) override;
     void setCurrentPlaybackSampleRate(double newRate) override;
