@@ -9,3 +9,13 @@
 */
 
 #include "RGBASynthesizer.h"
+
+RGBASynthesizer::RGBASynthesizer() 
+{
+
+}
+
+void RGBASynthesizer::noteOn(int midiChannel, int midiNoteNumber, float velocity)
+{
+    
+}
