@@ -5,6 +5,10 @@
               pluginCharacteristicsValue="pluginIsSynth">
   <MAINGROUP id="koVNHO" name="RGBA Synth">
     <GROUP id="{52D4325F-21E4-0C7F-FFDF-A233B014DF08}" name="RGBA Util">
+      <FILE id="MRenbs" name="RGBASynthSounds.cpp" compile="1" resource="0"
+            file="Source/RGBASynthSounds.cpp"/>
+      <FILE id="AdXVqg" name="RGBASynthSounds.h" compile="0" resource="0"
+            file="Source/RGBASynthSounds.h"/>
       <FILE id="NJS5S7" name="RGBADecibelSlider.cpp" compile="1" resource="0"
             file="Source/RGBADecibelSlider.cpp"/>
       <FILE id="NRD8gn" name="RGBASynthesizer.cpp" compile="1" resource="0"
