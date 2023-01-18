@@ -23,6 +23,7 @@ void RGBASynthesizer::noteOn(int midiChannel, int midiNoteNumber, float velocity
     {
         auto currentVoice = getVoice(voice);
         currentVoice->setKeyDown(true);
-        currentVoice->startNote(midiNoteNumber, velocity, )
+        currentVoice->startNote(midiNoteNumber, velocity,); // We must pass in a synth sound, but it is defined as a voice?
+        
     }
 }
