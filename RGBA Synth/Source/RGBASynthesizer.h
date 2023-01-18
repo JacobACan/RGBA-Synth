@@ -25,6 +25,6 @@ public:
 private:
 
     //Sounds this synth can make
-    
+    RGBASin RGBASinSound; 
 
 };
