@@ -3,6 +3,8 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "RGBASynthesizer.h"
+
 
 //==============================================================================
 /**
@@ -102,6 +104,8 @@ private:
 
     double detuneAmount;
     int extraVoices;
+
+    RGBASynthesizer RGBASynth;
 
     juce::MidiMessageCollector midiCollector;
 

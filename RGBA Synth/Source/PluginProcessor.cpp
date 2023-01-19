@@ -41,6 +41,12 @@ PluginRGBASynthProcessor::PluginRGBASynthProcessor()
 
 PluginRGBASynthProcessor::~PluginRGBASynthProcessor()
 {
+    for (int numVoices = 0; numVoices < 4; numVoices++)
+    {
+        RGBASynth.addVoice(new /* Make RGBA Synth Voice*/);
+    }
+    // Add synth voices
+    // Add synth sound
 }
 
 //==============================================================================
@@ -108,6 +114,7 @@ void PluginRGBASynthProcessor::changeProgramName(int index, const juce::String& 
 //==============================================================================
 void PluginRGBASynthProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
+    RGBASynth.setCurrentPlaybackSampleRate(samplesPerBlock);
     currentSampleRate = sampleRate;
     midiCollector.reset(sampleRate);
     updateAngleDelta();
@@ -161,6 +168,7 @@ void PluginRGBASynthProcessor::processBlock(juce::AudioBuffer<float>& buffer, ju
     midiCollector.removeNextBlockOfMessages(midiMessages, buffer.getNumSamples());
 
     //Method that takes the midiMessages, the buffer, samplerate, and start sample and mutates the buffer to output RGBA Synth Sound...
+    // Process midimessages in synth that mutates the audio buffer and return that
 
     DBG("==============");
     DBG(midiMessages.getFirstEventTime());
