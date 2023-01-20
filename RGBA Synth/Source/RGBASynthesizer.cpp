@@ -17,16 +17,16 @@ RGBASynthesizer::RGBASynthesizer()
 
 void RGBASynthesizer::noteOn(int midiChannel, int midiNoteNumber, float velocity)
 {
-    // I dont think we should be starting all the voices here... only the first one with like getRelevantVoice()
-    // And then get the synths current sounds and play the synth voice with the sounds it has... 
-    // but how do we specify the sound that a certain voice should play?
-    //set midiChannel notenumber and velocity of all synth sounds?
+    // Getting every sound and playing it to the fist voice...
+    // In this case, for testing purposes, there is one sound and one voice.
 
-    for (auto voice = 0; voice < getNumVoices(); voice++)
+    if (getNumVoices() > 0)
     {
-        auto currentVoice = getVoice(voice);
-        currentVoice->setKeyDown(true);
-        currentVoice->startNote(midiNoteNumber, velocity,); // We must pass in a synth sound, but it is defined as a voice?
-
+        auto voice = getVoice(0);
+        for (int i = 0; i < getNumSounds(); i++)
+        {
+            auto sound = getSound(i).get();
+            voice->startNote(midiNoteNumber, velocity,  sound, 0);
+        }
     }
 }
