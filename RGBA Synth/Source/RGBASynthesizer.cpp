@@ -30,3 +30,14 @@ void RGBASynthesizer::noteOn(int midiChannel, int midiNoteNumber, float velocity
         }
     }
 }
+
+void RGBASynthesizer::noteOff(int midiChannel, int midiNoteNumber, float velocity, bool allowTailOff)
+{
+    //Stopping all sounds playing to the first voice...
+
+    if (getNumVoices() > 0)
+    {
+        auto voice = getVoice(0);
+        voice->stopNote(velocity, allowTailOff);
+    }
+}
