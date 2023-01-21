@@ -5,28 +5,34 @@
               pluginCharacteristicsValue="pluginIsSynth">
   <MAINGROUP id="koVNHO" name="RGBA Synth">
     <GROUP id="{52D4325F-21E4-0C7F-FFDF-A233B014DF08}" name="RGBA Util">
-      <FILE id="RLcAsO" name="RGBASynthVoice.cpp" compile="1" resource="0"
-            file="Source/RGBASynthVoice.cpp"/>
-      <FILE id="jWvuOj" name="RGBASynthVoice.h" compile="0" resource="0"
-            file="Source/RGBASynthVoice.h"/>
-      <FILE id="MRenbs" name="RGBASynthSounds.cpp" compile="1" resource="0"
-            file="Source/RGBASynthSounds.cpp"/>
-      <FILE id="AdXVqg" name="RGBASynthSounds.h" compile="0" resource="0"
-            file="Source/RGBASynthSounds.h"/>
-      <FILE id="NJS5S7" name="RGBADecibelSlider.cpp" compile="1" resource="0"
-            file="Source/RGBADecibelSlider.cpp"/>
-      <FILE id="NRD8gn" name="RGBASynthesizer.cpp" compile="1" resource="0"
-            file="Source/RGBASynthesizer.cpp"/>
-      <FILE id="KUPXC7" name="RGBASynthesizer.h" compile="0" resource="0"
-            file="Source/RGBASynthesizer.h"/>
-      <FILE id="k3MeaC" name="RGBADecibelSlider.h" compile="0" resource="0"
-            file="Source/RGBADecibelSlider.h"/>
-      <FILE id="NOgCuK" name="RGBAWaveDisplay.cpp" compile="1" resource="0"
-            file="Source/RGBAWaveDisplay.cpp"/>
-      <FILE id="ihKYTy" name="RGBAWaveDisplay.h" compile="0" resource="0"
-            file="Source/RGBAWaveDisplay.h"/>
-      <FILE id="QYZbDI" name="WaveGen.cpp" compile="1" resource="0" file="Source/WaveGen.cpp"/>
-      <FILE id="cqKKhL" name="WaveGen.h" compile="0" resource="0" file="Source/WaveGen.h"/>
+      <GROUP id="{1747D0E3-AE07-999F-5D39-81A40617C29E}" name="RGBA Processing">
+        <FILE id="QYZbDI" name="WaveGen.cpp" compile="1" resource="0" file="Source/WaveGen.cpp"/>
+        <FILE id="cqKKhL" name="WaveGen.h" compile="0" resource="0" file="Source/WaveGen.h"/>
+        <GROUP id="{A71A984D-B944-AEAA-4D00-DBD2E4A00E6F}" name="Synth">
+          <FILE id="NRD8gn" name="RGBASynthesizer.cpp" compile="1" resource="0"
+                file="Source/RGBASynthesizer.cpp"/>
+          <FILE id="KUPXC7" name="RGBASynthesizer.h" compile="0" resource="0"
+                file="Source/RGBASynthesizer.h"/>
+          <FILE id="RLcAsO" name="RGBASynthVoices.cpp" compile="1" resource="0"
+                file="Source/RGBASynthVoices.cpp"/>
+          <FILE id="jWvuOj" name="RGBASynthVoices.h" compile="0" resource="0"
+                file="Source/RGBASynthVoices.h"/>
+          <FILE id="MRenbs" name="RGBASynthSounds.cpp" compile="1" resource="0"
+                file="Source/RGBASynthSounds.cpp"/>
+          <FILE id="AdXVqg" name="RGBASynthSounds.h" compile="0" resource="0"
+                file="Source/RGBASynthSounds.h"/>
+        </GROUP>
+      </GROUP>
+      <GROUP id="{93B58BCE-C3D4-42F8-D495-5D42D59E6822}" name="RGBA GUI">
+        <FILE id="NJS5S7" name="RGBADecibelSlider.cpp" compile="1" resource="0"
+              file="Source/RGBADecibelSlider.cpp"/>
+        <FILE id="k3MeaC" name="RGBADecibelSlider.h" compile="0" resource="0"
+              file="Source/RGBADecibelSlider.h"/>
+        <FILE id="NOgCuK" name="RGBAWaveDisplay.cpp" compile="1" resource="0"
+              file="Source/RGBAWaveDisplay.cpp"/>
+        <FILE id="ihKYTy" name="RGBAWaveDisplay.h" compile="0" resource="0"
+              file="Source/RGBAWaveDisplay.h"/>
+      </GROUP>
     </GROUP>
     <GROUP id="{073CD852-4834-58B0-7B85-4D7018EFA1B1}" name="Source">
       <FILE id="jYLw0O" name="PluginProcessor.cpp" compile="1" resource="0"

@@ -43,10 +43,9 @@ PluginRGBASynthProcessor::~PluginRGBASynthProcessor()
 {
     for (int numVoices = 0; numVoices < 4; numVoices++)
     {
-        RGBASynth.addVoice(new /* Make RGBA Synth Voice*/);
+        RGBASynth.addVoice(new RGBASin());
     }
-    // Add synth voices
-    // Add synth sound
+    RGBASynth.addSound(new RGBASound1());
 }
 
 //==============================================================================
