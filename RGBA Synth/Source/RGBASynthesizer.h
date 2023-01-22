@@ -16,6 +16,7 @@
 class RGBASynthesizer : public juce::Synthesiser
 {
 public:
+    RGBASynthesizer();
 
     void noteOn(int midiChannel, int midiNoteNumber, float velocity) override;
     void noteOff(int midiChannel, int midiNoteNumber, float velocity, bool allowTailOff) override;
@@ -24,7 +25,6 @@ public:
 
 private:
 
-    //Sounds this synth can make
-    RGBASin RGBASinSound; 
+    
 
 };

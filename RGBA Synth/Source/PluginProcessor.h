@@ -108,8 +108,6 @@ private:
     int extraVoices;
 
     RGBASynthesizer RGBASynth;
-    RGBASound1 RGBAsnd1;
-    RGBASin RGBASinVoice;
 
     juce::MidiMessageCollector midiCollector;
 

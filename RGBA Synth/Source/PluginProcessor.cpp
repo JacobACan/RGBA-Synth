@@ -158,81 +158,73 @@ void PluginRGBASynthProcessor::processBlock(juce::AudioBuffer<float>& buffer, ju
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
 
-    auto* leftBuffer = buffer.getWritePointer(0, 0);
-    auto* rightBuffer = buffer.getWritePointer(1, 0);
-
-    DBG(midiMessages.getFirstEventTime());
-
+   /* auto* leftBuffer = buffer.getWritePointer(0, 0);
+    auto* rightBuffer = buffer.getWritePointer(1, 0);*/
 
     midiCollector.removeNextBlockOfMessages(midiMessages, buffer.getNumSamples());
-
-    //Method that takes the midiMessages, the buffer, samplerate, and start sample and mutates the buffer to output RGBA Synth Sound...
-    // Process midimessages in synth that mutates the audio buffer and return that
-
-    DBG("==============");
-    DBG(midiMessages.getFirstEventTime());
+    RGBASynth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 
 
-    if (notesOn > 0)
-    {
-        //Create Sound
-        if (level != targetLevel)
-        {
-            // If the buffer size is too small the increment amount will still make artifacts.  
-            // Splitting the smoothing between multiple buffers could fix this.
-            double levelIncrement = (targetLevel - level) / buffer.getNumSamples();
+    //if (notesOn > 0)
+    //{
+    //    //Create Sound
+    //    if (level != targetLevel)
+    //    {
+    //        // If the buffer size is too small the increment amount will still make artifacts.  
+    //        // Splitting the smoothing between multiple buffers could fix this.
+    //        double levelIncrement = (targetLevel - level) / buffer.getNumSamples();
 
-            for (auto sample = 0; sample < buffer.getNumSamples(); sample++)
-            {
-                level += levelIncrement;
-                double writeSampleVal;
+    //        for (auto sample = 0; sample < buffer.getNumSamples(); sample++)
+    //        {
+    //            level += levelIncrement;
+    //            double writeSampleVal;
 
-                // 4 Notes can be played at a time.
-                noteSample1 = getNoteSample(noteNumber1, currentAngle);
-                noteSample2 = getNoteSample(noteNumber2, currentAngle);
-                noteSample3 = getNoteSample(noteNumber3, currentAngle);
-                noteSample4 = getNoteSample(noteNumber4, currentAngle);
+    //            // 4 Notes can be played at a time.
+    //            noteSample1 = getNoteSample(noteNumber1, currentAngle);
+    //            noteSample2 = getNoteSample(noteNumber2, currentAngle);
+    //            noteSample3 = getNoteSample(noteNumber3, currentAngle);
+    //            noteSample4 = getNoteSample(noteNumber4, currentAngle);
 
-                
+    //            
 
-                writeSampleVal = (noteSample1 + noteSample2 + noteSample3 + noteSample4);
-                writeSampleVal *= level;
+    //            writeSampleVal = (noteSample1 + noteSample2 + noteSample3 + noteSample4);
+    //            writeSampleVal *= level;
 
-                leftBuffer[sample] = writeSampleVal;
-                rightBuffer[sample] = writeSampleVal;
-                currentAngle += angleDelta;
-            }
+    //            leftBuffer[sample] = writeSampleVal;
+    //            rightBuffer[sample] = writeSampleVal;
+    //            currentAngle += angleDelta;
+    //        }
 
-            level = targetLevel;
-        }
-        else
-        {
-            for (auto sample = 0; sample < buffer.getNumSamples(); sample++)
-            {
-                double writeSampleVal;
+    //        level = targetLevel;
+    //    }
+    //    else
+    //    {
+    //        for (auto sample = 0; sample < buffer.getNumSamples(); sample++)
+    //        {
+    //            double writeSampleVal;
 
-                // 4 Notes can be played at a time.
-                noteSample1 = getNoteSample(noteNumber1, currentAngle);
-                noteSample2 = getNoteSample(noteNumber2, currentAngle);
-                noteSample3 = getNoteSample(noteNumber3, currentAngle);
-                noteSample4 = getNoteSample(noteNumber4, currentAngle);
+    //            // 4 Notes can be played at a time.
+    //            noteSample1 = getNoteSample(noteNumber1, currentAngle);
+    //            noteSample2 = getNoteSample(noteNumber2, currentAngle);
+    //            noteSample3 = getNoteSample(noteNumber3, currentAngle);
+    //            noteSample4 = getNoteSample(noteNumber4, currentAngle);
 
-                
+    //            
 
-                writeSampleVal = (noteSample1 + noteSample2 + noteSample3 + noteSample4);
-                writeSampleVal *= level;
+    //            writeSampleVal = (noteSample1 + noteSample2 + noteSample3 + noteSample4);
+    //            writeSampleVal *= level;
 
-                leftBuffer[sample] = writeSampleVal;
-                rightBuffer[sample] = writeSampleVal;
-                currentAngle += angleDelta;
-                
-            }
-        }
-    }
-    else
-    {
-        buffer.clear();
-    }
+    //            leftBuffer[sample] = writeSampleVal;
+    //            rightBuffer[sample] = writeSampleVal;
+    //            currentAngle += angleDelta;
+    //            
+    //        }
+    //    }
+    //}
+    //else
+    //{
+    //    buffer.clear();
+    //}
 }
 
 double PluginRGBASynthProcessor::getNoteSample(int noteNumber, double angle)

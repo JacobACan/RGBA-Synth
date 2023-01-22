@@ -18,6 +18,77 @@ RGBASin::RGBASin()
     updateAngleDelta();
 }
 
+bool RGBASin::canPlaySound(juce::SynthesiserSound*)
+{
+    // TODO : Determine if sound can be played by this voice
+    return true;
+}
+
+void RGBASin::startNote(int midiNoteNumber,
+    float velocity,
+    juce::SynthesiserSound* sound,
+    int currentPitchWheelPosition)
+{
+    // TODO : do something when starting note.
+}
+
+void RGBASin::stopNote(float velocity, bool allowTailOff)
+{
+    // TODO : do something when note stops.
+}
+
+bool RGBASin::isVoiceActive() const
+{
+    // TODO : determine if this voice is active
+    return true;
+}
+
+void RGBASin::pitchWheelMoved(int newPitchWheelValue)
+{
+    // TODO : alter voice when pitch wheel moved
+}
+
+void RGBASin::controllerMoved(int controllerNumber, int newControllerValue)
+{
+    // TODO : altar voice when controller Moved
+}
+
+void RGBASin::aftertouchChanged(int newAftertouchValue)
+{
+    // TODO : alter voice after touch changed
+}
+
+void RGBASin::channelPressureChanged(int newChannelPressureValue)
+{
+    // TODO : alter voice when channel pressure changed
+}
+
+bool RGBASin::isPlayingChannel(int midiChannel) const
+{
+    //TODO determine if voice is playing a channel
+    return true;
+}
+
+void RGBASin::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sartSample, int numSamples)
+{
+    auto leftChannel = outputBuffer.getWritePointer(0);
+    auto rightChannel = outputBuffer.getWritePointer(1);
+
+    if (isKeyDown())
+    {
+        for (int sample = 0; sample < numSamples; sample++)
+        {
+            double sinWavNoteSample = std::sin(angle);
+
+            leftChannel[sample] = sinWavNoteSample;
+            rightChannel[sample] = sinWavNoteSample;
+
+            angle += angleDelta;
+
+        }
+    }
+}
+
 void RGBASin::renderNextBlock(juce::AudioBuffer<double>& outputBuffer, int sartSample, int numSamples)
 {
     auto leftChannel = outputBuffer.getWritePointer(0);
@@ -66,3 +137,4 @@ void RGBASin::setCurrentPlaybackSampleRate(double newRate)
     setCurrentPlaybackSampleRate(newRate);
     updateAngleDelta();
 }
+

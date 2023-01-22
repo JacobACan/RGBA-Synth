@@ -17,18 +17,7 @@ RGBASynthesizer::RGBASynthesizer()
 
 void RGBASynthesizer::noteOn(int midiChannel, int midiNoteNumber, float velocity)
 {
-    // Getting every sound and playing it to the fist voice...
-    // In this case, for testing purposes, there is one sound and one voice.
-
-    if (getNumVoices() > 0)
-    {
-        auto voice = getVoice(0);
-        for (int i = 0; i < getNumSounds(); i++)
-        {
-            auto sound = getSound(i).get();
-            voice->startNote(midiNoteNumber, velocity,  sound, 0);
-        }
-    }
+    // Take all voices / notes and set their preconditions
 }
 
 void RGBASynthesizer::noteOff(int midiChannel, int midiNoteNumber, float velocity, bool allowTailOff)
@@ -40,4 +29,15 @@ void RGBASynthesizer::noteOff(int midiChannel, int midiNoteNumber, float velocit
         auto voice = getVoice(0);
         voice->stopNote(velocity, allowTailOff);
     }
+}
+
+void RGBASynthesizer::renderVoices(juce::AudioBuffer<double>& outPutBuffer, int startSample, int numSamples)
+{
+
+    if (getNumVoices() > 0)
+    {
+        auto firstVoice = getVoice(0);
+        firstVoice->renderNextBlock(outPutBuffer, startSample, numSamples);
+    }
+    
 }
