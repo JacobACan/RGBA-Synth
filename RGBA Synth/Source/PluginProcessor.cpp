@@ -37,15 +37,17 @@ PluginRGBASynthProcessor::PluginRGBASynthProcessor()
     detuneAmount(1),
     extraVoices(3)
 {
-}
-
-PluginRGBASynthProcessor::~PluginRGBASynthProcessor()
-{
     for (int numVoices = 0; numVoices < 4; numVoices++)
     {
         RGBASynth.addVoice(new RGBASin());
     }
     RGBASynth.addSound(new RGBASound1());
+
+}
+
+PluginRGBASynthProcessor::~PluginRGBASynthProcessor()
+{
+    
 }
 
 //==============================================================================
