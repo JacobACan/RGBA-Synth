@@ -134,7 +134,6 @@ void RGBASin::updateAngleDelta()
 
 void RGBASin::setCurrentPlaybackSampleRate(double newRate)
 {
-    DBG("Setting Sin Voices Playback SampleRate");
     juce::SynthesiserVoice::setCurrentPlaybackSampleRate(newRate);
     updateAngleDelta();
 }
