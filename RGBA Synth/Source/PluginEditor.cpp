@@ -108,7 +108,7 @@ PluginRGBASynthProcessorEditor::PluginRGBASynthProcessorEditor(PluginRGBASynthPr
 
 
     //keyboardState
-    keyboardState.addListener(this);
+    keyboardState.addListener(&audioProcessor);
 
     //keyboardComponent
     addAndMakeVisible(keyboardComponent);
@@ -125,7 +125,7 @@ PluginRGBASynthProcessorEditor::PluginRGBASynthProcessorEditor(PluginRGBASynthPr
 
 PluginRGBASynthProcessorEditor::~PluginRGBASynthProcessorEditor()
 {
-    keyboardState.removeListener(this);
+    keyboardState.removeListener(&audioProcessor);
 }
 
 //==============================================================================
@@ -205,40 +205,4 @@ void PluginRGBASynthProcessorEditor::resized()
 
 
     waveDisplay.setBounds(leftSideOfWaveDisplay, titleHeight, waveDisplayWidth, waveDisplayHeight);
-    DBG("Get Width : " << getWidth());
-    DBG("Get Height : " << getHeight());
-}
-
-
-//================================================================================
-void PluginRGBASynthProcessorEditor::handleNoteOn(juce::MidiKeyboardState* source,
-    int midiChannel, int midiNoteNumber, float velocity) {
-    int correctNoteNumber = midiNoteNumber - 33;
-    audioProcessor.incrementNotesOn();
-
-
-    audioProcessor.getNote1() == 0 ? audioProcessor.setNote1(correctNoteNumber)
-        : audioProcessor.getNote2() == 0 ? audioProcessor.setNote2(correctNoteNumber)
-        : audioProcessor.getNote3() == 0 ? audioProcessor.setNote3(correctNoteNumber)
-        : audioProcessor.getNote4() == 0 ? audioProcessor.setNote4(correctNoteNumber)
-        : correctNoteNumber;
-
-}
-
-void PluginRGBASynthProcessorEditor::handleNoteOff(juce::MidiKeyboardState* source,
-    int midiChannel, int midiNoteNumber, float velocity) {
-    audioProcessor.decrementNotesOn();
-
-
-
-    int correctNoteNumber = midiNoteNumber - 33;
-
-    audioProcessor.getNote1() == correctNoteNumber ? audioProcessor.setNote1(0)
-        : audioProcessor.getNote2() == correctNoteNumber ? audioProcessor.setNote2(0)
-        : audioProcessor.getNote3() == correctNoteNumber ? audioProcessor.setNote3(0)
-        : audioProcessor.getNote4() == correctNoteNumber ? audioProcessor.setNote4(0)
-        : correctNoteNumber;
-
-
-
 }
