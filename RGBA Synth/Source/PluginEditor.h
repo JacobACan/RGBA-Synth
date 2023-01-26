@@ -41,7 +41,6 @@ private:
 
     juce::Colour backgroundColor;
 
-    juce::MidiKeyboardState keyboardState;
     juce::MidiKeyboardComponent keyboardComponent;
 
     RGBAWaveDisplay waveDisplay;

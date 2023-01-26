@@ -18,6 +18,7 @@ RGBASynthesizer::RGBASynthesizer()
 void RGBASynthesizer::noteOn(int midiChannel, int midiNoteNumber, float velocity)
 {
     // Take all voices / notes and set their preconditions
+    DBG("Note On");
 }
 
 void RGBASynthesizer::noteOff(int midiChannel, int midiNoteNumber, float velocity, bool allowTailOff)

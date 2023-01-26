@@ -6,7 +6,7 @@
 PluginRGBASynthProcessorEditor::PluginRGBASynthProcessorEditor(PluginRGBASynthProcessor& p)
     : AudioProcessorEditor(&p), audioProcessor(p),
     waveDisplay(),
-    keyboardComponent(keyboardState, juce::KeyboardComponentBase::verticalKeyboardFacingLeft)
+    keyboardComponent(audioProcessor.keyboardState, juce::KeyboardComponentBase::verticalKeyboardFacingLeft)
 {
     setSize(958, 564);
 
@@ -108,7 +108,7 @@ PluginRGBASynthProcessorEditor::PluginRGBASynthProcessorEditor(PluginRGBASynthPr
 
 
     //keyboardState
-    keyboardState.addListener(&audioProcessor);
+    audioProcessor.keyboardState.addListener(&audioProcessor);
 
     //keyboardComponent
     addAndMakeVisible(keyboardComponent);
@@ -125,7 +125,7 @@ PluginRGBASynthProcessorEditor::PluginRGBASynthProcessorEditor(PluginRGBASynthPr
 
 PluginRGBASynthProcessorEditor::~PluginRGBASynthProcessorEditor()
 {
-    keyboardState.removeListener(&audioProcessor);
+    audioProcessor.keyboardState.removeListener(&audioProcessor);
 }
 
 //==============================================================================

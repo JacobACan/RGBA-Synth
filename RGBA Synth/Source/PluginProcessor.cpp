@@ -172,9 +172,10 @@ void PluginRGBASynthProcessor::processBlock(juce::AudioBuffer<float>& buffer, ju
 
     if (notesOn > 0)
     {
-        keyboardState.processNextMidiBuffer(midiMessages, 0, buffer.getNumSamples(), true);
+        juce::MidiBuffer incomingMidi;
+        keyboardState.processNextMidiBuffer(incomingMidi, 0, buffer.getNumSamples(), true);
 
-        RGBASynth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+        RGBASynth.renderNextBlock(buffer, incomingMidi, 0, buffer.getNumSamples());
     }
 
 

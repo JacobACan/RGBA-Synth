@@ -15,6 +15,7 @@ RGBASin::RGBASin()
     angleDelta(0),
     rootFrequency(440)
 {
+
     updateAngleDelta();
 }
 
@@ -73,6 +74,7 @@ void RGBASin::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sartSa
 {
     auto leftChannel = outputBuffer.getWritePointer(0);
     auto rightChannel = outputBuffer.getWritePointer(1);
+    DBG("Current Note : " << getCurrentlyPlayingNote());
 
     // TODO : update isKeyDown
     /*if (isKeyDown())
@@ -128,6 +130,8 @@ double RGBASin::getNoteSample()
 
 void RGBASin::updateAngleDelta()
 {
+    DBG("Sample Rate : " << getSampleRate());
+
     float cyclesPerSample = rootFrequency / getSampleRate(); // amount of wave in-between each sample
     angleDelta = cyclesPerSample * juce::MathConstants<float>::twoPi; // amount of wave in-between each sample multiplied by 2 pi (in radians)
 }

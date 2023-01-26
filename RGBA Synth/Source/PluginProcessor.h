@@ -72,6 +72,8 @@ public:
     void setTargetLevel(double newTargetLevel);
     void setDetuneAmount(double newDetuneLevel);
 
+    juce::MidiKeyboardState& keyboardState;
+
 private:
     //==============================================================================
 
@@ -113,7 +115,6 @@ private:
 
     juce::MidiMessageCollector midiCollector;
 
-    juce::MidiKeyboardState keyboardState;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginRGBASynthProcessor)
 };
