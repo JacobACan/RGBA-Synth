@@ -217,6 +217,7 @@ void PluginRGBASynthProcessorEditor::handleNoteOn(juce::MidiKeyboardState* sourc
     audioProcessor.incrementNotesOn();
 
 
+
     audioProcessor.getNote1() == 0 ? audioProcessor.setNote1(correctNoteNumber)
         : audioProcessor.getNote2() == 0 ? audioProcessor.setNote2(correctNoteNumber)
         : audioProcessor.getNote3() == 0 ? audioProcessor.setNote3(correctNoteNumber)

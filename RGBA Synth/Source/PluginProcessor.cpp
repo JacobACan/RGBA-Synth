@@ -15,6 +15,7 @@ PluginRGBASynthProcessor::PluginRGBASynthProcessor()
 #endif
     ),
 #endif
+
     rootFrequency(440),
 
     notesOn(0),
@@ -163,7 +164,10 @@ void PluginRGBASynthProcessor::processBlock(juce::AudioBuffer<float>& buffer, ju
    /* auto* leftBuffer = buffer.getWritePointer(0, 0);
     auto* rightBuffer = buffer.getWritePointer(1, 0);*/
 
+    
+
     midiCollector.removeNextBlockOfMessages(midiMessages, buffer.getNumSamples());
+
     RGBASynth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 
 
