@@ -33,6 +33,8 @@ void RGBASynthesizer::noteOff(int midiChannel, int midiNoteNumber, float velocit
 
 void RGBASynthesizer::renderVoices(juce::AudioBuffer<double>& outPutBuffer, int startSample, int numSamples)
 {
+    // TODO : need to set note number?
+    // TODO : need to set note on?
     if (getNumVoices() > 0)
     {
         auto firstVoice = getVoice(0);
