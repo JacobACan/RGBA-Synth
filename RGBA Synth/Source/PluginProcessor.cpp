@@ -16,6 +16,7 @@ PluginRGBASynthProcessor::PluginRGBASynthProcessor()
     ),
 #endif
 
+    //TODO : Remove all these variables into a audio process value tree state for undo / safe thread behavior
     rootFrequency(440),
 
     notesOn(0),
@@ -288,6 +289,32 @@ juce::AudioProcessorEditor* PluginRGBASynthProcessor::createEditor()
 {
     return new PluginRGBASynthProcessorEditor(*this);
 }
+// Keyboar State Listener ===============================================================
+void PluginRGBASynthProcessor::handleNoteOn(juce::MidiKeyboardState* source,
+    int midiChannel, int midiNoteNumber, float velocity) {
+    int correctNoteNumber = midiNoteNumber - 33;
+    notesOn += 1;
+
+    noteNumber1 == 0 ? noteNumber1 = correctNoteNumber
+        : noteNumber2 == 0 ? noteNumber2 = correctNoteNumber
+        : noteNumber3 == 0 ? noteNumber3 = correctNoteNumber
+        : noteNumber4 == 0 ? noteNumber4 = correctNoteNumber
+        : correctNoteNumber;
+}
+
+void PluginRGBASynthProcessor::handleNoteOff(juce::MidiKeyboardState* source,
+    int midiChannel, int midiNoteNumber, float velocity) {
+
+    notesOn -= 1;
+
+    int correctNoteNumber = midiNoteNumber - 33;
+
+    noteNumber1 == correctNoteNumber ? noteNumber1 = -1
+        : noteNumber2 == correctNoteNumber ? noteNumber2 = -1
+        : noteNumber3 == correctNoteNumber ? noteNumber3 = -1
+        : noteNumber4 == correctNoteNumber ? noteNumber4 = -1
+        : correctNoteNumber;
+}
 
 // Getters ==============================================================================
 void PluginRGBASynthProcessor::getStateInformation(juce::MemoryBlock& destData)
@@ -296,12 +323,6 @@ void PluginRGBASynthProcessor::getStateInformation(juce::MemoryBlock& destData)
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
 }
-
-int PluginRGBASynthProcessor::getNote1() { return noteNumber1; }
-int PluginRGBASynthProcessor::getNote2() { return noteNumber2; }
-int PluginRGBASynthProcessor::getNote3() { return noteNumber3; }
-int PluginRGBASynthProcessor::getNote4() { return noteNumber4; }
-
 
 // Setters =====================================================================
 void PluginRGBASynthProcessor::setStateInformation (const void* data, int sizeInBytes)
@@ -315,14 +336,6 @@ void PluginRGBASynthProcessor::setSawLevel(double newSawLevel) { sawLevel = newS
 void PluginRGBASynthProcessor::setSqrLevel(double newSqrLevel) { sqrLevel = newSqrLevel; }
 void PluginRGBASynthProcessor::setTargetLevel(double newTargetLevel) { targetLevel = newTargetLevel; }
 void PluginRGBASynthProcessor::setDetuneAmount(double newDetuneAmount) { detuneAmount = newDetuneAmount; }
-
-void PluginRGBASynthProcessor::setNote1(int newNoteNumber) { noteNumber1 = newNoteNumber; }
-void PluginRGBASynthProcessor::setNote2(int newNoteNumber) { noteNumber2 = newNoteNumber; }
-void PluginRGBASynthProcessor::setNote3(int newNoteNumber) { noteNumber3 = newNoteNumber; }
-void PluginRGBASynthProcessor::setNote4(int newNoteNumber) { noteNumber4 = newNoteNumber; }
-
-void PluginRGBASynthProcessor::incrementNotesOn() { notesOn += 1; }
-void PluginRGBASynthProcessor::decrementNotesOn() { notesOn -= 1; }
 
 //==============================================================================
 // This creates new instances of the plugin..

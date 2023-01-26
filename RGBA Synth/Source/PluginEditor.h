@@ -13,8 +13,7 @@
 //==============================================================================
 /**
 */
-class PluginRGBASynthProcessorEditor  : public juce::AudioProcessorEditor,
-                                        public juce::MidiKeyboardState::Listener
+class PluginRGBASynthProcessorEditor  : public juce::AudioProcessorEditor
 {
 public:
     PluginRGBASynthProcessorEditor (PluginRGBASynthProcessor&);
@@ -23,12 +22,6 @@ public:
     //==============================================================================
     void paint(juce::Graphics&) override;
     void resized() override;
-
-    //Keyboard Listener=============================================================
-    void handleNoteOn(juce::MidiKeyboardState* source,
-        int midiChannel, int midiNoteNumber, float velocity) override;
-    void handleNoteOff(juce::MidiKeyboardState* source,
-        int midiChannel, int midiNoteNumber, float velocity) override;
 
 private:
     // This reference is provided as a quick way for your editor to

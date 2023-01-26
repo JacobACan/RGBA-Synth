@@ -11,7 +11,8 @@
 //==============================================================================
 /**
 */
-class PluginRGBASynthProcessor  : public juce::AudioProcessor
+class PluginRGBASynthProcessor  : public juce::AudioProcessor,
+                                  public juce::MidiKeyboardState::Listener
                             #if JucePlugin_Enable_ARA
                              , public juce::AudioProcessorARAExtension
                             #endif
@@ -51,26 +52,25 @@ public:
     void changeProgramName (int index, const juce::String& newName) override;
 
     //==============================================================================
-    void getStateInformation (juce::MemoryBlock& destData) override;
 
-    int getNote1();
-    int getNote2();
-    int getNote3();
-    int getNote4();
+    //==============================================================================
+    void handleNoteOn(juce::MidiKeyboardState* source,
+        int midiChannel, int midiNoteNumber, float velocity);
+
+    void handleNoteOff(juce::MidiKeyboardState* source,
+        int midiChannel, int midiNoteNumber, float velocity);
+
+    //==============================================================================
+    void getStateInformation (juce::MemoryBlock& destData) override;
 
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+    // TODO : Move these levels to audio processor value tree state
     void setSwtLevel(double newSwtLevel);
     void setSawLevel(double newSawLevel);
     void setSqrLevel(double newSqeLevel);
     void setTargetLevel(double newTargetLevel);
     void setDetuneAmount(double newDetuneLevel);
-    void setNote1(int newNoteNumber);
-    void setNote2(int newNoteNumber);
-    void setNote3(int newNoteNumber);
-    void setNote4(int newNoteNumber);
-    void incrementNotesOn();
-    void decrementNotesOn();
 
 private:
     //==============================================================================
@@ -81,6 +81,8 @@ private:
 
     //Noise Generation Variables
 
+
+    //TODO : Move these variables to an audio processor value tree state
     double currentSampleRate;
 
     double currentAngle;
