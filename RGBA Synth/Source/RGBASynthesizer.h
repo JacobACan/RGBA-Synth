@@ -21,6 +21,7 @@ public:
     void noteOn(int midiChannel, int midiNoteNumber, float velocity) override;
     void noteOff(int midiChannel, int midiNoteNumber, float velocity, bool allowTailOff) override;
     void renderVoices(juce::AudioBuffer<double>& outPutBuffer, int startSample, int numSamples) override;
+    void renderVoices(juce::AudioBuffer<float>& outPutBuffer, int startSample, int numSamples) override;
 
 
 private:

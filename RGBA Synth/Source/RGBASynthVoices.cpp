@@ -74,19 +74,20 @@ void RGBASin::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sartSa
     auto leftChannel = outputBuffer.getWritePointer(0);
     auto rightChannel = outputBuffer.getWritePointer(1);
 
-    if (isKeyDown())
-    {
+    // TODO : update isKeyDown
+    /*if (isKeyDown())
+    {*/
         for (int sample = 0; sample < numSamples; sample++)
         {
             double sinWavNoteSample = std::sin(angle);
 
-            leftChannel[sample] = sinWavNoteSample;
-            rightChannel[sample] = sinWavNoteSample;
+            leftChannel[sample] = sinWavNoteSample * .125;
+            rightChannel[sample] = sinWavNoteSample * .125;
 
             angle += angleDelta;
 
         }
-    }
+    //}
 }
 
 void RGBASin::renderNextBlock(juce::AudioBuffer<double>& outputBuffer, int sartSample, int numSamples)
@@ -104,7 +105,6 @@ void RGBASin::renderNextBlock(juce::AudioBuffer<double>& outputBuffer, int sartS
             rightChannel[sample] = sinWavNoteSample;
 
             angle += angleDelta;
-
         }
     }
 }

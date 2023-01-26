@@ -157,6 +157,7 @@ bool PluginRGBASynthProcessor::isBusesLayoutSupported(const BusesLayout& layouts
 
 void PluginRGBASynthProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
+
     juce::ScopedNoDenormals noDenormals;
     auto totalNumInputChannels = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
@@ -167,9 +168,14 @@ void PluginRGBASynthProcessor::processBlock(juce::AudioBuffer<float>& buffer, ju
 
     
 
-    midiCollector.removeNextBlockOfMessages(midiMessages, buffer.getNumSamples());
+    //midiCollector.removeNextBlockOfMessages(midiMessages, buffer.getNumSamples());
 
-    RGBASynth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+    if (notesOn > 0)
+    {
+        keyboardState.processNextMidiBuffer(midiMessages, 0, buffer.getNumSamples(), true);
+
+        RGBASynth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+    }
 
 
     //if (notesOn > 0)
@@ -304,7 +310,6 @@ void PluginRGBASynthProcessor::handleNoteOn(juce::MidiKeyboardState* source,
 
 void PluginRGBASynthProcessor::handleNoteOff(juce::MidiKeyboardState* source,
     int midiChannel, int midiNoteNumber, float velocity) {
-
     notesOn -= 1;
 
     int correctNoteNumber = midiNoteNumber - 33;

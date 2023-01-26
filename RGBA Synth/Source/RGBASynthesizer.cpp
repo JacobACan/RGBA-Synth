@@ -33,11 +33,19 @@ void RGBASynthesizer::noteOff(int midiChannel, int midiNoteNumber, float velocit
 
 void RGBASynthesizer::renderVoices(juce::AudioBuffer<double>& outPutBuffer, int startSample, int numSamples)
 {
+    if (getNumVoices() > 0)
+    {
+        auto firstVoice = getVoice(0);
+        firstVoice->renderNextBlock(outPutBuffer, startSample, numSamples);
+    }  
+}
+
+void RGBASynthesizer::renderVoices(juce::AudioBuffer<float>& outPutBuffer, int startSample, int numSamples)
+{
 
     if (getNumVoices() > 0)
     {
         auto firstVoice = getVoice(0);
         firstVoice->renderNextBlock(outPutBuffer, startSample, numSamples);
     }
-    
 }
