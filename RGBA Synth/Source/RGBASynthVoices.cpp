@@ -77,8 +77,8 @@ void RGBASin::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sartSa
     DBG("Current Note : " << getCurrentlyPlayingNote());
 
     // TODO : update isKeyDown
-    /*if (isKeyDown())
-    {*/
+    if (isKeyDown())
+    {
         for (int sample = 0; sample < numSamples; sample++)
         {
             double sinWavNoteSample = std::sin(angle);
@@ -89,7 +89,7 @@ void RGBASin::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sartSa
             angle += angleDelta;
 
         }
-    //}
+    }
 }
 
 void RGBASin::renderNextBlock(juce::AudioBuffer<double>& outputBuffer, int sartSample, int numSamples)

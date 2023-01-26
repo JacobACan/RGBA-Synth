@@ -18,13 +18,18 @@ RGBASynthesizer::RGBASynthesizer()
 void RGBASynthesizer::noteOn(int midiChannel, int midiNoteNumber, float velocity)
 {
     // Take all voices / notes and set their preconditions
-    DBG("Note On");
+    for (int voice = 0; voice < getNumVoices(); voice++)
+    {
+        auto currentVoice = getVoice(voice);
+        currentVoice->setKeyDown(true);
+    }
+
 }
 
 void RGBASynthesizer::noteOff(int midiChannel, int midiNoteNumber, float velocity, bool allowTailOff)
 {
     //Stopping all sounds playing to the first voice...
-
+    DBG("Note Off");
     if (getNumVoices() > 0)
     {
         auto voice = getVoice(0);

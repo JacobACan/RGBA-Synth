@@ -72,7 +72,7 @@ public:
     void setTargetLevel(double newTargetLevel);
     void setDetuneAmount(double newDetuneLevel);
 
-    juce::MidiKeyboardState& keyboardState;
+    juce::MidiKeyboardState keyboardState;
 
 private:
     //==============================================================================
