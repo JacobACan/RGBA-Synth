@@ -13,7 +13,8 @@
 RGBASin::RGBASin()
     : angle(0),
     angleDelta(0),
-    rootFrequency(440)
+    rootFrequency(440),
+    currentMidiNote(-1)
 {
 
     updateAngleDelta();
@@ -30,11 +31,14 @@ void RGBASin::startNote(int midiNoteNumber,
     juce::SynthesiserSound* sound,
     int currentPitchWheelPosition)
 {
-    // TODO : do something when starting note.
+    //TODO : use getCurrentlyPlayingNote Instead of instantaneously setting a note (causing artifacts)
+    currentMidiNote = midiNoteNumber;
+    setKeyDown(true);
 }
 
 void RGBASin::stopNote(float velocity, bool allowTailOff)
 {
+    setKeyDown(false);
     // TODO : do something when note stops.
 }
 
@@ -74,9 +78,7 @@ void RGBASin::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sartSa
 {
     auto leftChannel = outputBuffer.getWritePointer(0);
     auto rightChannel = outputBuffer.getWritePointer(1);
-    DBG("Current Note : " << getCurrentlyPlayingNote());
 
-    // TODO : update isKeyDown
     if (isKeyDown())
     {
         for (int sample = 0; sample < numSamples; sample++)
@@ -101,7 +103,7 @@ void RGBASin::renderNextBlock(juce::AudioBuffer<double>& outputBuffer, int sartS
     {
         for (int sample = 0; sample < numSamples; sample++)
         {
-            double sinWavNoteSample = std::sin(angle);
+            double sinWavNoteSample = getNoteSample();
 
             leftChannel[sample] = sinWavNoteSample;
             rightChannel[sample] = sinWavNoteSample;
@@ -113,6 +115,7 @@ void RGBASin::renderNextBlock(juce::AudioBuffer<double>& outputBuffer, int sartS
 
 double RGBASin::getNoteSample()
 {
+    // TODO : Test for Playing accurate pitch
     int currentNoteNumber = getCurrentlyPlayingNote();
     if (currentNoteNumber == -1) return 0;
 

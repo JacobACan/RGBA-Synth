@@ -15,7 +15,6 @@ class RGBASin : public juce::SynthesiserVoice
 {
 public:
     RGBASin();
-    //~RGBASin() override;
 
 
     bool canPlaySound(juce::SynthesiserSound*) override;
@@ -122,4 +121,5 @@ private:
     double angleDelta;
     double angle;
     float rootFrequency;
+    int currentMidiNote;
 };

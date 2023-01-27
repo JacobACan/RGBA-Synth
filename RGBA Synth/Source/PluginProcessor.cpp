@@ -117,7 +117,7 @@ void PluginRGBASynthProcessor::changeProgramName(int index, const juce::String& 
 //==============================================================================
 void PluginRGBASynthProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
-    RGBASynth.setCurrentPlaybackSampleRate(samplesPerBlock);
+    RGBASynth.setCurrentPlaybackSampleRate(sampleRate);
     currentSampleRate = sampleRate;
     midiCollector.reset(sampleRate);
     updateAngleDelta();

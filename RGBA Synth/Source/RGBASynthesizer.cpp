@@ -9,6 +9,7 @@
 */
 
 #include "RGBASynthesizer.h"
+#include "RGBASynthSounds.h"
 
 RGBASynthesizer::RGBASynthesizer() 
 {
@@ -21,7 +22,7 @@ void RGBASynthesizer::noteOn(int midiChannel, int midiNoteNumber, float velocity
     for (int voice = 0; voice < getNumVoices(); voice++)
     {
         auto currentVoice = getVoice(voice);
-        currentVoice->setKeyDown(true);
+        currentVoice->startNote(midiNoteNumber, velocity,  getSound(0).get(), 0);
     }
 
 }
