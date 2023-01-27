@@ -18,7 +18,8 @@ RGBASynthesizer::RGBASynthesizer()
 
 void RGBASynthesizer::noteOn(int midiChannel, int midiNoteNumber, float velocity)
 {
-    // Take all voices / notes and set their preconditions
+    DBG("Note On");
+    // TODO : use more sophistocated logic to activate Voices
     for (int voice = 0; voice < getNumVoices(); voice++)
     {
         auto currentVoice = getVoice(voice);

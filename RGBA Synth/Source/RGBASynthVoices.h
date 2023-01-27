@@ -11,6 +11,9 @@
 #pragma once
 #include <JuceHeader.h>
 
+//TODO : Make "RGBASynthVoice Abstract Class that is used in conjunction with individual RGBASIn etc... so that we only have to implement a render next block method for RGBA VOices since they are very similar
+//       Other methods will be similar such as start/stop note.
+
 class RGBASin : public juce::SynthesiserVoice
 {
 public:

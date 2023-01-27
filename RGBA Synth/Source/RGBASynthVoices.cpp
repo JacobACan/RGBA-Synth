@@ -10,6 +10,8 @@
 
 #include "RGBASynthVoices.h"
 
+// TODO : Refactor into own "Voices Folder"
+
 RGBASin::RGBASin()
     : angle(0),
     angleDelta(0),
@@ -76,6 +78,7 @@ bool RGBASin::isPlayingChannel(int midiChannel) const
 
 void RGBASin::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sartSample, int numSamples)
 {
+    // TODO : smooth in attack
     auto leftChannel = outputBuffer.getWritePointer(0);
     auto rightChannel = outputBuffer.getWritePointer(1);
 
@@ -83,7 +86,7 @@ void RGBASin::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sartSa
     {
         for (int sample = 0; sample < numSamples; sample++)
         {
-            double sinWavNoteSample = std::sin(angle);
+            double sinWavNoteSample = getNoteSample();
 
             leftChannel[sample] = sinWavNoteSample * .125;
             rightChannel[sample] = sinWavNoteSample * .125;
@@ -96,6 +99,7 @@ void RGBASin::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sartSa
 
 void RGBASin::renderNextBlock(juce::AudioBuffer<double>& outputBuffer, int sartSample, int numSamples)
 {
+    //TODO : Smooth in attack.
     auto leftChannel = outputBuffer.getWritePointer(0);
     auto rightChannel = outputBuffer.getWritePointer(1);
 
@@ -115,9 +119,11 @@ void RGBASin::renderNextBlock(juce::AudioBuffer<double>& outputBuffer, int sartS
 
 double RGBASin::getNoteSample()
 {
-    // TODO : Test for Playing accurate pitch
-    int currentNoteNumber = getCurrentlyPlayingNote();
+    int currentNoteNumber = currentMidiNote;
     if (currentNoteNumber == -1) return 0;
+
+    int noteOffset = 21;
+    currentNoteNumber -= noteOffset;
 
     int distanceFromA = currentNoteNumber - 48;
     double angleForNote = angle * std::pow<double>(2, (double)distanceFromA / (double)12);
@@ -133,7 +139,6 @@ double RGBASin::getNoteSample()
 
 void RGBASin::updateAngleDelta()
 {
-    DBG("Sample Rate : " << getSampleRate());
 
     float cyclesPerSample = rootFrequency / getSampleRate(); // amount of wave in-between each sample
     angleDelta = cyclesPerSample * juce::MathConstants<float>::twoPi; // amount of wave in-between each sample multiplied by 2 pi (in radians)
