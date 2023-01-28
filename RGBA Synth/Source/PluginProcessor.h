@@ -11,8 +11,7 @@
 //==============================================================================
 /**
 */
-class PluginRGBASynthProcessor  : public juce::AudioProcessor,
-                                  public juce::MidiKeyboardState::Listener
+class PluginRGBASynthProcessor  : public juce::AudioProcessor
                             #if JucePlugin_Enable_ARA
                              , public juce::AudioProcessorARAExtension
                             #endif
@@ -52,68 +51,21 @@ public:
     void changeProgramName (int index, const juce::String& newName) override;
 
     //==============================================================================
-
-    //==============================================================================
-    void handleNoteOn(juce::MidiKeyboardState* source,
-        int midiChannel, int midiNoteNumber, float velocity);
-
-    void handleNoteOff(juce::MidiKeyboardState* source,
-        int midiChannel, int midiNoteNumber, float velocity);
-
-    //==============================================================================
     void getStateInformation (juce::MemoryBlock& destData) override;
 
     void setStateInformation (const void* data, int sizeInBytes) override;
 
-    // TODO : Move these levels to audio processor value tree state
-    void setSwtLevel(double newSwtLevel);
-    void setSawLevel(double newSawLevel);
-    void setSqrLevel(double newSqeLevel);
-    void setTargetLevel(double newTargetLevel);
-    void setDetuneAmount(double newDetuneLevel);
-
     juce::MidiKeyboardState keyboardState;
 
-private:
-    //==============================================================================
-
-    //Functions
-    void updateAngleDelta();
-    double getNoteSample(int noteNumber, double angle);
-
-    //Noise Generation Variables
-
-
-    //TODO : Move these variables to an audio processor value tree state
-    double currentSampleRate;
-
-    double currentAngle;
-    float angleDelta;
-
-    double level;
-    double targetLevel;
-
-    double rootFrequency;
-    int notesOn;
-    int noteNumber1;
-    int noteNumber2;
-    int noteNumber3;
-    int noteNumber4;
-    double noteSample1;
-    double noteSample2;
-    double noteSample3;
-    double noteSample4;
-
-    double swtLevel;
-    double sawLevel;
-    double sqrLevel;
-
-    double detuneAmount;
-    int extraVoices;
+    juce::AudioProcessorValueTreeState apvts;
 
     RGBASynthesizer RGBASynth;
+private:
+    //==============================================================================
+    //Synth
+    int numVoices;
 
-    juce::MidiMessageCollector midiCollector;
+    juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginRGBASynthProcessor)

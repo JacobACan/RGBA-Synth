@@ -15,6 +15,7 @@ PluginRGBASynthProcessorEditor::PluginRGBASynthProcessorEditor(PluginRGBASynthPr
 
     //red slider
     red.setRange(juce::Range<double>(0, 255), 1);
+    red.setValue(150, true);
     red.setSliderStyle(juce::Slider::LinearHorizontal);
     red.onValueChange = [this]
     {
@@ -22,8 +23,8 @@ PluginRGBASynthProcessorEditor::PluginRGBASynthProcessorEditor(PluginRGBASynthPr
 
         double swtLevel = red.getValue() / 255;
 
-        audioProcessor.setSwtLevel(swtLevel);
-
+        audioProcessor.apvts.state.setProperty("swtLevel",swtLevel, nullptr);
+        
         waveDisplay.setSwtLevel(swtLevel);
         repaint();
     };
@@ -37,7 +38,7 @@ PluginRGBASynthProcessorEditor::PluginRGBASynthProcessorEditor(PluginRGBASynthPr
 
         double sawLevel = green.getValue() / 255;
 
-        audioProcessor.setSawLevel(sawLevel);
+        audioProcessor.apvts.state.setProperty("sawLevel", sawLevel, nullptr);
 
         waveDisplay.setSawLevel(sawLevel);
         repaint();
@@ -52,7 +53,7 @@ PluginRGBASynthProcessorEditor::PluginRGBASynthProcessorEditor(PluginRGBASynthPr
 
         double sqrLevel = blue.getValue() / 255;
 
-        audioProcessor.setSqrLevel(sqrLevel);
+        audioProcessor.apvts.state.setProperty("sqrLevel", sqrLevel, nullptr);
 
         waveDisplay.setSqrLevel(sqrLevel);
         repaint();
@@ -66,7 +67,7 @@ PluginRGBASynthProcessorEditor::PluginRGBASynthProcessorEditor(PluginRGBASynthPr
         backgroundColor = juce::Colour::fromRGBA(red.getValue(), green.getValue(), blue.getValue(), RGBADecibelSlider::getRGBvalue(alpha));
         double targetLevel = RGBADecibelSlider::getLevelValue(alpha);
 
-        audioProcessor.setTargetLevel(targetLevel);
+        audioProcessor.apvts.state.setProperty("targetLevel", targetLevel, nullptr);
 
         waveDisplay.setLevel(targetLevel);
         repaint();
@@ -102,13 +103,9 @@ PluginRGBASynthProcessorEditor::PluginRGBASynthProcessorEditor(PluginRGBASynthPr
     detune.setSliderStyle(juce::Slider::RotaryVerticalDrag);
     detune.onValueChange = [this] {
         double detuneAmount = detune.getValue();
-        audioProcessor.setDetuneAmount(detuneAmount);
+
+        audioProcessor.apvts.state.setProperty("detuneAmount", detuneAmount, nullptr);
     };
-
-
-
-    //keyboardState
-    audioProcessor.keyboardState.addListener(&audioProcessor);
 
     //keyboardComponent
     addAndMakeVisible(keyboardComponent);
@@ -125,7 +122,6 @@ PluginRGBASynthProcessorEditor::PluginRGBASynthProcessorEditor(PluginRGBASynthPr
 
 PluginRGBASynthProcessorEditor::~PluginRGBASynthProcessorEditor()
 {
-    audioProcessor.keyboardState.removeListener(&audioProcessor);
 }
 
 //==============================================================================

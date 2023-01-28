@@ -9,6 +9,7 @@
 */
 
 #include "RGBASynthVoices.h"
+#include "WaveGen.h"
 
 // TODO : Refactor into own "Voices Folder"
 
@@ -17,7 +18,13 @@ RGBASin::RGBASin()
     angleDelta(0),
     rootFrequency(440),
     currentMidiNote(-1),
-    attackLevel(0)
+    attackLevel(0),
+    level(.125),
+    targetLevel(.125),
+    detuneAmount(0),
+    sawLevel(1),
+    sqrLevel(1),
+    swtLevel(1)
 {
 
     updateAngleDelta();
@@ -81,7 +88,40 @@ bool RGBASin::isPlayingChannel(int midiChannel) const
 void RGBASin::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sartSample, int numSamples)
 {
     double attackRamp = (1 - attackLevel) / outputBuffer.getNumSamples();
+    int samplesAfterRelease = 0;
+    double releaseRamp = (double)attackLevel / (double)samplesAfterRelease;
     
+
+    auto leftChannel = outputBuffer.getWritePointer(0);
+    auto rightChannel = outputBuffer.getWritePointer(1);
+
+    if (isKeyDown())
+    {
+        for (int sample = 0; sample < numSamples; sample++)
+        {
+            double sinWavNoteSample = getNoteSample();
+
+            leftChannel[sample] = sinWavNoteSample * level * attackLevel;
+            rightChannel[sample] = sinWavNoteSample * level * attackLevel;
+
+            angle += angleDelta;
+            attackLevel += attackRamp;
+
+        }
+        attackLevel = 1;
+    }
+    else
+    {
+        outputBuffer.clear();
+    }
+}
+
+void RGBASin::renderNextBlock(juce::AudioBuffer<double>& outputBuffer, int sartSample, int numSamples)
+{
+    double attackRamp = (1 - attackLevel) / outputBuffer.getNumSamples();
+    int samplesAfterRelease = 0;
+    double releaseRamp = (double)attackLevel / (double)samplesAfterRelease;
+
 
     auto leftChannel = outputBuffer.getWritePointer(0);
     auto rightChannel = outputBuffer.getWritePointer(1);
@@ -101,25 +141,9 @@ void RGBASin::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sartSa
         }
         attackLevel = 1;
     }
-}
-
-void RGBASin::renderNextBlock(juce::AudioBuffer<double>& outputBuffer, int sartSample, int numSamples)
-{
-    //TODO : Smooth in attack.
-    auto leftChannel = outputBuffer.getWritePointer(0);
-    auto rightChannel = outputBuffer.getWritePointer(1);
-
-    if (isKeyDown())
+    else
     {
-        for (int sample = 0; sample < numSamples; sample++)
-        {
-            double sinWavNoteSample = getNoteSample();
-
-            leftChannel[sample] = sinWavNoteSample;
-            rightChannel[sample] = sinWavNoteSample;
-
-            angle += angleDelta;
-        }
+        outputBuffer.clear();
     }
 }
 
@@ -135,9 +159,33 @@ double RGBASin::getNoteSample()
     double angleForNote = angle * std::pow<double>(2, (double)distanceFromA / (double)12);
 
     double bassSinVoiceSample = std::sin(angleForNote / 2);
+
+
     double sinWavSample = std::sin(angleForNote);
 
-    double noteSampleVal = (sinWavSample + bassSinVoiceSample);
+    double swtWavSample = WaveGen::swt(angleForNote);
+    double swtVoiceSample2 = WaveGen::swt(angleForNote / (1 + detuneAmount));
+    double swtVoiceSample3 = WaveGen::swt(angleForNote * (1 + detuneAmount));
+
+    double sawWavSample = WaveGen::saw(angleForNote);
+    double sawVoiceSample2 = WaveGen::saw(angleForNote / (1 + detuneAmount));
+    double sawVoiceSample3 = WaveGen::saw(angleForNote * (1 + detuneAmount));
+
+    double sqrWavSample = WaveGen::sqr(angleForNote);
+    double sqrVoiceSample2 = WaveGen::sqr(angleForNote / (1 + detuneAmount));
+    double sqrVoiceSample3 = WaveGen::sqr(angleForNote * (1 + detuneAmount));
+
+    double noteSampleVal;
+
+    noteSampleVal = (
+        sinWavSample
+        + ((swtWavSample + swtVoiceSample2 + swtVoiceSample3) * swtLevel)
+        + ((sawWavSample + sawVoiceSample2 + sawVoiceSample3) * sawLevel)
+        + ((sqrWavSample + sqrVoiceSample2 + sqrVoiceSample3) * sqrLevel)
+
+        + bassSinVoiceSample
+        )
+        / ((swtLevel * 3) + (sawLevel * 3) + (sqrLevel * 3) + 1); // Max combined in phase level reached by adding these wave samples.
 
     return noteSampleVal;
 }
@@ -156,3 +204,11 @@ void RGBASin::setCurrentPlaybackSampleRate(double newRate)
     updateAngleDelta();
 }
 
+void RGBASin::setStateInformation(juce::AudioProcessorValueTreeState& apvts)
+{
+    targetLevel.store(apvts.getRawParameterValue("targetLevel")->load());
+    swtLevel.store(apvts.getRawParameterValue("swtLevel")->load());
+    sawLevel.store(apvts.getRawParameterValue("sawLevel")->load());
+    sqrLevel.store(apvts.getRawParameterValue("sqrLevel")->load());
+    detuneAmount.store(apvts.getRawParameterValue("detuneAmount")->load());
+}

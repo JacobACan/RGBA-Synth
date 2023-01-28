@@ -115,15 +115,32 @@ public:
     */
     bool isPlayingChannel(int midiChannel) const override;
 
+    //============================================================================================
+    void setStateInformation(juce::AudioProcessorValueTreeState &apvts);
+    
 private:
 
     //Helper Functions
     double getNoteSample();
-    void updateAngleDelta();
+    void updateAngleDelta()
+        ;
+    int currentMidiNote;
+
+    double level;
 
     double angleDelta;
     double angle;
     float rootFrequency;
-    int currentMidiNote;
+
     double attackLevel;
+    double realeaseLevel;
+
+    //TODO : Move these variables to an audio processor value tree state
+     
+
+    std::atomic<float> targetLevel;
+    std::atomic<double> swtLevel;
+    std::atomic<double> sawLevel;
+    std::atomic<double> sqrLevel;
+    std::atomic<double> detuneAmount;
 };

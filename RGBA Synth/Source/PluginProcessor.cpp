@@ -15,37 +15,15 @@ PluginRGBASynthProcessor::PluginRGBASynthProcessor()
 #endif
     ),
 #endif
-
-    //TODO : Remove all these variables into a audio process value tree state for undo / safe thread behavior
-    rootFrequency(440),
-
-    notesOn(0),
-    noteSample1(0),
-    noteSample2(0),
-    noteSample3(0),
-    noteSample4(0),
-    noteNumber1(0),
-    noteNumber2(0),
-    noteNumber3(0),
-    noteNumber4(0),
-
-    currentAngle(0),
-    level(0),
-
-    swtLevel(0),
-    sawLevel(0),
-    sqrLevel(0),
-
-    detuneAmount(1),
-    extraVoices(3)
+    apvts(*this, nullptr, "Parameters",createParameterLayout()),
+    numVoices(4)
 {
-    for (int numVoices = 0; numVoices < 4; numVoices++)
+    for (int i = 0; i < numVoices; i++)
     {
         RGBASynth.addVoice(new RGBASin());
 
     }
     RGBASynth.addSound(new RGBASound1());
-
 }
 
 PluginRGBASynthProcessor::~PluginRGBASynthProcessor()
@@ -119,9 +97,6 @@ void PluginRGBASynthProcessor::changeProgramName(int index, const juce::String& 
 void PluginRGBASynthProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
     RGBASynth.setCurrentPlaybackSampleRate(sampleRate);
-    currentSampleRate = sampleRate;
-    midiCollector.reset(sampleRate);
-    updateAngleDelta();
 }
 
 void PluginRGBASynthProcessor::releaseResources()
@@ -158,133 +133,13 @@ bool PluginRGBASynthProcessor::isBusesLayoutSupported(const BusesLayout& layouts
 
 void PluginRGBASynthProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
+    keyboardState.processNextMidiBuffer(midiMessages, 0, buffer.getNumSamples(), true);
 
-    juce::ScopedNoDenormals noDenormals;
-    auto totalNumInputChannels = getTotalNumInputChannels();
-    auto totalNumOutputChannels = getTotalNumOutputChannels();
-
-
-   /* auto* leftBuffer = buffer.getWritePointer(0, 0);
-    auto* rightBuffer = buffer.getWritePointer(1, 0);*/
-
-    
-
-    //midiCollector.removeNextBlockOfMessages(midiMessages, buffer.getNumSamples());
-
-    if (notesOn > 0)
-    {
-        juce::MidiBuffer incomingMidi;
-        keyboardState.processNextMidiBuffer(incomingMidi, 0, buffer.getNumSamples(), true);
-
-        RGBASynth.renderNextBlock(buffer, incomingMidi, 0, buffer.getNumSamples());
-    }
+    RGBASynth.updateVoiceParameters(apvts);
+    RGBASynth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 
 
-    //if (notesOn > 0)
-    //{
-    //    //Create Sound
-    //    if (level != targetLevel)
-    //    {
-    //        // If the buffer size is too small the increment amount will still make artifacts.  
-    //        // Splitting the smoothing between multiple buffers could fix this.
-    //        double levelIncrement = (targetLevel - level) / buffer.getNumSamples();
-
-    //        for (auto sample = 0; sample < buffer.getNumSamples(); sample++)
-    //        {
-    //            level += levelIncrement;
-    //            double writeSampleVal;
-
-    //            // 4 Notes can be played at a time.
-    //            noteSample1 = getNoteSample(noteNumber1, currentAngle);
-    //            noteSample2 = getNoteSample(noteNumber2, currentAngle);
-    //            noteSample3 = getNoteSample(noteNumber3, currentAngle);
-    //            noteSample4 = getNoteSample(noteNumber4, currentAngle);
-
-    //            
-
-    //            writeSampleVal = (noteSample1 + noteSample2 + noteSample3 + noteSample4);
-    //            writeSampleVal *= level;
-
-    //            leftBuffer[sample] = writeSampleVal;
-    //            rightBuffer[sample] = writeSampleVal;
-    //            currentAngle += angleDelta;
-    //        }
-
-    //        level = targetLevel;
-    //    }
-    //    else
-    //    {
-    //        for (auto sample = 0; sample < buffer.getNumSamples(); sample++)
-    //        {
-    //            double writeSampleVal;
-
-    //            // 4 Notes can be played at a time.
-    //            noteSample1 = getNoteSample(noteNumber1, currentAngle);
-    //            noteSample2 = getNoteSample(noteNumber2, currentAngle);
-    //            noteSample3 = getNoteSample(noteNumber3, currentAngle);
-    //            noteSample4 = getNoteSample(noteNumber4, currentAngle);
-
-    //            
-
-    //            writeSampleVal = (noteSample1 + noteSample2 + noteSample3 + noteSample4);
-    //            writeSampleVal *= level;
-
-    //            leftBuffer[sample] = writeSampleVal;
-    //            rightBuffer[sample] = writeSampleVal;
-    //            currentAngle += angleDelta;
-    //            
-    //        }
-    //    }
-    //}
-    //else
-    //{
-    //    buffer.clear();
-    //}
-}
-
-double PluginRGBASynthProcessor::getNoteSample(int noteNumber, double angle)
-{
-    if (noteNumber == 0) return 0;
-
-    int distanceFromA = noteNumber - 48;
-    double angleForNote = angle * std::pow<double>(2, (double)distanceFromA / (double)12);
-
-    double bassSinVoiceSample = std::sin(angleForNote / 2);
-
-
-    double sinWavSample = std::sin(angleForNote);
-
-    double swtWavSample = WaveGen::swt(angleForNote);
-    double swtVoiceSample2 = WaveGen::swt(angleForNote / (1 + detuneAmount));
-    double swtVoiceSample3 = WaveGen::swt(angleForNote * (1 + detuneAmount));
-
-    double sawWavSample = WaveGen::saw(angleForNote);
-    double sawVoiceSample2 = WaveGen::saw(angleForNote / (1 + detuneAmount));
-    double sawVoiceSample3 = WaveGen::saw(angleForNote * (1 + detuneAmount));
-
-    double sqrWavSample = WaveGen::sqr(angleForNote);
-    double sqrVoiceSample2 = WaveGen::sqr(angleForNote / (1 + detuneAmount));
-    double sqrVoiceSample3 = WaveGen::sqr(angleForNote * (1 + detuneAmount));
-
-    double noteSampleVal;
-
-    noteSampleVal = (
-        sinWavSample
-        + ((swtWavSample + swtVoiceSample2 + swtVoiceSample3) * swtLevel)
-        + ((sawWavSample + sawVoiceSample2 + sawVoiceSample3) * sawLevel)
-        + ((sqrWavSample + sqrVoiceSample2 + sqrVoiceSample3) * sqrLevel)
-
-        + bassSinVoiceSample
-        )
-        / ((swtLevel * 3) + (sawLevel * 3) + (sqrLevel * 3) + 1); // Max combined in phase level reached by adding these wave samples.
-
-    return noteSampleVal;
-}
-
-void PluginRGBASynthProcessor::updateAngleDelta()
-{
-    float cyclesPerSample = rootFrequency / currentSampleRate; // amount of wave in-between each sample
-    angleDelta = cyclesPerSample * juce::MathConstants<float>::twoPi; // amount of wave in-between each sample multiplied by 2 pi (in radians)
+    midiMessages.clear();
 }
 
 //==============================================================================
@@ -297,52 +152,36 @@ juce::AudioProcessorEditor* PluginRGBASynthProcessor::createEditor()
 {
     return new PluginRGBASynthProcessorEditor(*this);
 }
-// Keyboar State Listener ===============================================================
-void PluginRGBASynthProcessor::handleNoteOn(juce::MidiKeyboardState* source,
-    int midiChannel, int midiNoteNumber, float velocity) {
-    int correctNoteNumber = midiNoteNumber - 33;
-    notesOn += 1;
-
-    noteNumber1 == 0 ? noteNumber1 = correctNoteNumber
-        : noteNumber2 == 0 ? noteNumber2 = correctNoteNumber
-        : noteNumber3 == 0 ? noteNumber3 = correctNoteNumber
-        : noteNumber4 == 0 ? noteNumber4 = correctNoteNumber
-        : correctNoteNumber;
-}
-
-void PluginRGBASynthProcessor::handleNoteOff(juce::MidiKeyboardState* source,
-    int midiChannel, int midiNoteNumber, float velocity) {
-    notesOn -= 1;
-
-    int correctNoteNumber = midiNoteNumber - 33;
-
-    noteNumber1 == correctNoteNumber ? noteNumber1 = -1
-        : noteNumber2 == correctNoteNumber ? noteNumber2 = -1
-        : noteNumber3 == correctNoteNumber ? noteNumber3 = -1
-        : noteNumber4 == correctNoteNumber ? noteNumber4 = -1
-        : correctNoteNumber;
-}
 
 // Getters ==============================================================================
 void PluginRGBASynthProcessor::getStateInformation(juce::MemoryBlock& destData)
 {
-    // You should use this method to store your parameters in the memory block.
-    // You could do that either as raw data, or use the XML or ValueTree classes
-    // as intermediaries to make it easy to save and load complex data.
+    auto state = apvts.copyState();
+    std::unique_ptr<juce::XmlElement> xml(state.createXml());
+    copyXmlToBinary(*xml, destData);
 }
 
 // Setters =====================================================================
 void PluginRGBASynthProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
-    // You should use this method to restore your parameters from this memory block,
-    // whose contents will have been created by the getStateInformation() call.
+    std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
+
+    if (xmlState.get() != nullptr)
+        if (xmlState->hasTagName(apvts.state.getType()))
+            apvts.replaceState(juce::ValueTree::fromXml(*xmlState));
 }
 
-void PluginRGBASynthProcessor::setSwtLevel(double newSwtLevel) { swtLevel = newSwtLevel; }
-void PluginRGBASynthProcessor::setSawLevel(double newSawLevel) { sawLevel = newSawLevel; }
-void PluginRGBASynthProcessor::setSqrLevel(double newSqrLevel) { sqrLevel = newSqrLevel; }
-void PluginRGBASynthProcessor::setTargetLevel(double newTargetLevel) { targetLevel = newTargetLevel; }
-void PluginRGBASynthProcessor::setDetuneAmount(double newDetuneAmount) { detuneAmount = newDetuneAmount; }
+juce::AudioProcessorValueTreeState::ParameterLayout 
+PluginRGBASynthProcessor::createParameterLayout()
+{
+    juce::AudioProcessorValueTreeState::ParameterLayout layout;
+
+    layout.add(std::make_unique<juce::AudioParameterFloat>("targetLevel", "targetLevel", juce::Range<float>(0, 1), .125));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("swtLevel", "swtLevel", juce::Range<float>(0, 1), .125));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("sqrLevel", "sqrLevel", juce::Range<float>(0, 1), .125));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("sawLevel", "sawLevel", juce::Range<float>(0, 1), .125));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("detuneAmount", "detuneAmount", juce::Range<float>(0, 1), 0));
+}
 
 //==============================================================================
 // This creates new instances of the plugin..
@@ -350,7 +189,3 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new PluginRGBASynthProcessor();
 }
-
-
-
-

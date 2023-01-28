@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="DK07MN" name="RGBA Synth" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
-              pluginCharacteristicsValue="pluginIsSynth">
+              pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn">
   <MAINGROUP id="koVNHO" name="RGBA Synth">
     <GROUP id="{52D4325F-21E4-0C7F-FFDF-A233B014DF08}" name="RGBA Util">
       <GROUP id="{1747D0E3-AE07-999F-5D39-81A40617C29E}" name="RGBA Processing">

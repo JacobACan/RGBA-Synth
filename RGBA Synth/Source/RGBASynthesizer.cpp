@@ -10,6 +10,7 @@
 
 #include "RGBASynthesizer.h"
 #include "RGBASynthSounds.h"
+#include "RGBASynthVoices.h"
 
 RGBASynthesizer::RGBASynthesizer() 
 {
@@ -18,7 +19,6 @@ RGBASynthesizer::RGBASynthesizer()
 
 void RGBASynthesizer::noteOn(int midiChannel, int midiNoteNumber, float velocity)
 {
-    DBG("Note On");
     // TODO : use more sophistocated logic to activate Voices
     for (int voice = 0; voice < getNumVoices(); voice++)
     {
@@ -26,12 +26,12 @@ void RGBASynthesizer::noteOn(int midiChannel, int midiNoteNumber, float velocity
         currentVoice->startNote(midiNoteNumber, velocity,  getSound(0).get(), 0);
     }
 
+
 }
 
 void RGBASynthesizer::noteOff(int midiChannel, int midiNoteNumber, float velocity, bool allowTailOff)
 {
-    //Stopping all sounds playing to the first voice...
-    DBG("Note Off");
+    // TODO : use more sophistocated logic to de-activate Voices
     if (getNumVoices() > 0)
     {
         auto voice = getVoice(0);
@@ -41,21 +41,38 @@ void RGBASynthesizer::noteOff(int midiChannel, int midiNoteNumber, float velocit
 
 void RGBASynthesizer::renderVoices(juce::AudioBuffer<double>& outPutBuffer, int startSample, int numSamples)
 {
-    // TODO : need to set note number?
-    // TODO : need to set note on?
+    //TODO : start multiple notes here.
+
     if (getNumVoices() > 0)
     {
         auto firstVoice = getVoice(0);
         firstVoice->renderNextBlock(outPutBuffer, startSample, numSamples);
-    }  
+    }
+
 }
 
 void RGBASynthesizer::renderVoices(juce::AudioBuffer<float>& outPutBuffer, int startSample, int numSamples)
 {
+    //TODO : start multiple notes here.
 
     if (getNumVoices() > 0)
     {
         auto firstVoice = getVoice(0);
         firstVoice->renderNextBlock(outPutBuffer, startSample, numSamples);
+    }
+}
+
+// =============================================================================================================
+
+void RGBASynthesizer::updateVoiceParameters(juce::AudioProcessorValueTreeState &apvts)
+{
+    // TODO : more sophisticated method of updating multiple voice parameters.
+    if (getNumVoices() > 0)
+    {
+        auto firstVoice = getVoice(0);
+        if (RGBASin* sinVoice = dynamic_cast<RGBASin*>(firstVoice))
+        {
+            sinVoice->setStateInformation(apvts);
+        }
     }
 }
