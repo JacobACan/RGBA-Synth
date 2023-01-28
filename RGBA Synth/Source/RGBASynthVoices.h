@@ -125,4 +125,5 @@ private:
     double angle;
     float rootFrequency;
     int currentMidiNote;
+    double attackLevel;
 };

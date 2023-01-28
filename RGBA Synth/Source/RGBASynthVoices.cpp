@@ -16,7 +16,8 @@ RGBASin::RGBASin()
     : angle(0),
     angleDelta(0),
     rootFrequency(440),
-    currentMidiNote(-1)
+    currentMidiNote(-1),
+    attackLevel(0)
 {
 
     updateAngleDelta();
@@ -35,6 +36,7 @@ void RGBASin::startNote(int midiNoteNumber,
 {
     //TODO : use getCurrentlyPlayingNote Instead of instantaneously setting a note (causing artifacts)
     currentMidiNote = midiNoteNumber;
+    attackLevel = 0;
     setKeyDown(true);
 }
 
@@ -78,7 +80,9 @@ bool RGBASin::isPlayingChannel(int midiChannel) const
 
 void RGBASin::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sartSample, int numSamples)
 {
-    // TODO : smooth in attack
+    double attackRamp = (1 - attackLevel) / outputBuffer.getNumSamples();
+    
+
     auto leftChannel = outputBuffer.getWritePointer(0);
     auto rightChannel = outputBuffer.getWritePointer(1);
 
@@ -88,12 +92,14 @@ void RGBASin::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sartSa
         {
             double sinWavNoteSample = getNoteSample();
 
-            leftChannel[sample] = sinWavNoteSample * .125;
-            rightChannel[sample] = sinWavNoteSample * .125;
+            leftChannel[sample] = sinWavNoteSample * .125 * attackLevel;
+            rightChannel[sample] = sinWavNoteSample * .125 * attackLevel;
 
             angle += angleDelta;
+            attackLevel += attackRamp;
 
         }
+        attackLevel = 1;
     }
 }
 
