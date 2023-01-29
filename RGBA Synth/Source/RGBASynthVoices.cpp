@@ -11,9 +11,8 @@
 #include "RGBASynthVoices.h"
 #include "WaveGen.h"
 
-// TODO : Refactor into own "Voices Folder"
-
 RGBASin::RGBASin()
+    // TODO : Initialize Values with apvts values. (call set state from plugin processor)
     : angle(0),
     angleDelta(0),
     rootFrequency(440),
@@ -90,6 +89,8 @@ void RGBASin::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sartSa
     double attackRamp = (1 - attackLevel) / outputBuffer.getNumSamples();
     int samplesAfterRelease = 0;
     double releaseRamp = (double)attackLevel / (double)samplesAfterRelease;
+
+    level = targetLevel;
     
 
     auto leftChannel = outputBuffer.getWritePointer(0);
@@ -122,6 +123,8 @@ void RGBASin::renderNextBlock(juce::AudioBuffer<double>& outputBuffer, int sartS
     int samplesAfterRelease = 0;
     double releaseRamp = (double)attackLevel / (double)samplesAfterRelease;
 
+    level = targetLevel;
+
 
     auto leftChannel = outputBuffer.getWritePointer(0);
     auto rightChannel = outputBuffer.getWritePointer(1);
@@ -132,8 +135,8 @@ void RGBASin::renderNextBlock(juce::AudioBuffer<double>& outputBuffer, int sartS
         {
             double sinWavNoteSample = getNoteSample();
 
-            leftChannel[sample] = sinWavNoteSample * .125 * attackLevel;
-            rightChannel[sample] = sinWavNoteSample * .125 * attackLevel;
+            leftChannel[sample] = sinWavNoteSample * level * attackLevel;
+            rightChannel[sample] = sinWavNoteSample * level * attackLevel;
 
             angle += angleDelta;
             attackLevel += attackRamp;

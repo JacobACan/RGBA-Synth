@@ -181,6 +181,8 @@ PluginRGBASynthProcessor::createParameterLayout()
     layout.add(std::make_unique<juce::AudioParameterFloat>("sqrLevel", "sqrLevel", juce::Range<float>(0, 1), .125));
     layout.add(std::make_unique<juce::AudioParameterFloat>("sawLevel", "sawLevel", juce::Range<float>(0, 1), .125));
     layout.add(std::make_unique<juce::AudioParameterFloat>("detuneAmount", "detuneAmount", juce::Range<float>(0, 1), 0));
+
+    return layout;
 }
 
 //==============================================================================

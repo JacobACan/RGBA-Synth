@@ -11,6 +11,7 @@
 #pragma once
 #include <JuceHeader.h>
 
+//TODO : Find out purpose of this class.
 
 class RGBASound1 : public juce::SynthesiserSound
 {
