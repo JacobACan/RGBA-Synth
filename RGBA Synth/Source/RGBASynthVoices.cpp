@@ -12,7 +12,6 @@
 #include "WaveGen.h"
 
 RGBASin::RGBASin()
-    // TODO : Initialize Values with apvts values. (call set state from plugin processor)
     : angle(0),
     angleDelta(0),
     rootFrequency(440),
@@ -25,7 +24,6 @@ RGBASin::RGBASin()
     sqrLevel(1),
     swtLevel(1)
 {
-
     updateAngleDelta();
 }
 

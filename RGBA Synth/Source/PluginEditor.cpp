@@ -8,12 +8,10 @@ PluginRGBASynthProcessorEditor::PluginRGBASynthProcessorEditor(PluginRGBASynthPr
     waveDisplay(),
     keyboardComponent(audioProcessor.keyboardState, juce::KeyboardComponentBase::verticalKeyboardFacingLeft)
 {
-    // TODO : Initialize Sliders with apvts values.
     setSize(958, 564);
 
 
     backgroundColor = juce::Colour::fromFloatRGBA(0, 0, 0, 0);
-
     //red slider
     red.setRange(juce::Range<double>(0, 255), 1);
     red.setSliderStyle(juce::Slider::LinearHorizontal);
@@ -28,8 +26,9 @@ PluginRGBASynthProcessorEditor::PluginRGBASynthProcessorEditor(PluginRGBASynthPr
         waveDisplay.setSwtLevel(swtLevel);
         repaint();
     };
+    red.setValue(audioProcessor.apvts.getRawParameterValue("swtLevel")->load() * 255);
 
-    //green slider
+    //Green ==============================================
     green.setRange(juce::Range<double>(0, 255), 1);
     green.setSliderStyle(juce::Slider::LinearHorizontal);
     green.onValueChange = [this]
@@ -43,8 +42,9 @@ PluginRGBASynthProcessorEditor::PluginRGBASynthProcessorEditor(PluginRGBASynthPr
         waveDisplay.setSawLevel(sawLevel);
         repaint();
     };
+    green.setValue(audioProcessor.apvts.getRawParameterValue("sawLevel")->load() * 255);
 
-    //blue slider
+    // Blue ==============================================
     blue.setRange(juce::Range<double>(0, 255), 1);
     blue.setSliderStyle(juce::Slider::LinearHorizontal);
     blue.onValueChange = [this]
@@ -58,8 +58,9 @@ PluginRGBASynthProcessorEditor::PluginRGBASynthProcessorEditor(PluginRGBASynthPr
         waveDisplay.setSqrLevel(sqrLevel);
         repaint();
     };
+    blue.setValue(audioProcessor.apvts.getRawParameterValue("sqrLevel")->load() * 255);
 
-    //alpha decibel slider
+    // Alpha ==============================================
     alpha.setRange(juce::Range<double>(0, 12), 1);
     alpha.setSliderStyle(juce::Slider::LinearBarVertical);
     alpha.onValueChange = [this]
@@ -68,15 +69,14 @@ PluginRGBASynthProcessorEditor::PluginRGBASynthProcessorEditor(PluginRGBASynthPr
         double targetLevel = RGBADecibelSlider::getLevelValue(alpha);
 
         audioProcessor.apvts.getRawParameterValue("targetLevel")->store(targetLevel);
-        
+       
         waveDisplay.setLevel(targetLevel);
         repaint();
     };
-    addAndMakeVisible(red);
-    addAndMakeVisible(green);
-    addAndMakeVisible(blue);
+    alpha.setValue(audioProcessor.apvts.getRawParameterValue("targetLevel")->load() * 12 * 64);
 
-    //Phase Shift 
+    // Phase Shift ==============================================
+    // TODO  : Add phase shift to apvts 
     swtPhase.setRange(juce::Range<double>(0, juce::MathConstants<double>::twoPi), .01);
     swtPhase.setSliderStyle(juce::Slider::RotaryVerticalDrag);
     swtPhase.onValueChange = [this] {
@@ -106,13 +106,14 @@ PluginRGBASynthProcessorEditor::PluginRGBASynthProcessorEditor(PluginRGBASynthPr
 
         audioProcessor.apvts.getRawParameterValue("detuneAmount")->store(detuneAmount);
     };
+    detune.setValue(audioProcessor.apvts.getRawParameterValue("detuneAmount")->load());
 
-    //keyboardComponent
+    addAndMakeVisible(waveDisplay);
     addAndMakeVisible(keyboardComponent);
 
-    //WaveDisplay
-    addAndMakeVisible(waveDisplay);
-
+    addAndMakeVisible(red);
+    addAndMakeVisible(green);
+    addAndMakeVisible(blue);
     addAndMakeVisible(alpha);
     addAndMakeVisible(swtPhase);
     addAndMakeVisible(sawPhase);

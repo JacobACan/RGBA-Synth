@@ -10,6 +10,8 @@
 
 #include "RGBADecibelSlider.h"
 
+//TODO : Properly implement decibels
+
 juce::String RGBADecibelSlider::getTextFromValue(double value)
 {
     return juce::Decibels::toString(value);
@@ -22,7 +24,7 @@ double RGBADecibelSlider::getValueFromText(const juce::String& text)
 
     auto decibelText = text.upToFirstOccurrenceOf("db", false, false).trim();
 
-    return text.equalsIgnoreCase("-INF") ? minusInfDb //Case insensitive comparison with another string
+    return text.equalsIgnoreCase("-INF") ? minusInfDb 
                                         : decibelText.getDoubleValue(); 
 }
 
@@ -35,7 +37,7 @@ double RGBADecibelSlider::getRGBvalue(RGBADecibelSlider& slider) {
 double RGBADecibelSlider::getLevelValue(RGBADecibelSlider& slider) {
     double maxValue = slider.getMaximum();
     double scale = maxValue * 64;
-    return slider.getValue() / scale; // Return a value that is a fraction of the value from 0 to 1
+    return slider.getValue() / scale; 
 }
 
 
