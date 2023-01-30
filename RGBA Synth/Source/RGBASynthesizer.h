@@ -25,4 +25,5 @@ public:
 
     void updateVoiceParameters(juce::AudioProcessorValueTreeState &);
 private:
+    int voicesOn;
 };

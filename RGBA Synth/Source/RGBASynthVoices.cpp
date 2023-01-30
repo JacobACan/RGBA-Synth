@@ -94,25 +94,18 @@ void RGBASin::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sartSa
     auto leftChannel = outputBuffer.getWritePointer(0);
     auto rightChannel = outputBuffer.getWritePointer(1);
 
-    if (isKeyDown())
+    for (int sample = 0; sample < numSamples; sample++)
     {
-        for (int sample = 0; sample < numSamples; sample++)
-        {
-            double sinWavNoteSample = getNoteSample();
+        double sinWavNoteSample = getNoteSample();
 
-            leftChannel[sample] = sinWavNoteSample * level * attackLevel;
-            rightChannel[sample] = sinWavNoteSample * level * attackLevel;
+        leftChannel[sample] += sinWavNoteSample * level * attackLevel;
+        rightChannel[sample] += sinWavNoteSample * level * attackLevel;
 
-            angle += angleDelta;
-            attackLevel += attackRamp;
+        angle += angleDelta;
+        attackLevel += attackRamp;
 
-        }
-        attackLevel = 1;
     }
-    else
-    {
-        outputBuffer.clear();
-    }
+    attackLevel = 1;
 }
 
 void RGBASin::renderNextBlock(juce::AudioBuffer<double>& outputBuffer, int sartSample, int numSamples)
