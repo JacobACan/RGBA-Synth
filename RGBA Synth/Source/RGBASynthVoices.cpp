@@ -39,6 +39,7 @@ void RGBASin::startNote(int midiNoteNumber,
     int currentPitchWheelPosition)
 {
     //TODO : use getCurrentlyPlayingNote Instead of instantaneously setting a note (causing artifacts)
+    DBG("Starting Note : " << midiNoteNumber);
     currentMidiNote = midiNoteNumber;
     attackLevel = 0;
     setKeyDown(true);
@@ -46,14 +47,13 @@ void RGBASin::startNote(int midiNoteNumber,
 
 void RGBASin::stopNote(float velocity, bool allowTailOff)
 {
+    DBG("Stopping Note");
     setKeyDown(false);
-    // TODO : do something when note stops.
 }
 
 bool RGBASin::isVoiceActive() const
 {
-    // TODO : determine if this voice is active
-    return true;
+    return juce::SynthesiserVoice::isVoiceActive();
 }
 
 void RGBASin::pitchWheelMoved(int newPitchWheelValue)
@@ -89,29 +89,31 @@ void RGBASin::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sartSa
     double releaseRamp = (double)attackLevel / (double)samplesAfterRelease;
 
     level = targetLevel;
-    
 
-    auto leftChannel = outputBuffer.getWritePointer(0);
-    auto rightChannel = outputBuffer.getWritePointer(1);
-
-    if (isKeyDown())
+    if (angleDelta != 0)
     {
-        for (int sample = 0; sample < numSamples; sample++)
+        if (isKeyDown())
         {
-            double sinWavNoteSample = getNoteSample();
+            while (--numSamples >= 0)
+            {
+                double sinWavNoteSample = getNoteSample();
 
-            leftChannel[sample] = sinWavNoteSample * level * attackLevel;
-            rightChannel[sample] = sinWavNoteSample * level * attackLevel;
+                // TODO : fix sinWaveNaming Convention
+                outputBuffer.addSample(0, sartSample, sinWavNoteSample * level * attackLevel);
+                outputBuffer.addSample(1, sartSample, sinWavNoteSample * level * attackLevel);
 
-            angle += angleDelta;
-            attackLevel += attackRamp;
+                angle += angleDelta;
+                attackLevel += attackRamp;
 
+                ++sartSample;
+                DBG("Starrrrr SMPL : " << sartSample);
+            }
         }
-        attackLevel = 1;
-    }
-    else
-    {
-        outputBuffer.clear();
+        else
+        {
+            clearCurrentNote();
+        }
+
     }
 }
 
@@ -133,8 +135,8 @@ void RGBASin::renderNextBlock(juce::AudioBuffer<double>& outputBuffer, int sartS
         {
             double sinWavNoteSample = getNoteSample();
 
-            leftChannel[sample] = sinWavNoteSample * level * attackLevel;
-            rightChannel[sample] = sinWavNoteSample * level * attackLevel;
+            leftChannel[sample] += sinWavNoteSample * level * attackLevel;
+            rightChannel[sample] += sinWavNoteSample * level * attackLevel;
 
             angle += angleDelta;
             attackLevel += attackRamp;
@@ -144,7 +146,7 @@ void RGBASin::renderNextBlock(juce::AudioBuffer<double>& outputBuffer, int sartS
     }
     else
     {
-        outputBuffer.clear();
+        //outputBuffer.clear();
     }
 }
 
