@@ -12,13 +12,15 @@
 #include "RGBASynthSounds.h"
 #include "RGBASynthVoices.h"
 
-RGBASynthesizer::RGBASynthesizer() 
+RGBASynthesizer::RGBASynthesizer() : voicesOn(0)
 {
 
 }
 
 void RGBASynthesizer::noteOn(int midiChannel, int midiNoteNumber, float velocity)
 {
+    // TODO : use more sophistocated logic to activate Voices
+    voicesOn += 1;
     for (int voice = 0; voice < getNumVoices(); voice++)
     {
         auto currentVoice = getVoice(voice);
@@ -33,7 +35,8 @@ void RGBASynthesizer::noteOn(int midiChannel, int midiNoteNumber, float velocity
 
 void RGBASynthesizer::noteOff(int midiChannel, int midiNoteNumber, float velocity, bool allowTailOff)
 {
-    for (int voice = 0; voice < getNumVoices() - 1; voice++)
+    // TODO : use more sophistocated logic to de-activate Voices
+    if (getNumVoices() > 0)
     {
         auto currentVoice = getVoice(voice);
         auto nextVoice = getVoice(voice + 1);
@@ -56,9 +59,13 @@ void RGBASynthesizer::renderVoices(juce::AudioBuffer<double>& outPutBuffer, int 
 
 void RGBASynthesizer::renderVoices(juce::AudioBuffer<float>& outPutBuffer, int startSample, int numSamples)
 {
-    DBG("Start Sample : " << startSample);
-    auto currentVoice = getVoice(0);
-    currentVoice->renderNextBlock(outPutBuffer, startSample, numSamples);
+    //TODO : start multiple notes here.
+
+    if (getNumVoices() > 0)
+    {
+        auto firstVoice = getVoice(0);
+        firstVoice->renderNextBlock(outPutBuffer, startSample, numSamples);
+    }
 }
 
 // =============================================================================================================
@@ -67,10 +74,10 @@ void RGBASynthesizer::updateVoiceParameters(juce::AudioProcessorValueTreeState &
 {
     for (int voice = 0; voice < getNumVoices(); voice++)
     {
-        auto currentVoice = getVoice(voice);
-        if (RGBASin* currentSinVoice = dynamic_cast<RGBASin*>(currentVoice))
+        auto firstVoice = getVoice(0);
+        if (RGBASin* sinVoice = dynamic_cast<RGBASin*>(firstVoice))
         {
-            currentSinVoice->setStateInformation(apvts);
+            sinVoice->setStateInformation(apvts);
         }
     }
 }

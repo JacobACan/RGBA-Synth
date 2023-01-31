@@ -89,32 +89,23 @@ void RGBASin::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sartSa
     double releaseRamp = (double)attackLevel / (double)samplesAfterRelease;
 
     level = targetLevel;
+    
 
-    if (angleDelta != 0)
+    auto leftChannel = outputBuffer.getWritePointer(0);
+    auto rightChannel = outputBuffer.getWritePointer(1);
+
+    for (int sample = 0; sample < numSamples; sample++)
     {
-        if (isKeyDown())
-        {
-            while (--numSamples >= 0)
-            {
-                double sinWavNoteSample = getNoteSample();
+        double sinWavNoteSample = getNoteSample();
 
-                // TODO : fix sinWaveNaming Convention
-                outputBuffer.addSample(0, sartSample, sinWavNoteSample * level * attackLevel);
-                outputBuffer.addSample(1, sartSample, sinWavNoteSample * level * attackLevel);
+        leftChannel[sample] += sinWavNoteSample * level * attackLevel;
+        rightChannel[sample] += sinWavNoteSample * level * attackLevel;
 
-                angle += angleDelta;
-                attackLevel += attackRamp;
-
-                ++sartSample;
-                DBG("Starrrrr SMPL : " << sartSample);
-            }
-        }
-        else
-        {
-            clearCurrentNote();
-        }
+        angle += angleDelta;
+        attackLevel += attackRamp;
 
     }
+    attackLevel = 1;
 }
 
 void RGBASin::renderNextBlock(juce::AudioBuffer<double>& outputBuffer, int sartSample, int numSamples)
