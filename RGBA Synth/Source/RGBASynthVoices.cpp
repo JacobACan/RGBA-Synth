@@ -47,7 +47,7 @@ void RGBASin::startNote(int midiNoteNumber,
 void RGBASin::stopNote(float velocity, bool allowTailOff)
 {
     // TODO : do something when note stops.
-    setKeyDown(true);
+    setKeyDown(false);
 
 }
 
@@ -101,8 +101,8 @@ void RGBASin::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sartSa
         {
             double sinWavNoteSample = getNoteSample();
 
-            leftChannel[sample] = sinWavNoteSample * level * attackLevel;
-            rightChannel[sample] = sinWavNoteSample * level * attackLevel;
+            leftChannel[sample] += sinWavNoteSample * level * attackLevel;
+            rightChannel[sample] += sinWavNoteSample * level * attackLevel;
 
             angle += angleDelta;
             attackLevel += attackRamp;
