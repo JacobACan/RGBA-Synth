@@ -110,10 +110,6 @@ void RGBASin::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sartSa
         }
         attackLevel = 1;
     }
-    else
-    {
-        outputBuffer.clear();
-    }
 }
 
 void RGBASin::renderNextBlock(juce::AudioBuffer<double>& outputBuffer, int sartSample, int numSamples)
@@ -142,10 +138,6 @@ void RGBASin::renderNextBlock(juce::AudioBuffer<double>& outputBuffer, int sartS
 
         }
         attackLevel = 1;
-    }
-    else
-    {
-        outputBuffer.clear();
     }
 }
 

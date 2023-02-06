@@ -116,6 +116,7 @@ public:
 
     //============================================================================================
     void setStateInformation(juce::AudioProcessorValueTreeState &apvts);
+    int currentMidiNote;
     
 private:
 
@@ -123,7 +124,6 @@ private:
     double getNoteSample();
     void updateAngleDelta()
         ;
-    int currentMidiNote;
 
     double level;
 
