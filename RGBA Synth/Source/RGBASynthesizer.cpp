@@ -39,8 +39,6 @@ void RGBASynthesizer::noteOff(int midiChannel, int midiNoteNumber, float velocit
     {
         if (RGBASin* sinVoice = dynamic_cast<RGBASin*>(voice))
         {
-            /*DBG("midi NN : " << midiNoteNumber);
-            DBG("voice NN : " << sinVoice->currentMidiNote);*/
             if (sinVoice->currentMidiNote == midiNoteNumber)
             {
                 sinVoice->stopNote(velocity, allowTailOff);
