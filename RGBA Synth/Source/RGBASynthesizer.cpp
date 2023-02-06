@@ -18,10 +18,10 @@ RGBASynthesizer::RGBASynthesizer() : voicesOn(0)
 void RGBASynthesizer::noteOn(int midiChannel, int midiNoteNumber, float velocity)
 {
     // TODO : Figure out how to actually set currently playing note of voice
+    // TODO : Check for number of voices available to prevent crashing
     voicesOn += 1;
-    DBG("Voices On : " << voicesOn);
 
-    for (int i = voicesOn; i <= voicesOn; i++)
+    for (int i = 0; i < voicesOn; i++)
     {
         auto voice = getVoice(i);
         if (!voice->isKeyDown()) 
@@ -34,7 +34,6 @@ void RGBASynthesizer::noteOff(int midiChannel, int midiNoteNumber, float velocit
     // TODO : Figure out how to actually set currently playing note
     // TODO : Handle notes that arent of sinVoice type
     voicesOn -= 1;
-    DBG("Voices On : " << voicesOn);
 
     for (auto voice : voices)
     {
