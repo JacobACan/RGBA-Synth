@@ -37,25 +37,26 @@ void RGBASynthesizer::noteOff(int midiChannel, int midiNoteNumber, float velocit
 
 void RGBASynthesizer::renderVoices(juce::AudioBuffer<double>& outPutBuffer, int startSample, int numSamples)
 {
-    //TODO : start multiple notes here.
-    voicesOn -= 1;
-    if (getNumVoices() > 0)
-    {
-        auto firstVoice = getVoice(0);
-        firstVoice->renderNextBlock(outPutBuffer, startSample, numSamples);
-    }
+    ////TODO : start multiple notes here.
+    //voicesOn -= 1;
+    //if (getNumVoices() > 0)
+    //{
+    //    auto firstVoice = getVoice(0);
+    //    firstVoice->renderNextBlock(outPutBuffer, startSample, numSamples);
+    //}
 }
 
 void RGBASynthesizer::renderVoices(juce::AudioBuffer<float>& outPutBuffer, int startSample, int numSamples)
 {
     //TODO : start multiple notes here.
-    if (getNumVoices() > 0)
+    /*if (getNumVoices() > 0)
     {
         for (auto voice : voices)
         {
             voice->renderNextBlock(outPutBuffer, startSample, numSamples);
         }
-    }
+    }*/
+    getVoice(0)->renderNextBlock(outPutBuffer, startSample, numSamples);
 }
 
 // =============================================================================================================
