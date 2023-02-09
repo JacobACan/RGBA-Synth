@@ -17,46 +17,70 @@ RGBASynthesizer::RGBASynthesizer() : voicesOn(0)
 
 void RGBASynthesizer::noteOn(int midiChannel, int midiNoteNumber, float velocity)
 {
-    // TODO : use more sophistocated logic to activate Voices
+    // TODO : Figure out how to actually set currently playing note of voice
     voicesOn += 1;
-    for (juce::SynthesiserVoice* voice : voices)
+    if (voicesOn <= getNumVoices())
     {
-        voice->startNote(midiNoteNumber, velocity, getSound(0).get(), 0);
+        for (int i = 0; i < voicesOn; i++)
+        {
+            auto voice = getVoice(i);
+            if (!voice->isKeyDown())
+                voice->startNote(midiNoteNumber, velocity, getSound(0).get(), 0);
+        }
+    }
+    else
+    {
+        auto lastVoice = getVoice(getNumVoices() - 1);
+        lastVoice->startNote(midiNoteNumber, velocity, getSound(0).get(), 0);
     }
 }
 
 void RGBASynthesizer::noteOff(int midiChannel, int midiNoteNumber, float velocity, bool allowTailOff)
 {
-    // TODO : use more sophistocated logic to de-activate Voices
+    // TODO : Figure out how to actually set currently playing note
+    // TODO : Handle notes that arent of sinVoice type
     voicesOn -= 1;
+
     for (auto voice : voices)
     {
-        voice->stopNote(velocity, allowTailOff);
+        if (RGBASin* sinVoice = dynamic_cast<RGBASin*>(voice))
+        {
+            if (sinVoice->currentMidiNote == midiNoteNumber)
+            {
+                sinVoice->stopNote(velocity, allowTailOff);
+            }
+        }
     }
 }
 
 void RGBASynthesizer::renderVoices(juce::AudioBuffer<double>& outPutBuffer, int startSample, int numSamples)
 {
-    ////TODO : start multiple notes here.
-    //voicesOn -= 1;
-    //if (getNumVoices() > 0)
-    //{
-    //    auto firstVoice = getVoice(0);
-    //    firstVoice->renderNextBlock(outPutBuffer, startSample, numSamples);
-    //}
-}
-
-void RGBASynthesizer::renderVoices(juce::AudioBuffer<float>& outPutBuffer, int startSample, int numSamples)
-{
-    //TODO : start multiple notes here.
-    /*if (getNumVoices() > 0)
+    if (voicesOn > 0)
     {
         for (auto voice : voices)
         {
             voice->renderNextBlock(outPutBuffer, startSample, numSamples);
         }
-    }*/
-    getVoice(0)->renderNextBlock(outPutBuffer, startSample, numSamples);
+    }
+    else
+    {
+        outPutBuffer.clear();
+    }
+}
+
+void RGBASynthesizer::renderVoices(juce::AudioBuffer<float>& outPutBuffer, int startSample, int numSamples)
+{
+    if (voicesOn > 0)
+    {
+        for (auto voice : voices)
+        {
+            voice->renderNextBlock(outPutBuffer, startSample, numSamples);
+        }
+    }
+    else
+    {
+        outPutBuffer.clear();
+    }
 }
 
 // =============================================================================================================

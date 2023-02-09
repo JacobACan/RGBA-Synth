@@ -23,7 +23,7 @@ public:
     void renderVoices(juce::AudioBuffer<double>& outPutBuffer, int startSample, int numSamples) override;
     void renderVoices(juce::AudioBuffer<float>& outPutBuffer, int startSample, int numSamples) override;
 
-    void updateVoiceParameters(juce::AudioProcessorValueTreeState &);
+    void updateVoiceParameters(juce::AudioProcessorValueTreeState&);
 private:
     int voicesOn;
 };

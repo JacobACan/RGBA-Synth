@@ -98,6 +98,8 @@ void PluginRGBASynthProcessor::prepareToPlay(double sampleRate, int samplesPerBl
 {
     RGBASynth.setCurrentPlaybackSampleRate(sampleRate);
     RGBASynth.updateVoiceParameters(apvts);
+
+    midiCollector.reset(sampleRate);
 }
 
 void PluginRGBASynthProcessor::releaseResources()
@@ -134,8 +136,9 @@ bool PluginRGBASynthProcessor::isBusesLayoutSupported(const BusesLayout& layouts
 
 void PluginRGBASynthProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
+    buffer.clear();
+    midiCollector.removeNextBlockOfMessages(midiMessages, buffer.getNumSamples());
     keyboardState.processNextMidiBuffer(midiMessages, 0, buffer.getNumSamples(), true);
-
     RGBASynth.updateVoiceParameters(apvts);
     RGBASynth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 

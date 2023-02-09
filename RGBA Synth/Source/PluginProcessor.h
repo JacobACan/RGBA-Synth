@@ -64,6 +64,7 @@ private:
     //==============================================================================
     //Synth
     int numVoices;
+    juce::MidiMessageCollector midiCollector;
 
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
 
