@@ -83,7 +83,7 @@ bool RGBASin::isPlayingChannel(int midiChannel) const
     return true;
 }
 
-void RGBASin::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sartSample, int numSamples)
+void RGBASin::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples)
 {
     double attackRamp = (1 - attackLevel) / outputBuffer.getNumSamples();
     int samplesAfterRelease = 0;
@@ -94,10 +94,10 @@ void RGBASin::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sartSa
 
     auto leftChannel = outputBuffer.getWritePointer(0);
     auto rightChannel = outputBuffer.getWritePointer(1);
-
+    DBG("Level : " << level);
     if (isKeyDown())
     {
-        for (int sample = 0; sample < numSamples; sample++)
+        for (int sample = startSample; sample < numSamples; sample++)
         {
             double sinWavNoteSample = getNoteSample();
 
@@ -112,7 +112,7 @@ void RGBASin::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sartSa
     }
 }
 
-void RGBASin::renderNextBlock(juce::AudioBuffer<double>& outputBuffer, int sartSample, int numSamples)
+void RGBASin::renderNextBlock(juce::AudioBuffer<double>& outputBuffer, int startSample, int numSamples)
 {
     double attackRamp = (1 - attackLevel) / outputBuffer.getNumSamples();
     int samplesAfterRelease = 0;
@@ -126,7 +126,7 @@ void RGBASin::renderNextBlock(juce::AudioBuffer<double>& outputBuffer, int sartS
 
     if (isKeyDown())
     {
-        for (int sample = 0; sample < numSamples; sample++)
+        for (int sample = startSample; sample < numSamples; sample++)
         {
             double sinWavNoteSample = getNoteSample();
 
