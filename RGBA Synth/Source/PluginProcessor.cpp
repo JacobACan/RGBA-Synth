@@ -16,7 +16,7 @@ PluginRGBASynthProcessor::PluginRGBASynthProcessor()
     ),
 #endif
     apvts(*this, nullptr, "Parameters",createParameterLayout()),
-    numVoices(4)
+    numVoices(8)
 {
     for (int i = 0; i < numVoices; i++)
     {
@@ -188,6 +188,8 @@ PluginRGBASynthProcessor::createParameterLayout()
 
     return layout;
 }
+
+
 
 //==============================================================================
 // This creates new instances of the plugin..

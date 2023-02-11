@@ -24,9 +24,6 @@ void RGBASynthesizer::noteOn(int midiChannel, int midiNoteNumber, float velocity
 
 void RGBASynthesizer::noteOff(int midiChannel, int midiNoteNumber, float velocity, bool allowTailOff)
 {
-    // TODO : Figure out how to actually set currently playing note
-    // TODO : Handle notes that arent of sinVoice type
-
     for (auto voice : voices)
     {
         if (RGBASin* sinVoice = dynamic_cast<RGBASin*>(voice))

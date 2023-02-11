@@ -119,6 +119,8 @@ PluginRGBASynthProcessorEditor::PluginRGBASynthProcessorEditor(PluginRGBASynthPr
     addAndMakeVisible(sawPhase);
     addAndMakeVisible(sqrPhase);
     addAndMakeVisible(detune);
+
+    startTimer(500);
 }
 
 PluginRGBASynthProcessorEditor::~PluginRGBASynthProcessorEditor()
@@ -202,4 +204,13 @@ void PluginRGBASynthProcessorEditor::resized()
 
 
     waveDisplay.setBounds(leftSideOfWaveDisplay, titleHeight, waveDisplayWidth, waveDisplayHeight);
+}
+
+//============================================================================
+
+//==============================================================================
+void PluginRGBASynthProcessorEditor::timerCallback()
+{
+    keyboardComponent.grabKeyboardFocus();
+    stopTimer();
 }
