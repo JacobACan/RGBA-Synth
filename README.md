@@ -2,8 +2,7 @@
 ![image](https://user-images.githubusercontent.com/89418437/211211903-e65e2506-1ecd-498a-83b1-77f0b0107dd6.png)
 
 ## What is RGBA Synth
-A wave synth with 4 controls for wave synthesis between a sin, square, sawtooth, and saw wave. 
-Creatively mapping color to sound through different algorithm presets.
+Helping music producers experience additive synthesis in a new and intuitive way by matching sound quality to color and limiting over-all options while consitently providing a retro sound.
 
 Demo : N/A
 
