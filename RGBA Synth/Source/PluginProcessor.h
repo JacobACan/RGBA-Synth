@@ -4,8 +4,8 @@
 
 #include <JuceHeader.h>
 #include "RGBASynthesizer.h"
-#include "RGBASynthSounds.h"
-#include "RGBASynthVoices.h"
+#include "RGBASound.h"
+#include "RGBAVoice.h"
 
 
 //==============================================================================

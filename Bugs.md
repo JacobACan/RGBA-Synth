@@ -1,6 +1,9 @@
 # TODO
-- Can not set Automations Easily.
+- Correct Synth starting parameters.
+- Correct Decibel slider math.
+- Update phase generation.
+- Slider Automations.
 - Font will not be portable.
-- Stylize Sliders.
+- Stylize.
 - Set up release on github w/ previews etc.
 

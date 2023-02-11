@@ -76,27 +76,38 @@ PluginRGBASynthProcessorEditor::PluginRGBASynthProcessorEditor(PluginRGBASynthPr
     alpha.setValue(audioProcessor.apvts.getRawParameterValue("targetLevel")->load() * 12 * 64);
 
     // Phase Shift ==============================================
-    // TODO  : Add phase shift to apvts 
     swtPhase.setRange(juce::Range<double>(0, juce::MathConstants<double>::twoPi), .01);
     swtPhase.setSliderStyle(juce::Slider::RotaryVerticalDrag);
     swtPhase.onValueChange = [this] {
         WaveGen::setSwtPhase(swtPhase.getValue());
+        
+        audioProcessor.apvts.getRawParameterValue("swtPhase")->store(swtPhase.getValue());
+
         waveDisplay.repaint();
     };
+    swtPhase.setValue(audioProcessor.apvts.getRawParameterValue("swtPhase")->load());
+
 
     sawPhase.setRange(juce::Range<double>(0, juce::MathConstants<double>::twoPi), .01);
     sawPhase.setSliderStyle(juce::Slider::RotaryVerticalDrag);
     sawPhase.onValueChange = [this] {
         WaveGen::setSawPhase(sawPhase.getValue());
+        audioProcessor.apvts.getRawParameterValue("sawPhase")->store(sawPhase.getValue());
         waveDisplay.repaint();
     };
+    sawPhase.setValue(audioProcessor.apvts.getRawParameterValue("sawPhase")->load());
+
+
 
     sqrPhase.setRange(juce::Range<double>(0, juce::MathConstants<double>::twoPi), .01);
     sqrPhase.setSliderStyle(juce::Slider::RotaryVerticalDrag);
     sqrPhase.onValueChange = [this] {
         WaveGen::setSqrPhase(sqrPhase.getValue());
+        audioProcessor.apvts.getRawParameterValue("sqrPhase")->store(sqrPhase.getValue());
         waveDisplay.repaint();
     };
+    sqrPhase.setValue(audioProcessor.apvts.getRawParameterValue("sqrPhase")->load());
+
 
     //Detune 
     detune.setRange(0, 1, .001);

@@ -20,10 +20,10 @@ PluginRGBASynthProcessor::PluginRGBASynthProcessor()
 {
     for (int i = 0; i < numVoices; i++)
     {
-        RGBASynth.addVoice(new RGBASin());
+        RGBASynth.addVoice(new RGBAVoice());
 
     }
-    RGBASynth.addSound(new RGBASound1());
+    RGBASynth.addSound(new RGBASound());
 }
 
 PluginRGBASynthProcessor::~PluginRGBASynthProcessor()
@@ -185,6 +185,10 @@ PluginRGBASynthProcessor::createParameterLayout()
     layout.add(std::make_unique<juce::AudioParameterFloat>("sqrLevel", "sqrLevel", juce::Range<float>(0, 1), 0));
     layout.add(std::make_unique<juce::AudioParameterFloat>("sawLevel", "sawLevel", juce::Range<float>(0, 1), 0));
     layout.add(std::make_unique<juce::AudioParameterFloat>("detuneAmount", "detuneAmount", juce::Range<float>(0, 1), 0));
+
+    layout.add(std::make_unique<juce::AudioParameterFloat>("swtPhase", "swtPhase", juce::Range<float>(0, 1), 0));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("sawPhase", "sawPhase", juce::Range<float>(0, 1), 0));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("sqrPhase", "sqrPhase", juce::Range<float>(0, 1), 0));
 
     return layout;
 }

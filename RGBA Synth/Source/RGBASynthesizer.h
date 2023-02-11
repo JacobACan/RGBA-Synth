@@ -11,7 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "RGBASynthSounds.h"
+#include "RGBASound.h"
 
 class RGBASynthesizer : public juce::Synthesiser
 {

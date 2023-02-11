@@ -8,10 +8,10 @@
   ==============================================================================
 */
 
-#include "RGBASynthVoices.h"
+#include "RGBAVoice.h"
 #include "WaveGen.h"
 
-RGBASin::RGBASin()
+RGBAVoice::RGBAVoice()
     : angle(0),
     angleDelta(0),
     rootFrequency(440),
@@ -28,19 +28,16 @@ RGBASin::RGBASin()
     updateAngleDelta();
 }
 
-bool RGBASin::canPlaySound(juce::SynthesiserSound*)
+bool RGBAVoice::canPlaySound(juce::SynthesiserSound* sound)
 {
-    // TODO : Determine if sound can be played by this voice
-    return true;
+    return dynamic_cast<RGBASound*> (sound) != nullptr;
 }
 
-void RGBASin::startNote(int midiNoteNumber,
+void RGBAVoice::startNote(int midiNoteNumber,
     float velocity,
-    juce::SynthesiserSound* sound,
-    int currentPitchWheelPosition)
-    //TODO : use getCurrentlyPlayingNote
+    juce::SynthesiserSound* /*sound*/,
+    int /*currentPitchWheelPosition*/)
 {
-
     level = velocity * .15;
     currentMidiNote = midiNoteNumber;
     attackLevel = 0;
@@ -52,9 +49,8 @@ void RGBASin::startNote(int midiNoteNumber,
     setKeyDown(true);
 }
 
-void RGBASin::stopNote(float velocity, bool allowTailOff)
+void RGBAVoice::stopNote(float /*velocity*/, bool allowTailOff)
 {
-    // TODO : do something when note stops.
     if (allowTailOff)
     {
         if (realeaseLevel == 0.0)
@@ -69,38 +65,37 @@ void RGBASin::stopNote(float velocity, bool allowTailOff)
 
 }
 
-bool RGBASin::isVoiceActive() const
+bool RGBAVoice::isVoiceActive() const
 {
     return realeaseLevel > 0.0 || isKeyDown();
 }
 
-void RGBASin::pitchWheelMoved(int newPitchWheelValue)
+void RGBAVoice::pitchWheelMoved(int newPitchWheelValue)
 {
     // TODO : alter voice when pitch wheel moved
 }
 
-void RGBASin::controllerMoved(int controllerNumber, int newControllerValue)
+void RGBAVoice::controllerMoved(int controllerNumber, int newControllerValue)
 {
     // TODO : altar voice when controller Moved
 }
 
-void RGBASin::aftertouchChanged(int newAftertouchValue)
+void RGBAVoice::aftertouchChanged(int newAftertouchValue)
 {
     // TODO : alter voice after touch changed
 }
 
-void RGBASin::channelPressureChanged(int newChannelPressureValue)
+void RGBAVoice::channelPressureChanged(int newChannelPressureValue)
 {
     // TODO : alter voice when channel pressure changed
 }
 
-bool RGBASin::isPlayingChannel(int midiChannel) const
+bool RGBAVoice::isPlayingChannel(int midiChannel) const
 {
-    //TODO determine if voice is playing a channel
-    return true;
+    return midiChannel <2 && midiChannel >= 0;
 }
 
-void RGBASin::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples)
+void RGBAVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples)
 {
     double attackRamp = (1 - attackLevel) / outputBuffer.getNumSamples();
     int samplesAfterRelease = 5000;
@@ -154,10 +149,10 @@ void RGBASin::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int startS
     }
 }
 
-void RGBASin::renderNextBlock(juce::AudioBuffer<double>& outputBuffer, int startSample, int numSamples)
+void RGBAVoice::renderNextBlock(juce::AudioBuffer<double>& outputBuffer, int startSample, int numSamples)
 {
     double attackRamp = (1 - attackLevel) / outputBuffer.getNumSamples();
-    int samplesAfterRelease = 0;
+    int samplesAfterRelease = 5000;
     double releaseRamp = (double)attackLevel / (double)samplesAfterRelease;
 
     level = targetLevel;
@@ -165,25 +160,50 @@ void RGBASin::renderNextBlock(juce::AudioBuffer<double>& outputBuffer, int start
 
     auto leftChannel = outputBuffer.getWritePointer(0);
     auto rightChannel = outputBuffer.getWritePointer(1);
-
-    if (isKeyDown())
+    if (angleDelta != 0)
     {
-        for (int sample = startSample; sample < numSamples; sample++)
+        if (realeaseLevel > 0.0)
         {
-            double sinWavNoteSample = getNoteSample();
+            for (int sample = startSample; sample < numSamples; sample++)
+            {
+                double sinWavNoteSample = getNoteSample();
 
-            leftChannel[sample] = sinWavNoteSample * level * attackLevel;
-            rightChannel[sample] = sinWavNoteSample * level * attackLevel;
+                leftChannel[sample] += sinWavNoteSample * level * attackLevel * realeaseLevel;
+                rightChannel[sample] += sinWavNoteSample * level * attackLevel * realeaseLevel;
 
-            angle += angleDelta;
-            attackLevel += attackRamp;
+                angle += angleDelta;
+                realeaseLevel -= releaseRamp;
 
+                if (realeaseLevel < .005)
+                {
+                    angleDelta = 0;
+                    clearCurrentNote();
+                    setKeyDown(false);
+                    realeaseLevel = 0;
+
+                    break;
+                }
+            }
         }
-        attackLevel = 1;
+        else
+        {
+            for (int sample = startSample; sample < numSamples; sample++)
+            {
+                double sinWavNoteSample = getNoteSample();
+
+                leftChannel[sample] += sinWavNoteSample * level * attackLevel;
+                rightChannel[sample] += sinWavNoteSample * level * attackLevel;
+
+                angle += angleDelta;
+                attackLevel += attackRamp;
+
+            }
+            attackLevel = 1;
+        }
     }
 }
 
-double RGBASin::getNoteSample()
+double RGBAVoice::getNoteSample()
 {
     int currentNoteNumber = currentMidiNote;
     if (currentNoteNumber == -1) return 0;
@@ -227,20 +247,20 @@ double RGBASin::getNoteSample()
 }
 
 
-void RGBASin::updateAngleDelta()
+void RGBAVoice::updateAngleDelta()
 {
 
     float cyclesPerSample = rootFrequency / getSampleRate(); // amount of wave in-between each sample
     angleDelta = cyclesPerSample * juce::MathConstants<float>::twoPi; // amount of wave in-between each sample multiplied by 2 pi (in radians)
 }
 
-void RGBASin::setCurrentPlaybackSampleRate(double newRate)
+void RGBAVoice::setCurrentPlaybackSampleRate(double newRate)
 {
     juce::SynthesiserVoice::setCurrentPlaybackSampleRate(newRate);
     updateAngleDelta();
 }
 
-void RGBASin::setStateInformation(juce::AudioProcessorValueTreeState& apvts)
+void RGBAVoice::setStateInformation(juce::AudioProcessorValueTreeState& apvts)
 {
     targetLevel.store(apvts.getRawParameterValue("targetLevel")->load());
     swtLevel.store(apvts.getRawParameterValue("swtLevel")->load());

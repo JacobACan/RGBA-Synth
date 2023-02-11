@@ -10,13 +10,13 @@
 
 #pragma once
 #include <JuceHeader.h>
+#include "RGBASound.h"
 
-//TODO : Re-name to RGBA Voice
 
-class RGBASin : public juce::SynthesiserVoice
+class RGBAVoice : public juce::SynthesiserVoice
 {
 public:
-    RGBASin();
+    RGBAVoice();
 
 
     bool canPlaySound(juce::SynthesiserSound*) override;
@@ -122,20 +122,14 @@ private:
 
     //Helper Functions
     double getNoteSample();
-    void updateAngleDelta()
-        ;
+    void updateAngleDelta();
 
     double level;
-
     double angleDelta;
     double angle;
     float rootFrequency;
-
     double attackLevel;
     double realeaseLevel;
-
-    //TODO : Move these variables to an audio processor value tree state
-     
 
     std::atomic<float> targetLevel;
     std::atomic<double> swtLevel;
