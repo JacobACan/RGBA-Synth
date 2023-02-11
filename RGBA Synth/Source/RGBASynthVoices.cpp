@@ -17,6 +17,7 @@ RGBASin::RGBASin()
     rootFrequency(440),
     currentMidiNote(-1),
     attackLevel(0),
+    realeaseLevel(0),
     level(.125),
     targetLevel(.125),
     detuneAmount(0),
@@ -37,24 +38,40 @@ void RGBASin::startNote(int midiNoteNumber,
     float velocity,
     juce::SynthesiserSound* sound,
     int currentPitchWheelPosition)
+    //TODO : use getCurrentlyPlayingNote
 {
-    //TODO : use getCurrentlyPlayingNote Instead of instantaneously setting a note (causing artifacts)
+
+    level = velocity * .15;
     currentMidiNote = midiNoteNumber;
     attackLevel = 0;
+    realeaseLevel = 0;
+
+    updateAngleDelta();
+
+
     setKeyDown(true);
 }
 
 void RGBASin::stopNote(float velocity, bool allowTailOff)
 {
     // TODO : do something when note stops.
-    setKeyDown(false);
+    if (allowTailOff)
+    {
+        if (realeaseLevel == 0.0)
+            realeaseLevel = 1.0;
+    }
+    else
+    {
+        angleDelta = 0.0;  // Stops note from playing
+        clearCurrentNote();
+        setKeyDown(false);
+    }
 
 }
 
 bool RGBASin::isVoiceActive() const
 {
-    // TODO : determine if this voice is active
-    return true;
+    return realeaseLevel > 0.0 || isKeyDown();
 }
 
 void RGBASin::pitchWheelMoved(int newPitchWheelValue)
@@ -86,7 +103,7 @@ bool RGBASin::isPlayingChannel(int midiChannel) const
 void RGBASin::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples)
 {
     double attackRamp = (1 - attackLevel) / outputBuffer.getNumSamples();
-    int samplesAfterRelease = 0;
+    int samplesAfterRelease = 5000;
     double releaseRamp = (double)attackLevel / (double)samplesAfterRelease;
 
     level = targetLevel;
@@ -94,21 +111,46 @@ void RGBASin::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int startS
 
     auto leftChannel = outputBuffer.getWritePointer(0);
     auto rightChannel = outputBuffer.getWritePointer(1);
-    DBG("Level : " << level);
-    if (isKeyDown())
+    if (angleDelta != 0)
     {
-        for (int sample = startSample; sample < numSamples; sample++)
+        if (realeaseLevel > 0.0)
         {
-            double sinWavNoteSample = getNoteSample();
+            for (int sample = startSample; sample < numSamples; sample++)
+            {
+                double sinWavNoteSample = getNoteSample();
 
-            leftChannel[sample] += sinWavNoteSample * level * attackLevel;
-            rightChannel[sample] += sinWavNoteSample * level * attackLevel;
+                leftChannel[sample] += sinWavNoteSample * level * attackLevel * realeaseLevel;
+                rightChannel[sample] += sinWavNoteSample * level * attackLevel * realeaseLevel;
 
-            angle += angleDelta;
-            attackLevel += attackRamp;
+                angle += angleDelta;
+                realeaseLevel -= releaseRamp;
 
+                if (realeaseLevel < .005)
+                {
+                    angleDelta = 0;
+                    clearCurrentNote();
+                    setKeyDown(false);
+                    realeaseLevel = 0;
+
+                    break;
+                }
+            }
         }
-        attackLevel = 1;
+        else 
+        {
+            for (int sample = startSample; sample < numSamples; sample++)
+            {
+                double sinWavNoteSample = getNoteSample();
+
+                leftChannel[sample] += sinWavNoteSample * level * attackLevel;
+                rightChannel[sample] += sinWavNoteSample * level * attackLevel;
+
+                angle += angleDelta;
+                attackLevel += attackRamp;
+
+            }
+            attackLevel = 1;
+        }
     }
 }
 
