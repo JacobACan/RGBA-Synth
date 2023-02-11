@@ -18,8 +18,8 @@ RGBAVoice::RGBAVoice()
     currentMidiNote(-1),
     attackLevel(0),
     realeaseLevel(0),
-    level(.125),
-    targetLevel(.125),
+    level(0),
+    targetLevel(0),
     detuneAmount(0),
     sawLevel(1),
     sqrLevel(1),
@@ -38,7 +38,6 @@ void RGBAVoice::startNote(int midiNoteNumber,
     juce::SynthesiserSound* /*sound*/,
     int /*currentPitchWheelPosition*/)
 {
-    level = velocity * .15;
     currentMidiNote = midiNoteNumber;
     attackLevel = 0;
     realeaseLevel = 0;

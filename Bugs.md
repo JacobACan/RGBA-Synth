@@ -1,7 +1,7 @@
 # TODO
 - Correct Synth starting parameters.
+- Load Correct Synth params on reboot of a DAW?
 - Correct Decibel slider math.
-- Update phase generation.
 - Slider Automations.
 - Font will not be portable.
 - Stylize.

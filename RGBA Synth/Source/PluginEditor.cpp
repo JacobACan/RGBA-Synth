@@ -8,8 +8,8 @@ PluginRGBASynthProcessorEditor::PluginRGBASynthProcessorEditor(PluginRGBASynthPr
     waveDisplay(),
     keyboardComponent(audioProcessor.keyboardState, juce::KeyboardComponentBase::verticalKeyboardFacingLeft)
 {
-    setSize(958, 564);
 
+    setSize(958, 564);
 
     backgroundColor = juce::Colour::fromFloatRGBA(0, 0, 0, 0);
     //red slider
@@ -132,6 +132,7 @@ PluginRGBASynthProcessorEditor::PluginRGBASynthProcessorEditor(PluginRGBASynthPr
     addAndMakeVisible(detune);
 
     startTimer(500);
+
 }
 
 PluginRGBASynthProcessorEditor::~PluginRGBASynthProcessorEditor()
@@ -162,6 +163,8 @@ void PluginRGBASynthProcessorEditor::paint(juce::Graphics& g)
         : g.setColour(juce::Colours::white);
 
     g.drawText("RGBA Synth", 6, 16, getWidth(), getHeight(), juce::Justification::centredTop);
+
+    
 }
 
 void PluginRGBASynthProcessorEditor::resized()
