@@ -24,6 +24,7 @@ PluginRGBASynthProcessor::PluginRGBASynthProcessor()
 
     }
     RGBASynth.addSound(new RGBASound());
+    DBG("Processor Target Level : " << apvts.getRawParameterValue("targetLevel")->load());
 }
 
 PluginRGBASynthProcessor::~PluginRGBASynthProcessor()
@@ -177,19 +178,19 @@ void PluginRGBASynthProcessor::setStateInformation (const void* data, int sizeIn
 juce::AudioProcessorValueTreeState::ParameterLayout 
 PluginRGBASynthProcessor::createParameterLayout()
 {
-    juce::AudioProcessorValueTreeState::ParameterLayout layout;
+    std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
 
-    layout.add(std::make_unique<juce::AudioParameterFloat>("targetLevel", "targetLevel", juce::Range<float>(0, 1), 0));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("swtLevel", "swtLevel", juce::Range<float>(0, 1), 0));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("sqrLevel", "sqrLevel", juce::Range<float>(0, 1), 0));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("sawLevel", "sawLevel", juce::Range<float>(0, 1), 0));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("detuneAmount", "detuneAmount", juce::Range<float>(0, 1), 0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("targetLevel", "targetLevel", juce::Range<float>(0.f, 1.f), 0.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("swtLevel", "swtLevel", juce::Range<float>(0.f, 1.f), 0.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("sqrLevel", "sqrLevel", juce::Range<float>(0.f, 1.f), 0.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("sawLevel", "sawLevel", juce::Range<float>(0.f, 1.f), 0.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("detuneAmount", "detuneAmount", juce::Range<float>(0.f, 1.f), 0.f));
 
-    layout.add(std::make_unique<juce::AudioParameterFloat>("swtPhase", "swtPhase", juce::Range<float>(0, 1), 0));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("sawPhase", "sawPhase", juce::Range<float>(0, 1), 0));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("sqrPhase", "sqrPhase", juce::Range<float>(0, 1), 0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("swtPhase", "swtPhase", juce::Range<float>(0.f, 1.f), 0.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("sawPhase", "sawPhase", juce::Range<float>(0.f, 1.f), 0.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("sqrPhase", "sqrPhase", juce::Range<float>(0.f, 1.f), 0.f));
 
-    return layout;
+    return { params.begin(), params.end() };
 }
 
 

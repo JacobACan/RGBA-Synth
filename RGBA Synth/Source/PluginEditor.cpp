@@ -8,6 +8,8 @@ PluginRGBASynthProcessorEditor::PluginRGBASynthProcessorEditor(PluginRGBASynthPr
     waveDisplay(),
     keyboardComponent(audioProcessor.keyboardState, juce::KeyboardComponentBase::verticalKeyboardFacingLeft)
 {
+    DBG("Editor Target Level : " << audioProcessor.apvts.getRawParameterValue("targetLevel")->load());
+
 
     setSize(958, 564);
 

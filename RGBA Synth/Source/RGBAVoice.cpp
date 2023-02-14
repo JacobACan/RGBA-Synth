@@ -21,9 +21,9 @@ RGBAVoice::RGBAVoice()
     level(0),
     targetLevel(0),
     detuneAmount(0),
-    sawLevel(1),
-    sqrLevel(1),
-    swtLevel(1)
+    sawLevel(0),
+    sqrLevel(0),
+    swtLevel(0)
 {
     updateAngleDelta();
 }
@@ -261,6 +261,7 @@ void RGBAVoice::setCurrentPlaybackSampleRate(double newRate)
 
 void RGBAVoice::setStateInformation(juce::AudioProcessorValueTreeState& apvts)
 {
+    DBG("Set Target Level : " << apvts.getRawParameterValue("targetLevel")->load());
     targetLevel.store(apvts.getRawParameterValue("targetLevel")->load());
     swtLevel.store(apvts.getRawParameterValue("swtLevel")->load());
     sawLevel.store(apvts.getRawParameterValue("sawLevel")->load());
