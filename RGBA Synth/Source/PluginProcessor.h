@@ -4,8 +4,8 @@
 
 #include <JuceHeader.h>
 #include "RGBASynthesizer.h"
-#include "RGBASynthSounds.h"
-#include "RGBASynthVoices.h"
+#include "RGBASound.h"
+#include "RGBAVoice.h"
 
 
 //==============================================================================
@@ -64,7 +64,11 @@ private:
     //==============================================================================
     //Synth
     int numVoices;
+    juce::MidiMessageCollector midiCollector;
 
+    //APVTS
+    bool hasInitializedAPVTS;
+    void initializeAPVTS();
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
 
 

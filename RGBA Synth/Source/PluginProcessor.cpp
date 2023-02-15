@@ -16,19 +16,18 @@ PluginRGBASynthProcessor::PluginRGBASynthProcessor()
     ),
 #endif
     apvts(*this, nullptr, "Parameters",createParameterLayout()),
-    numVoices(4)
+    numVoices(8)
 {
     for (int i = 0; i < numVoices; i++)
     {
-        RGBASynth.addVoice(new RGBASin());
+        RGBASynth.addVoice(new RGBAVoice());
 
     }
-    RGBASynth.addSound(new RGBASound1());
+    RGBASynth.addSound(new RGBASound());
 }
 
 PluginRGBASynthProcessor::~PluginRGBASynthProcessor()
 {
-    
 }
 
 //==============================================================================
@@ -96,8 +95,15 @@ void PluginRGBASynthProcessor::changeProgramName(int index, const juce::String& 
 //==============================================================================
 void PluginRGBASynthProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
+    if (!hasInitializedAPVTS)
+    {
+        initializeAPVTS();
+    }
+
     RGBASynth.setCurrentPlaybackSampleRate(sampleRate);
     RGBASynth.updateVoiceParameters(apvts);
+
+    midiCollector.reset(sampleRate);
 }
 
 void PluginRGBASynthProcessor::releaseResources()
@@ -134,9 +140,14 @@ bool PluginRGBASynthProcessor::isBusesLayoutSupported(const BusesLayout& layouts
 
 void PluginRGBASynthProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
+    buffer.clear();
+
+    midiCollector.removeNextBlockOfMessages(midiMessages, buffer.getNumSamples());
     keyboardState.processNextMidiBuffer(midiMessages, 0, buffer.getNumSamples(), true);
 
     RGBASynth.updateVoiceParameters(apvts);
+
+
     RGBASynth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 
 
@@ -175,20 +186,32 @@ void PluginRGBASynthProcessor::setStateInformation (const void* data, int sizeIn
 juce::AudioProcessorValueTreeState::ParameterLayout 
 PluginRGBASynthProcessor::createParameterLayout()
 {
-    juce::AudioProcessorValueTreeState::ParameterLayout layout;
+    std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
 
-    layout.add(std::make_unique<juce::AudioParameterFloat>("targetLevel", "targetLevel", juce::Range<float>(0, 1), .8));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("swtLevel", "swtLevel", juce::Range<float>(0, 1), 0));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("sqrLevel", "sqrLevel", juce::Range<float>(0, 1), 0));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("sawLevel", "sawLevel", juce::Range<float>(0, 1), 0));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("detuneAmount", "detuneAmount", juce::Range<float>(0, 1), 0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("targetLevel", "targetLevel", juce::Range<float>(0.f, 1.f), 0.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("swtLevel", "swtLevel", juce::Range<float>(0.f, 1.f), 0.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("sqrLevel", "sqrLevel", juce::Range<float>(0.f, 1.f), 0.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("sawLevel", "sawLevel", juce::Range<float>(0.f, 1.f), 0.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("detuneAmount", "detuneAmount", juce::Range<float>(0.f, 1.f), 0.f));
 
-    return layout;
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("swtPhase", "swtPhase", juce::Range<float>(0.f, 1.f), 0.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("sawPhase", "sawPhase", juce::Range<float>(0.f, 1.f), 0.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("sqrPhase", "sqrPhase", juce::Range<float>(0.f, 1.f), 0.f));
+
+    return { params.begin(), params.end() };
 }
+
+void PluginRGBASynthProcessor::initializeAPVTS()
+{
+    //BUG? original values of apvts unable to change after initially setting them.
+    // Initialize all apvts paramaters here
+}
+
+
 
 //==============================================================================
 // This creates new instances of the plugin..
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
-{
+{ 
     return new PluginRGBASynthProcessor();
 }

@@ -11,7 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "RGBASynthSounds.h"
+#include "RGBASound.h"
 
 class RGBASynthesizer : public juce::Synthesiser
 {
@@ -23,7 +23,7 @@ public:
     void renderVoices(juce::AudioBuffer<double>& outPutBuffer, int startSample, int numSamples) override;
     void renderVoices(juce::AudioBuffer<float>& outPutBuffer, int startSample, int numSamples) override;
 
-    void updateVoiceParameters(juce::AudioProcessorValueTreeState &);
+    void updateVoiceParameters(juce::AudioProcessorValueTreeState&);
 private:
     int voicesOn;
 };

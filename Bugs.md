@@ -1,10 +1,10 @@
-<<<<<<< HEAD
-# Bugs
-- GUI reset on each initialization
-- Loud Noise when playing and no parameters dialed in.
-=======
-## Bugs
-- Harsh Sound in DAW when no parameters dialed in.
-- GUI Reset on reinitialization of plugin in DAW.
-- Poor Audio connection when outputting through bluetooth headphones.
->>>>>>> d2c1eb85e804d7e0119a20b0946723abb62bec4d
+# TODO
+- Correct Synth starting parameters.
+     - The first couple of times that the level is set, it is set to the correct value.
+- Load Correct Synth params on reboot of a DAW?
+- Correct Decibel slider math.
+- Slider Automations.
+- Font will not be portable.
+- Stylize.
+- Set up release on github w/ previews etc.
+

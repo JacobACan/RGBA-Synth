@@ -13,7 +13,8 @@
 //==============================================================================
 /**
 */
-class PluginRGBASynthProcessorEditor  : public juce::AudioProcessorEditor
+class PluginRGBASynthProcessorEditor  : public juce::AudioProcessorEditor,
+    public juce::Timer
 {
 public:
     PluginRGBASynthProcessorEditor (PluginRGBASynthProcessor&);
@@ -22,6 +23,8 @@ public:
     //==============================================================================
     void paint(juce::Graphics&) override;
     void resized() override;
+    //==============================================================================
+    virtual void timerCallback();
 
 private:
     // This reference is provided as a quick way for your editor to

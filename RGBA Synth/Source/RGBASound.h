@@ -11,12 +11,10 @@
 #pragma once
 #include <JuceHeader.h>
 
-//TODO : Find out purpose of this class.
-
-class RGBASound1 : public juce::SynthesiserSound
+class RGBASound : public juce::SynthesiserSound
 {
 public:
-    RGBASound1();
+    RGBASound();
 
     //==============================================================================
     /** Returns true if this sound should be played when a given midi note is pressed.

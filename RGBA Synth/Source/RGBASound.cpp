@@ -8,16 +8,16 @@
   ==============================================================================
 */
 
-#include "RGBASynthSounds.h"
+#include "RGBASound.h"
 
-RGBASound1::RGBASound1(){}
+RGBASound::RGBASound(){}
 
-bool RGBASound1::appliesToNote(int midiNoteNumber)
+bool RGBASound::appliesToNote(int /*midiNoteNumber*/)
 {
     return true;
 }
 
-bool RGBASound1::appliesToChannel(int midiChannel)
+bool RGBASound::appliesToChannel(int /*midiChannel*/)
 {
     return true;
 }

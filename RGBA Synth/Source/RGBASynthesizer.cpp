@@ -7,48 +7,28 @@
 */
 
 #include "RGBASynthesizer.h"
-#include "RGBASynthSounds.h"
-#include "RGBASynthVoices.h"
+#include "RGBASound.h"
+#include "RGBAVoice.h"
 
 RGBASynthesizer::RGBASynthesizer() : voicesOn(0)
 {
-
 }
 
 void RGBASynthesizer::noteOn(int midiChannel, int midiNoteNumber, float velocity)
 {
-    // TODO : Figure out how to actually set currently playing note of voice
-    voicesOn += 1;
-
-    if (voicesOn <= getNumVoices())
-    {
-        for (int i = 0; i < voicesOn; i++)
-        {
-            auto voice = getVoice(i);
-            if (!voice->isKeyDown()) 
-                voice->startNote(midiNoteNumber, velocity, getSound(0).get(), 0);
-        }
-    }
-    else
-    {
-        auto lastVoice = getVoice(getNumVoices() - 1);
-        lastVoice->startNote(midiNoteNumber, velocity, getSound(0).get(), 0);
-    }
+    auto freeVoice = findFreeVoice(getSound(0).get(), midiChannel, midiNoteNumber, true);
+    freeVoice->startNote(midiNoteNumber, velocity, getSound(0).get(), 0);
 }
 
-void RGBASynthesizer::noteOff(int midiChannel, int midiNoteNumber, float velocity, bool allowTailOff)
+void RGBASynthesizer::noteOff(int /*midiChannel*/, int midiNoteNumber, float velocity, bool allowTailOff)
 {
-    // TODO : Figure out how to actually set currently playing note
-    // TODO : Handle notes that arent of sinVoice type
-    voicesOn -= 1;
-
     for (auto voice : voices)
     {
-        if (RGBASin* sinVoice = dynamic_cast<RGBASin*>(voice))
+        if (RGBAVoice* rgbaVoice = dynamic_cast<RGBAVoice*>(voice))
         {
-            if (sinVoice->currentMidiNote == midiNoteNumber)
+            if (rgbaVoice->currentMidiNote == midiNoteNumber)
             {
-                sinVoice->stopNote(velocity, allowTailOff);
+                rgbaVoice->stopNote(velocity, allowTailOff);
             }
         }
     }
@@ -71,32 +51,26 @@ void RGBASynthesizer::renderVoices(juce::AudioBuffer<double>& outPutBuffer, int 
 
 void RGBASynthesizer::renderVoices(juce::AudioBuffer<float>& outPutBuffer, int startSample, int numSamples)
 {
-    if (voicesOn > 0)
+    
+    for (auto voice : voices)
     {
-        for (auto voice : voices)
-        {
-            voice->renderNextBlock(outPutBuffer, startSample, numSamples);
-        }
+        voice->renderNextBlock(outPutBuffer, startSample, numSamples);
     }
-    else 
-    {
-        outPutBuffer.clear();
-    }
+    
 }
 
 // =============================================================================================================
 
 void RGBASynthesizer::updateVoiceParameters(juce::AudioProcessorValueTreeState& apvts)
 {
-    // TODO : more sophisticated method of updating multiple voice parameters.
     if (getNumVoices() > 0)
     {
         for (int i = 0; i < getNumVoices(); i++)
         {
             auto currentVoice = getVoice(i);
-            if (RGBASin* sinVoice = dynamic_cast<RGBASin*>(currentVoice))
+            if (RGBAVoice* rgbaVoice = dynamic_cast<RGBAVoice*>(currentVoice))
             {
-                sinVoice->setStateInformation(apvts);
+                rgbaVoice->setStateInformation(apvts);
             }
         }
     }

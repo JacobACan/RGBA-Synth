@@ -13,14 +13,10 @@
                 file="Source/RGBASynthesizer.cpp"/>
           <FILE id="KUPXC7" name="RGBASynthesizer.h" compile="0" resource="0"
                 file="Source/RGBASynthesizer.h"/>
-          <FILE id="RLcAsO" name="RGBASynthVoices.cpp" compile="1" resource="0"
-                file="Source/RGBASynthVoices.cpp"/>
-          <FILE id="jWvuOj" name="RGBASynthVoices.h" compile="0" resource="0"
-                file="Source/RGBASynthVoices.h"/>
-          <FILE id="MRenbs" name="RGBASynthSounds.cpp" compile="1" resource="0"
-                file="Source/RGBASynthSounds.cpp"/>
-          <FILE id="AdXVqg" name="RGBASynthSounds.h" compile="0" resource="0"
-                file="Source/RGBASynthSounds.h"/>
+          <FILE id="RLcAsO" name="RGBAVoice.cpp" compile="1" resource="0" file="Source/RGBAVoice.cpp"/>
+          <FILE id="jWvuOj" name="RGBAVoice.h" compile="0" resource="0" file="Source/RGBAVoice.h"/>
+          <FILE id="MRenbs" name="RGBASound.cpp" compile="1" resource="0" file="Source/RGBASound.cpp"/>
+          <FILE id="AdXVqg" name="RGBASound.h" compile="0" resource="0" file="Source/RGBASound.h"/>
         </GROUP>
       </GROUP>
       <GROUP id="{93B58BCE-C3D4-42F8-D495-5D42D59E6822}" name="RGBA GUI">
