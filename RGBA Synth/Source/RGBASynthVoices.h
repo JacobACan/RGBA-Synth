@@ -134,6 +134,7 @@ private:
     double attackLevel;
     double realeaseLevel;
 
+
     //TODO : Move these variables to an audio processor value tree state
      
 

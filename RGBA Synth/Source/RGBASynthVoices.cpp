@@ -39,6 +39,9 @@ void RGBASin::startNote(int midiNoteNumber,
     int currentPitchWheelPosition)
 {
     //TODO : use getCurrentlyPlayingNote Instead of instantaneously setting a note (causing artifacts)
+    DBG("G|Current Note : " << getCurrentlyPlayingNote());
+
+
     currentMidiNote = midiNoteNumber;
     attackLevel = 0;
     setKeyDown(true);
@@ -47,6 +50,8 @@ void RGBASin::startNote(int midiNoteNumber,
 void RGBASin::stopNote(float velocity, bool allowTailOff)
 {
     // TODO : do something when note stops.
+    DBG("X|Current Note : " << getCurrentlyPlayingNote());
+    clearCurrentNote();
     setKeyDown(false);
 
 }
@@ -97,6 +102,7 @@ void RGBASin::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sartSa
 
     if (isKeyDown())
     {
+
         for (int sample = 0; sample < numSamples; sample++)
         {
             double sinWavNoteSample = getNoteSample();
