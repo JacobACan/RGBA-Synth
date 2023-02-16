@@ -15,8 +15,9 @@ PluginRGBASynthProcessor::PluginRGBASynthProcessor()
 #endif
     ),
 #endif
-    apvts(*this, nullptr, "Parameters",createParameterLayout()),
-    numVoices(8)
+    apvts(*this, nullptr, "Parameters", createParameterLayout()),
+    numVoices(8),
+    hasInitializedAPVTS(false)
 {
     for (int i = 0; i < numVoices; i++)
     {
@@ -95,15 +96,13 @@ void PluginRGBASynthProcessor::changeProgramName(int index, const juce::String& 
 //==============================================================================
 void PluginRGBASynthProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
-    if (!hasInitializedAPVTS)
-    {
-        initializeAPVTS();
-    }
+    
 
     RGBASynth.setCurrentPlaybackSampleRate(sampleRate);
     RGBASynth.updateVoiceParameters(apvts);
 
     midiCollector.reset(sampleRate);
+
 }
 
 void PluginRGBASynthProcessor::releaseResources()
@@ -141,6 +140,14 @@ bool PluginRGBASynthProcessor::isBusesLayoutSupported(const BusesLayout& layouts
 void PluginRGBASynthProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     buffer.clear();
+
+    // Bug with initialization of APVTS needs fix.
+    if (!hasInitializedAPVTS)
+    {
+        initializeAPVTS();
+        hasInitializedAPVTS = true;
+    }
+
 
     midiCollector.removeNextBlockOfMessages(midiMessages, buffer.getNumSamples());
     keyboardState.processNextMidiBuffer(midiMessages, 0, buffer.getNumSamples(), true);
@@ -205,6 +212,14 @@ void PluginRGBASynthProcessor::initializeAPVTS()
 {
     //BUG? original values of apvts unable to change after initially setting them.
     // Initialize all apvts paramaters here
+    apvts.getRawParameterValue("targetLevel")->store(0.f);
+    apvts.getRawParameterValue("swtLevel")->store(0.f);
+    apvts.getRawParameterValue("sqrLevel")->store(0.f);
+    apvts.getRawParameterValue("sawLevel")->store(0.f);
+    apvts.getRawParameterValue("detuneAmount")->store(0.f);
+    apvts.getRawParameterValue("swtPhase")->store(0.f);
+    apvts.getRawParameterValue("sawPhase")->store(0.f);
+    apvts.getRawParameterValue("sqrPhase")->store(0.f);
 }
 
 
