@@ -1,43 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="DK07MN" name="RGBA Synth" projectType="audioplug" useAppConfig="0"
+<JUCERPROJECT id="KMBrie" name="RGBA Synth" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
               pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn">
-  <MAINGROUP id="koVNHO" name="RGBA Synth">
-    <GROUP id="{52D4325F-21E4-0C7F-FFDF-A233B014DF08}" name="RGBA Util">
-      <GROUP id="{1747D0E3-AE07-999F-5D39-81A40617C29E}" name="RGBA Processing">
-        <FILE id="QYZbDI" name="WaveGen.cpp" compile="1" resource="0" file="Source/WaveGen.cpp"/>
-        <FILE id="cqKKhL" name="WaveGen.h" compile="0" resource="0" file="Source/WaveGen.h"/>
-        <GROUP id="{A71A984D-B944-AEAA-4D00-DBD2E4A00E6F}" name="Synth">
-          <FILE id="NRD8gn" name="RGBASynthesizer.cpp" compile="1" resource="0"
-                file="Source/RGBASynthesizer.cpp"/>
-          <FILE id="KUPXC7" name="RGBASynthesizer.h" compile="0" resource="0"
-                file="Source/RGBASynthesizer.h"/>
-          <FILE id="RLcAsO" name="RGBAVoice.cpp" compile="1" resource="0" file="Source/RGBAVoice.cpp"/>
-          <FILE id="jWvuOj" name="RGBAVoice.h" compile="0" resource="0" file="Source/RGBAVoice.h"/>
-          <FILE id="MRenbs" name="RGBASound.cpp" compile="1" resource="0" file="Source/RGBASound.cpp"/>
-          <FILE id="AdXVqg" name="RGBASound.h" compile="0" resource="0" file="Source/RGBASound.h"/>
-        </GROUP>
+  <MAINGROUP id="Zvyqkt" name="RGBA Synth">
+    <GROUP id="{92F803E2-DBEC-7AEB-629B-D7B9E4073310}" name="RGBA Processing">
+      <GROUP id="{EEF23D81-75F6-6E5C-E629-2C97E5D7A3C7}" name="Synth">
+        <FILE id="Ggj2s8" name="RGBASound.cpp" compile="1" resource="0" file="Source/RGBA Processing/RGBASound.cpp"/>
+        <FILE id="xTSt0a" name="RGBASound.h" compile="0" resource="0" file="Source/RGBA Processing/RGBASound.h"/>
+        <FILE id="oLICQ3" name="RGBASynthesizer.cpp" compile="1" resource="0"
+              file="Source/RGBA Processing/RGBASynthesizer.cpp"/>
+        <FILE id="EB173y" name="RGBASynthesizer.h" compile="0" resource="0"
+              file="Source/RGBA Processing/RGBASynthesizer.h"/>
+        <FILE id="fywOcL" name="RGBAVoice.cpp" compile="1" resource="0" file="Source/RGBA Processing/RGBAVoice.cpp"/>
+        <FILE id="OW9kA6" name="RGBAVoice.h" compile="0" resource="0" file="Source/RGBA Processing/RGBAVoice.h"/>
       </GROUP>
-      <GROUP id="{93B58BCE-C3D4-42F8-D495-5D42D59E6822}" name="RGBA GUI">
-        <FILE id="NJS5S7" name="RGBADecibelSlider.cpp" compile="1" resource="0"
-              file="Source/RGBADecibelSlider.cpp"/>
-        <FILE id="k3MeaC" name="RGBADecibelSlider.h" compile="0" resource="0"
-              file="Source/RGBADecibelSlider.h"/>
-        <FILE id="NOgCuK" name="RGBAWaveDisplay.cpp" compile="1" resource="0"
-              file="Source/RGBAWaveDisplay.cpp"/>
-        <FILE id="ihKYTy" name="RGBAWaveDisplay.h" compile="0" resource="0"
-              file="Source/RGBAWaveDisplay.h"/>
-      </GROUP>
+      <FILE id="INeF16" name="WaveGen.cpp" compile="1" resource="0" file="Source/RGBA Processing/WaveGen.cpp"/>
+      <FILE id="l2RGN5" name="WaveGen.h" compile="0" resource="0" file="Source/RGBA Processing/WaveGen.h"/>
     </GROUP>
-    <GROUP id="{073CD852-4834-58B0-7B85-4D7018EFA1B1}" name="Source">
-      <FILE id="jYLw0O" name="PluginProcessor.cpp" compile="1" resource="0"
+    <GROUP id="{29D5494E-B5FF-D071-435D-E23EBCE6012D}" name="RGBA GUI">
+      <FILE id="yiHI0t" name="RGBAWaveDisplay.cpp" compile="1" resource="0"
+            file="Source/RGBA GUI/RGBAWaveDisplay.cpp"/>
+      <FILE id="K6M4Sv" name="RGBAWaveDisplay.h" compile="0" resource="0"
+            file="Source/RGBA GUI/RGBAWaveDisplay.h"/>
+    </GROUP>
+    <GROUP id="{BA1136F5-3A00-3A0D-D55E-A522311DB7B4}" name="Source">
+      <FILE id="DWffvB" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
-      <FILE id="YMPATM" name="PluginProcessor.h" compile="0" resource="0"
+      <FILE id="LI2DXA" name="PluginProcessor.h" compile="0" resource="0"
             file="Source/PluginProcessor.h"/>
-      <FILE id="UyBZM3" name="PluginEditor.cpp" compile="1" resource="0"
+      <FILE id="a2xPSC" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>
-      <FILE id="Y6MCMg" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <FILE id="k5geTb" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
@@ -48,18 +42,18 @@
         <CONFIGURATION isDebug="0" name="Release" targetName="RGBA Synth"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
-        <MODULEPATH id="juce_audio_basics" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_devices" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_formats" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_plugin_client" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_processors" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_utils" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_core" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_data_structures" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_events" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_graphics" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_gui_basics" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_gui_extra" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_basics" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../../../JUCE/modules"/>
       </MODULEPATHS>
     </VS2022>
   </EXPORTFORMATS>

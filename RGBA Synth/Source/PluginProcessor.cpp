@@ -1,232 +1,204 @@
+/*
+  ==============================================================================
 
+    This file contains the basic framework code for a JUCE plugin processor.
+
+  ==============================================================================
+*/
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
 //==============================================================================
-PluginRGBASynthProcessor::PluginRGBASynthProcessor()
-#ifndef JucePlugin_PreferredChannelConfigurations
-    : AudioProcessor(BusesProperties()
-#if ! JucePlugin_IsMidiEffect
-#if ! JucePlugin_IsSynth
-        .withInput("Input", juce::AudioChannelSet::stereo(), true)
-#endif
-        .withOutput("Output", juce::AudioChannelSet::stereo(), true)
-#endif
-    ),
-#endif
-    apvts(*this, nullptr, "Parameters", createParameterLayout()),
+RGBASynthAudioProcessor::RGBASynthAudioProcessor()
+    : parameters(*this, nullptr, juce::Identifier("APVTS"), createParameterLayout()),
     numVoices(8),
-    hasInitializedAPVTS(false)
+#ifndef JucePlugin_PreferredChannelConfigurations
+      AudioProcessor (BusesProperties()
+                     #if ! JucePlugin_IsMidiEffect
+                      #if ! JucePlugin_IsSynth
+                       .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
+                      #endif
+                       .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
+                     #endif
+                       )
+#endif
 {
     for (int i = 0; i < numVoices; i++)
     {
         RGBASynth.addVoice(new RGBAVoice());
-
     }
     RGBASynth.addSound(new RGBASound());
 }
 
-PluginRGBASynthProcessor::~PluginRGBASynthProcessor()
+juce::AudioProcessorValueTreeState::ParameterLayout 
+RGBASynthAudioProcessor::createParameterLayout()
+{
+    juce::AudioProcessorValueTreeState::ParameterLayout params;
+
+    params.add(std::make_unique<juce::AudioParameterFloat>("targetLevel", "targetLevel", juce::Range<float>(0.f, 1.f), 0.125f));
+    params.add(std::make_unique<juce::AudioParameterFloat>("swtLevel", "swtLevel", juce::Range<float>(0.f, 1.f), 0));
+    params.add(std::make_unique<juce::AudioParameterFloat>("sawLevel", "sawLevel", juce::Range<float>(0.f, 1.f), 0));
+    params.add(std::make_unique<juce::AudioParameterFloat>("sqrLevel", "sqrLevel", juce::Range<float>(0.f, 1.f), 0));
+    params.add(std::make_unique<juce::AudioParameterFloat>("detuneAmount", "detuneAmount", juce::Range<float>(0.f, 1.f), 0));
+    params.add(std::make_unique<juce::AudioParameterFloat>("swtPhase", "swtPhase", juce::Range<float>(0.f, juce::MathConstants<double>::twoPi), 0));
+    params.add(std::make_unique<juce::AudioParameterFloat>("sawPhase", "sawPhase", juce::Range<float>(0.f, juce::MathConstants<double>::twoPi), 0));
+    params.add(std::make_unique<juce::AudioParameterFloat>("sqrPhase", "sqrPhase", juce::Range<float>(0.f, juce::MathConstants<double>::twoPi), 0));
+
+    return params;
+}
+
+RGBASynthAudioProcessor::~RGBASynthAudioProcessor()
 {
 }
 
 //==============================================================================
-const juce::String PluginRGBASynthProcessor::getName() const
+const juce::String RGBASynthAudioProcessor::getName() const
 {
     return JucePlugin_Name;
 }
 
-bool PluginRGBASynthProcessor::acceptsMidi() const
+bool RGBASynthAudioProcessor::acceptsMidi() const
 {
-#if JucePlugin_WantsMidiInput
+   #if JucePlugin_WantsMidiInput
     return true;
-#else
+   #else
     return false;
-#endif
+   #endif
 }
 
-bool PluginRGBASynthProcessor::producesMidi() const
+bool RGBASynthAudioProcessor::producesMidi() const
 {
-#if JucePlugin_ProducesMidiOutput
+   #if JucePlugin_ProducesMidiOutput
     return true;
-#else
+   #else
     return false;
-#endif
+   #endif
 }
 
-bool PluginRGBASynthProcessor::isMidiEffect() const
+bool RGBASynthAudioProcessor::isMidiEffect() const
 {
-#if JucePlugin_IsMidiEffect
+   #if JucePlugin_IsMidiEffect
     return true;
-#else
+   #else
     return false;
-#endif
+   #endif
 }
 
-double PluginRGBASynthProcessor::getTailLengthSeconds() const
+double RGBASynthAudioProcessor::getTailLengthSeconds() const
 {
     return 0.0;
 }
 
-int PluginRGBASynthProcessor::getNumPrograms()
+int RGBASynthAudioProcessor::getNumPrograms()
 {
     return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
-    // so this should be at least 1, even if you're not really implementing programs.
+                // so this should be at least 1, even if you're not really implementing programs.
 }
 
-int PluginRGBASynthProcessor::getCurrentProgram()
+int RGBASynthAudioProcessor::getCurrentProgram()
 {
     return 0;
 }
 
-void PluginRGBASynthProcessor::setCurrentProgram(int index)
+void RGBASynthAudioProcessor::setCurrentProgram (int index)
 {
 }
 
-const juce::String PluginRGBASynthProcessor::getProgramName(int index)
+const juce::String RGBASynthAudioProcessor::getProgramName (int index)
 {
     return {};
 }
 
-void PluginRGBASynthProcessor::changeProgramName(int index, const juce::String& newName)
+void RGBASynthAudioProcessor::changeProgramName (int index, const juce::String& newName)
 {
 }
 
 //==============================================================================
-void PluginRGBASynthProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
+void RGBASynthAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    
-
     RGBASynth.setCurrentPlaybackSampleRate(sampleRate);
-    RGBASynth.updateVoiceParameters(apvts);
-
+    RGBASynth.updateVoiceParameters(parameters);
     midiCollector.reset(sampleRate);
-
 }
 
-void PluginRGBASynthProcessor::releaseResources()
+void RGBASynthAudioProcessor::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
-bool PluginRGBASynthProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const
+bool RGBASynthAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
-#if JucePlugin_IsMidiEffect
-    juce::ignoreUnused(layouts);
+  #if JucePlugin_IsMidiEffect
+    juce::ignoreUnused (layouts);
     return true;
-#else
+  #else
     // This is the place where you check if the layout is supported.
     // In this template code we only support mono or stereo.
     // Some plugin hosts, such as certain GarageBand versions, will only
     // load plugins that support stereo bus layouts.
     if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::mono()
-        && layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
+     && layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
         return false;
 
     // This checks if the input layout matches the output layout
-#if ! JucePlugin_IsSynth
+   #if ! JucePlugin_IsSynth
     if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
         return false;
-#endif
+   #endif
 
     return true;
-#endif
+  #endif
 }
 #endif
 
-void PluginRGBASynthProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
+void RGBASynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     buffer.clear();
-
-    // Bug with initialization of APVTS needs fix.
-    if (!hasInitializedAPVTS)
-    {
-        initializeAPVTS();
-        hasInitializedAPVTS = true;
-    }
-
 
     midiCollector.removeNextBlockOfMessages(midiMessages, buffer.getNumSamples());
     keyboardState.processNextMidiBuffer(midiMessages, 0, buffer.getNumSamples(), true);
 
-    RGBASynth.updateVoiceParameters(apvts);
-
+    RGBASynth.updateVoiceParameters(parameters);
 
     RGBASynth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
-
 
     midiMessages.clear();
 }
 
 //==============================================================================
-bool PluginRGBASynthProcessor::hasEditor() const
+bool RGBASynthAudioProcessor::hasEditor() const
 {
     return true; // (change this to false if you choose to not supply an editor)
 }
 
-juce::AudioProcessorEditor* PluginRGBASynthProcessor::createEditor()
+juce::AudioProcessorEditor* RGBASynthAudioProcessor::createEditor()
 {
-    return new PluginRGBASynthProcessorEditor(*this);
+    return new RGBASynthAudioProcessorEditor (*this, parameters);
 }
 
-// Getters ==============================================================================
-void PluginRGBASynthProcessor::getStateInformation(juce::MemoryBlock& destData)
+//==============================================================================
+void RGBASynthAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
-    auto state = apvts.copyState();
+    auto state = parameters.copyState();
     std::unique_ptr<juce::XmlElement> xml(state.createXml());
     copyXmlToBinary(*xml, destData);
 }
 
-// Setters =====================================================================
-void PluginRGBASynthProcessor::setStateInformation (const void* data, int sizeInBytes)
+void RGBASynthAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
 
     if (xmlState.get() != nullptr)
-        if (xmlState->hasTagName(apvts.state.getType()))
-            apvts.replaceState(juce::ValueTree::fromXml(*xmlState));
+        if (xmlState->hasTagName(parameters.state.getType()))
+            parameters.replaceState(juce::ValueTree::fromXml(*xmlState));
 }
-
-juce::AudioProcessorValueTreeState::ParameterLayout 
-PluginRGBASynthProcessor::createParameterLayout()
-{
-    std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
-
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("targetLevel", "targetLevel", juce::Range<float>(0.f, 1.f), 0.f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("swtLevel", "swtLevel", juce::Range<float>(0.f, 1.f), 0.f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("sqrLevel", "sqrLevel", juce::Range<float>(0.f, 1.f), 0.f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("sawLevel", "sawLevel", juce::Range<float>(0.f, 1.f), 0.f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("detuneAmount", "detuneAmount", juce::Range<float>(0.f, 1.f), 0.f));
-
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("swtPhase", "swtPhase", juce::Range<float>(0.f, 1.f), 0.f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("sawPhase", "sawPhase", juce::Range<float>(0.f, 1.f), 0.f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("sqrPhase", "sqrPhase", juce::Range<float>(0.f, 1.f), 0.f));
-
-    return { params.begin(), params.end() };
-}
-
-void PluginRGBASynthProcessor::initializeAPVTS()
-{
-    //BUG? original values of apvts unable to change after initially setting them.
-    // Initialize all apvts paramaters here
-    apvts.getRawParameterValue("targetLevel")->store(0.f);
-    apvts.getRawParameterValue("swtLevel")->store(0.f);
-    apvts.getRawParameterValue("sqrLevel")->store(0.f);
-    apvts.getRawParameterValue("sawLevel")->store(0.f);
-    apvts.getRawParameterValue("detuneAmount")->store(0.f);
-    apvts.getRawParameterValue("swtPhase")->store(0.f);
-    apvts.getRawParameterValue("sawPhase")->store(0.f);
-    apvts.getRawParameterValue("sqrPhase")->store(0.f);
-}
-
-
 
 //==============================================================================
 // This creates new instances of the plugin..
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
-{ 
-    return new PluginRGBASynthProcessor();
+{
+    return new RGBASynthAudioProcessor();
 }

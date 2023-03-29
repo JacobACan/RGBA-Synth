@@ -1,25 +1,30 @@
+/*
+  ==============================================================================
 
+    This file contains the basic framework code for a JUCE plugin processor.
+
+  ==============================================================================
+*/
 
 #pragma once
 
 #include <JuceHeader.h>
-#include "RGBASynthesizer.h"
-#include "RGBASound.h"
-#include "RGBAVoice.h"
+#include "RGBA Processing/RGBASynthesizer.h"
+#include "RGBA Processing/RGBAVoice.h"
 
 
 //==============================================================================
 /**
 */
-class PluginRGBASynthProcessor  : public juce::AudioProcessor
+class RGBASynthAudioProcessor  : public juce::AudioProcessor
                             #if JucePlugin_Enable_ARA
                              , public juce::AudioProcessorARAExtension
                             #endif
 {
 public:
     //==============================================================================
-    PluginRGBASynthProcessor();
-    ~PluginRGBASynthProcessor() override;
+    RGBASynthAudioProcessor();
+    ~RGBASynthAudioProcessor() override;
 
     //==============================================================================
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
@@ -52,25 +57,20 @@ public:
 
     //==============================================================================
     void getStateInformation (juce::MemoryBlock& destData) override;
-
     void setStateInformation (const void* data, int sizeInBytes) override;
 
     juce::MidiKeyboardState keyboardState;
-
-    juce::AudioProcessorValueTreeState apvts;
-
     RGBASynthesizer RGBASynth;
+
+
 private:
     //==============================================================================
-    //Synth
+    juce::AudioProcessorValueTreeState parameters;
+    juce::AudioProcessorValueTreeState::ParameterLayout
+        RGBASynthAudioProcessor::createParameterLayout();
+
     int numVoices;
     juce::MidiMessageCollector midiCollector;
 
-    //APVTS
-    bool hasInitializedAPVTS;
-    void initializeAPVTS();
-    juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
-
-
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginRGBASynthProcessor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (RGBASynthAudioProcessor)
 };

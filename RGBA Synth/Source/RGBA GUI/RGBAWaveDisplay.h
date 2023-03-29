@@ -10,30 +10,26 @@
 
 #pragma once
 #include <JuceHeader.h>
-#include "WaveGen.h"
+
 
 class RGBAWaveDisplay : public juce::Component
 {
 public:
-    RGBAWaveDisplay();
+    RGBAWaveDisplay(juce::AudioProcessorValueTreeState& apvts);
     ~RGBAWaveDisplay() override;
 
     //==========================================================================
     void paint(juce::Graphics& g) override;
 
-    void setSwtLevel(double newSwtLevel);
-    void setSawLevel(double newSawLevel);
-    void setSqrLevel(double newSqrLevel);
-    void setLevel(double newLevel);
-    void setMaxWaveHeight(double newMaxWaveHeight);
-
     //==========================================================================
 
 private:
-    double level;
+    juce::AudioProcessorValueTreeState& waveDisplayApvts;
 
-    double swtLevel;
-    double sawLevel;
-    double sqrLevel;
-    double maxWaveHeight;
+    std::atomic<float>* targetLevel = nullptr;
+
+    std::atomic<float>* swtLevel = nullptr;
+    std::atomic<float>* sawLevel = nullptr;
+    std::atomic<float>* sqrLevel = nullptr;
+    float maxWaveHeight = 0;
 };

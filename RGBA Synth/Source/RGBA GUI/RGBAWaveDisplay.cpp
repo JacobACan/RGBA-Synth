@@ -8,14 +8,17 @@
   ==============================================================================
 */
 
+#include "../RGBA Processing/WaveGen.h"
 #include "RGBAWaveDisplay.h"
 
-RGBAWaveDisplay::RGBAWaveDisplay() : swtLevel(0),
-sawLevel(0),
-sqrLevel(0),
-level(1),
-maxWaveHeight(1)
+RGBAWaveDisplay::RGBAWaveDisplay(juce::AudioProcessorValueTreeState& apvts) 
+    : waveDisplayApvts(apvts)
 {
+    targetLevel = waveDisplayApvts.getRawParameterValue("targetLevel");
+
+    swtLevel = waveDisplayApvts.getRawParameterValue("swtLevel");
+    sawLevel = waveDisplayApvts.getRawParameterValue("sawLevel");
+    sqrLevel = waveDisplayApvts.getRawParameterValue("sqrLevel");
 }
 
 RGBAWaveDisplay::~RGBAWaveDisplay() {
@@ -30,7 +33,7 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
 
     g.setColour(juce::Colours::white);
 
-    maxWaveHeight = 1 + swtLevel + sawLevel + sqrLevel;
+    maxWaveHeight = 1 + swtLevel->load() + sawLevel->load() + sqrLevel->load();
 
     float resolution = 128;
     float widthToRadiansFactor = juce::MathConstants<float>::twoPi / getWidth();
@@ -40,22 +43,22 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
     float offsetAmplitudeY = 3;
     float offsetX = -8;
 
-    float yPosAmplitudeSwt = (WaveGen::swt(offsetX * widthToRadiansFactor) * swtLevel + offsetAmplitudeY);
+    float yPosAmplitudeSwt = (WaveGen::swt(offsetX * widthToRadiansFactor) * swtLevel->load() + offsetAmplitudeY);
     float prevXSwt = offsetX;
     float prevYSwt = yPosAmplitudeSwt / amplitudeToRadians;
 
-    float yPosAmplitudeSaw = (WaveGen::saw(offsetX * widthToRadiansFactor) * sawLevel + offsetAmplitudeY);
+    float yPosAmplitudeSaw = (WaveGen::saw(offsetX * widthToRadiansFactor) * sawLevel->load() + offsetAmplitudeY);
     float prevXSaw = offsetX;
     float prevYSaw = yPosAmplitudeSaw / amplitudeToRadians;
 
-    float yPosAmplitudeSqr = (WaveGen::sqr(offsetX * widthToRadiansFactor) * sqrLevel + offsetAmplitudeY);
+    float yPosAmplitudeSqr = (WaveGen::sqr(offsetX * widthToRadiansFactor) * sqrLevel->load() + offsetAmplitudeY);
     float prevXSqr = offsetX;
     float prevYSqr = yPosAmplitudeSqr / amplitudeToRadians;
 
     float yPosAmplitudeResult = (std::sin(offsetX * widthToRadiansFactor)
-        + (WaveGen::sqr(offsetX * widthToRadiansFactor) * sqrLevel)
-        + (WaveGen::saw(offsetX * widthToRadiansFactor) * sawLevel)
-        + (WaveGen::swt(offsetX * widthToRadiansFactor) * swtLevel))
+        + (WaveGen::sqr(offsetX * widthToRadiansFactor) * sqrLevel->load())
+        + (WaveGen::saw(offsetX * widthToRadiansFactor) * sawLevel->load())
+        + (WaveGen::swt(offsetX * widthToRadiansFactor) * swtLevel->load()))
         / maxWaveHeight + offsetAmplitudeY;
     float prevYResult = (yPosAmplitudeResult / amplitudeToRadians);;
     float prevXResult = offsetX;
@@ -64,9 +67,9 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
     int thickness = 1;
     int zInterval = 4;
 
-    juce::Colour red = juce::Colour::fromFloatRGBA(1, 0, 0, swtLevel * opacityFactor);
-    juce::Colour green = juce::Colour::fromFloatRGBA(0, 1, 0, sawLevel * opacityFactor);
-    juce::Colour blue = juce::Colour::fromFloatRGBA(0, 0, 1, sqrLevel * opacityFactor);
+    juce::Colour red = juce::Colour::fromFloatRGBA(1, 0, 0, swtLevel->load() * opacityFactor);
+    juce::Colour green = juce::Colour::fromFloatRGBA(0, 1, 0, sawLevel->load() * opacityFactor);
+    juce::Colour blue = juce::Colour::fromFloatRGBA(0, 0, 1, sqrLevel->load() * opacityFactor);
 
     juce::Path redPath = juce::Path();
     juce::Path greenPath = juce::Path();
@@ -83,7 +86,7 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
         z += zInterval;
 
 
-        yPosAmplitudeSwt = (WaveGen::swt(xPosRadiads) * swtLevel + offsetAmplitudeY);
+        yPosAmplitudeSwt = (WaveGen::swt(xPosRadiads) * swtLevel->load() + offsetAmplitudeY);
         float yPos = (yPosAmplitudeSwt / amplitudeToRadians);
         g.setColour(red);
         juce::Line<float> swtLine(prevXSwt + z, prevYSwt + z, xPos + z, yPos + z);
@@ -93,7 +96,7 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
 
 
         z += zInterval;
-        yPosAmplitudeSaw = (WaveGen::saw(xPosRadiads) * sawLevel + offsetAmplitudeY);
+        yPosAmplitudeSaw = (WaveGen::saw(xPosRadiads) * sawLevel->load() + offsetAmplitudeY);
         yPos = (yPosAmplitudeSaw / amplitudeToRadians);
         juce::Line<float> sawLine(prevXSaw + z, prevYSaw + z, xPos + z, yPos + z);
         greenPath.addLineSegment(sawLine, thickness);
@@ -101,7 +104,7 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
         prevYSaw = yPos;
 
         z += zInterval;
-        yPosAmplitudeSqr = (WaveGen::sqr(xPosRadiads) * sqrLevel + offsetAmplitudeY);
+        yPosAmplitudeSqr = (WaveGen::sqr(xPosRadiads) * sqrLevel->load() + offsetAmplitudeY);
         yPos = (yPosAmplitudeSqr / amplitudeToRadians);
         juce::Line<float> sqrLine(prevXSqr + z, prevYSqr + z, xPos + z, yPos + z);
         bluePath.addLineSegment(sqrLine, thickness);
@@ -110,9 +113,9 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
 
         z += zInterval;
         yPosAmplitudeResult = (std::sin(xPosRadiads)
-            + (WaveGen::sqr(xPosRadiads) * sqrLevel)
-            + (WaveGen::saw(xPosRadiads) * sawLevel)
-            + (WaveGen::swt(xPosRadiads) * swtLevel))
+            + (WaveGen::sqr(xPosRadiads) * sqrLevel->load())
+            + (WaveGen::saw(xPosRadiads) * sawLevel->load())
+            + (WaveGen::swt(xPosRadiads) * swtLevel->load()))
             / maxWaveHeight + offsetAmplitudeY;
         yPos = (yPosAmplitudeResult / amplitudeToRadians);
         juce::Line<float> resultLine(prevXResult + z, prevYResult + z, xPos + z, yPos + z);
@@ -138,31 +141,4 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
 
     g.drawRoundedRectangle(bounds, 10, 10);
 
-}
-
-
-//=============================================================================
-void RGBAWaveDisplay::setSwtLevel(double newSwtLevel)
-{
-    swtLevel = newSwtLevel;
-}
-
-void RGBAWaveDisplay::setSawLevel(double newSawLevel)
-{
-    sawLevel = newSawLevel;
-}
-
-void RGBAWaveDisplay::setSqrLevel(double newSqrLevel)
-{
-    sqrLevel = newSqrLevel;
-}
-
-void RGBAWaveDisplay::setLevel(double newLevel)
-{
-    level = newLevel;
-}
-
-void RGBAWaveDisplay::setMaxWaveHeight(double newMaxWaveHeight)
-{
-    maxWaveHeight = newMaxWaveHeight;
 }

@@ -113,8 +113,8 @@ void RGBAVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int star
             {
                 double sinWavNoteSample = getNoteSample();
 
-                leftChannel[sample] += sinWavNoteSample * level * attackLevel * realeaseLevel;
-                rightChannel[sample] += sinWavNoteSample * level * attackLevel * realeaseLevel;
+                leftChannel[sample] += sinWavNoteSample * level * attackLevel * realeaseLevel *.125;
+                rightChannel[sample] += sinWavNoteSample * level * attackLevel * realeaseLevel *.125;
 
                 angle += angleDelta;
                 realeaseLevel -= releaseRamp;
@@ -136,8 +136,8 @@ void RGBAVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int star
             {
                 double sinWavNoteSample = getNoteSample();
 
-                leftChannel[sample] += sinWavNoteSample * level * attackLevel;
-                rightChannel[sample] += sinWavNoteSample * level * attackLevel;
+                leftChannel[sample] += sinWavNoteSample * level * attackLevel *.125;
+                rightChannel[sample] += sinWavNoteSample * level * attackLevel *.125;
 
                 angle += angleDelta;
                 attackLevel += attackRamp;
@@ -167,8 +167,8 @@ void RGBAVoice::renderNextBlock(juce::AudioBuffer<double>& outputBuffer, int sta
             {
                 double sinWavNoteSample = getNoteSample();
 
-                leftChannel[sample] += sinWavNoteSample * level * attackLevel * realeaseLevel;
-                rightChannel[sample] += sinWavNoteSample * level * attackLevel * realeaseLevel;
+                leftChannel[sample] += sinWavNoteSample * level * attackLevel * realeaseLevel *.125;
+                rightChannel[sample] += sinWavNoteSample * level * attackLevel * realeaseLevel *.125;
 
                 angle += angleDelta;
                 realeaseLevel -= releaseRamp;
@@ -190,8 +190,8 @@ void RGBAVoice::renderNextBlock(juce::AudioBuffer<double>& outputBuffer, int sta
             {
                 double sinWavNoteSample = getNoteSample();
 
-                leftChannel[sample] += sinWavNoteSample * level * attackLevel;
-                rightChannel[sample] += sinWavNoteSample * level * attackLevel;
+                leftChannel[sample] += sinWavNoteSample * level * attackLevel *.125;
+                rightChannel[sample] += sinWavNoteSample * level * attackLevel *.125;
 
                 angle += angleDelta;
                 attackLevel += attackRamp;
