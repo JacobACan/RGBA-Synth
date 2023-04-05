@@ -1,8 +1,8 @@
 # TODO
-- Load Correct Synth params on reboot of a DAW?
-- Correct Decibel slider math.
-- Slider Automations.
-- Font will not be portable.
-- Stylize.
+- Test Font Portability.
+- Display Correct Decibels on decibel slider.
+- Test Slider Automations.
+- Stylize Horizontal Slider w/ text.
+- Stylize Rotary Slider w/ text
 - Set up release on github w/ previews etc.
 

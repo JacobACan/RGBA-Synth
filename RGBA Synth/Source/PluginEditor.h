@@ -58,8 +58,6 @@ private:
     juce::Slider detuneAmountSlider;
     std::unique_ptr<SliderAttachment> detuneAmountAttatchment;
 
-
-
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (RGBASynthAudioProcessorEditor)
 };
 
