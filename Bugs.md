@@ -1,6 +1,5 @@
 # TODO
 ## Release 1
-- Test Slider Automations.
 - Display Correct Decibels on decibel slider.
 - Stylize Horizontal Slider w/ text.
 - Stylize Rotary Slider w/ text
