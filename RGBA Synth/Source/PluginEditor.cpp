@@ -105,14 +105,7 @@ void RGBASynthAudioProcessorEditor::paint (juce::Graphics& g)
     int titleHeight = 40;
     int lightThreshold = 210;
 
-    juce::File workingDirectory = juce::File::getCurrentWorkingDirectory();
-    juce::File rgbaDirectory = workingDirectory.getParentDirectory().getParentDirectory();
-    juce::File pressStartFontFile = rgbaDirectory.getChildFile("Fonts/PressStart2P-Regular.ttf");
-
-    juce::MemoryBlock fontData; 
-    pressStartFontFile.loadFileAsData(fontData);
-
-    static const juce::Font pressStart2P{ juce::Typeface::createSystemTypefaceFor(fontData.getData(), fontData.getSize())};
+    static const juce::Font pressStart2P{ juce::Typeface::createSystemTypefaceFor(BinaryData::PressStart2PRegular_ttf, BinaryData::PressStart2PRegular_ttfSize) };
 
     g.fillAll(backgroundColor);
     g.setFont(pressStart2P);

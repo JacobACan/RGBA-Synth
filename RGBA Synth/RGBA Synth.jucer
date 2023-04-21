@@ -2,7 +2,8 @@
 
 <JUCERPROJECT id="KMBrie" name="RGBA Synth" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
-              pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn">
+              pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
+              companyName="TechnologyPlayground">
   <MAINGROUP id="Zvyqkt" name="RGBA Synth">
     <GROUP id="{92F803E2-DBEC-7AEB-629B-D7B9E4073310}" name="RGBA Processing">
       <GROUP id="{EEF23D81-75F6-6E5C-E629-2C97E5D7A3C7}" name="Synth">
@@ -19,6 +20,10 @@
       <FILE id="l2RGN5" name="WaveGen.h" compile="0" resource="0" file="Source/RGBA Processing/WaveGen.h"/>
     </GROUP>
     <GROUP id="{29D5494E-B5FF-D071-435D-E23EBCE6012D}" name="RGBA GUI">
+      <GROUP id="{12DB267A-96A5-81EB-D4C1-51BD5AFE2F65}" name="Fonts">
+        <FILE id="pHKDs4" name="PressStart2P-Regular.ttf" compile="0" resource="1"
+              file="Fonts/PressStart2P-Regular.ttf"/>
+      </GROUP>
       <FILE id="yiHI0t" name="RGBAWaveDisplay.cpp" compile="1" resource="0"
             file="Source/RGBA GUI/RGBAWaveDisplay.cpp"/>
       <FILE id="K6M4Sv" name="RGBAWaveDisplay.h" compile="0" resource="0"
