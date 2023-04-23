@@ -12,6 +12,7 @@
 #include "PluginProcessor.h"
 #include "RGBA GUI/RGBAWaveDisplay.h"
 #include "RGBA Processing/WaveGen.h"
+#include "RGBA GUI/Sliders/AlphaSlider.h"
 
 typedef juce::AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
 typedef juce::AudioProcessorValueTreeState::ButtonAttachment ButtonAttachment;
@@ -37,7 +38,7 @@ private:
 
     juce::Colour backgroundColor;
 
-    juce::Slider targetLevelSlider;
+    AlphaSlider targetLevelSlider;
     std::unique_ptr<SliderAttachment> targetLevelAttatchment;
 
     juce::Slider swtLevelSlider;

@@ -113,8 +113,8 @@ void RGBAVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int star
             {
                 double sinWavNoteSample = getNoteSample();
 
-                leftChannel[sample] += sinWavNoteSample * level * attackLevel * realeaseLevel *.125;
-                rightChannel[sample] += sinWavNoteSample * level * attackLevel * realeaseLevel *.125;
+                leftChannel[sample] += sinWavNoteSample * level * attackLevel * realeaseLevel *.0125;
+                rightChannel[sample] += sinWavNoteSample * level * attackLevel * realeaseLevel *.0125;
 
                 angle += angleDelta;
                 realeaseLevel -= releaseRamp;
@@ -136,8 +136,8 @@ void RGBAVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int star
             {
                 double sinWavNoteSample = getNoteSample();
 
-                leftChannel[sample] += sinWavNoteSample * level * attackLevel *.125;
-                rightChannel[sample] += sinWavNoteSample * level * attackLevel *.125;
+                leftChannel[sample] += sinWavNoteSample * level * attackLevel *.0125;
+                rightChannel[sample] += sinWavNoteSample * level * attackLevel *.0125;
 
                 angle += angleDelta;
                 attackLevel += attackRamp;
