@@ -1,8 +1,10 @@
 # TODO
 ## Release 1
-- Display Correct Decibels on decibel slider.
+- Display no value for RGB Sliders / Phase / Detune
+- Use Look and feel to propogate 
 - Stylize Horizontal Slider w/ text.
-- Stylize Rotary Slider w/ text
+- Stylize All Slider w/ text
+- Design Sliders Look and make.
 - Set up release on github w/ previews etc.
 
 ## Release 2
