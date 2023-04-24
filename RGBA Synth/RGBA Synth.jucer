@@ -23,8 +23,20 @@
       <GROUP id="{E3CD4482-3F07-03D5-F376-7FEEF895C0AE}" name="Sliders">
         <FILE id="xPJVoR" name="AlphaSlider.cpp" compile="1" resource="0" file="Source/RGBA GUI/Sliders/AlphaSlider.cpp"/>
         <FILE id="ALFh3t" name="AlphaSlider.h" compile="0" resource="0" file="Source/RGBA GUI/Sliders/AlphaSlider.h"/>
-        <FILE id="rVBbLy" name="RGBSlider.cpp" compile="1" resource="0" file="Source/RGBA GUI/Sliders/RGBSlider.cpp"/>
-        <FILE id="y5S101" name="RGBSlider.h" compile="0" resource="0" file="Source/RGBA GUI/Sliders/RGBSlider.h"/>
+        <FILE id="f5rKq7" name="RGBAHorizontalSlider.cpp" compile="1" resource="0"
+              file="Source/RGBA GUI/Sliders/RGBAHorizontalSlider.cpp"/>
+        <FILE id="RYSv1O" name="RGBAHorizontalSlider.h" compile="0" resource="0"
+              file="Source/RGBA GUI/Sliders/RGBAHorizontalSlider.h"/>
+        <FILE id="A4Ag2k" name="RGBARotarySlider.cpp" compile="1" resource="0"
+              file="Source/RGBA GUI/Sliders/RGBARotarySlider.cpp"/>
+        <FILE id="sKngeJ" name="RGBARotarySlider.h" compile="0" resource="0"
+              file="Source/RGBA GUI/Sliders/RGBARotarySlider.h"/>
+        <FILE id="w0E5aV" name="RGBASlider.cpp" compile="1" resource="0" file="Source/RGBA GUI/Sliders/RGBASlider.cpp"/>
+        <FILE id="oRES9d" name="RGBASlider.h" compile="0" resource="0" file="Source/RGBA GUI/Sliders/RGBASlider.h"/>
+        <FILE id="SctUEx" name="RGBAVerticalSlider.cpp" compile="1" resource="0"
+              file="Source/RGBA GUI/Sliders/RGBAVerticalSlider.cpp"/>
+        <FILE id="FNxeSj" name="RGBAVerticalSlider.h" compile="0" resource="0"
+              file="Source/RGBA GUI/Sliders/RGBAVerticalSlider.h"/>
       </GROUP>
       <GROUP id="{12DB267A-96A5-81EB-D4C1-51BD5AFE2F65}" name="Fonts">
         <FILE id="pHKDs4" name="PressStart2P-Regular.ttf" compile="0" resource="1"

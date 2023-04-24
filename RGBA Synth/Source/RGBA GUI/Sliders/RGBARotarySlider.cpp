@@ -1,11 +1,11 @@
 /*
   ==============================================================================
 
-    RGBSlider.cpp
-    Created: 23 Apr 2023 8:46:51am
+    RGBARotarySlider.cpp
+    Created: 24 Apr 2023 12:17:54pm
     Author:  13308
 
   ==============================================================================
 */
 
-#include "RGBSlider.h"
+#include "RGBARotarySlider.h"
