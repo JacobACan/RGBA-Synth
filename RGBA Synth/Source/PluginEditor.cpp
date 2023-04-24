@@ -19,6 +19,10 @@ RGBASynthAudioProcessorEditor::RGBASynthAudioProcessorEditor (RGBASynthAudioProc
 {
     setSize(958, 564);
     backgroundColor = juce::Colour::fromFloatRGBA(0, 0, 0, 0);
+    static const juce::Typeface::Ptr pressStart2P{ juce::Typeface::createSystemTypefaceFor(BinaryData::PressStart2PRegular_ttf, BinaryData::PressStart2PRegular_ttfSize) };
+    getLookAndFeel().setDefaultSansSerifTypeface(pressStart2P);
+
+
 
     addAndMakeVisible(waveDisplay);
     addAndMakeVisible(keyboardComponent);
@@ -92,6 +96,8 @@ RGBASynthAudioProcessorEditor::RGBASynthAudioProcessorEditor (RGBASynthAudioProc
         waveDisplay.repaint();
     };
     sqrPhaseAttatchment.reset(new SliderAttachment(editorApvts, "sqrPhase", sqrPhaseSlider));
+
+
 }
 
 RGBASynthAudioProcessorEditor::~RGBASynthAudioProcessorEditor()
@@ -105,10 +111,8 @@ void RGBASynthAudioProcessorEditor::paint (juce::Graphics& g)
     int titleHeight = 40;
     int lightThreshold = 210;
 
-    static const juce::Font pressStart2P{ juce::Typeface::createSystemTypefaceFor(BinaryData::PressStart2PRegular_ttf, BinaryData::PressStart2PRegular_ttfSize) };
 
     g.fillAll(backgroundColor);
-    g.setFont(pressStart2P);
     g.setFont(50.f);
 
     g.setColour(juce::Colours::red);
