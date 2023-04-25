@@ -12,6 +12,7 @@
 
 ## Release 2
 - Fix shipping with preset data.
+	- Presets from GraphQL API for RGBA
 - Application Speed.
 - Different Platform Error handling.
 
