@@ -14,6 +14,8 @@
 
 class AlphaSlider : public juce::Slider {
 public :
+    AlphaSlider();
+
     juce::String getTextFromValue(double currentValue) override;
 
 private :

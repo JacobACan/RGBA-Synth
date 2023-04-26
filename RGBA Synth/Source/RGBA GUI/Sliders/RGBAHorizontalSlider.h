@@ -9,3 +9,11 @@
 */
 
 #pragma once
+#include <JuceHeader.h>
+
+class RGBAHorizontalSlider : public juce::Slider {
+public :
+    RGBAHorizontalSlider();
+private :
+    juce::Colour thumbColor;
+};

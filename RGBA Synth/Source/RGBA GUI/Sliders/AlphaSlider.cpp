@@ -10,6 +10,13 @@
 
 #include "AlphaSlider.h"
 
+
+
+AlphaSlider::AlphaSlider()
+{
+    setSliderStyle(juce::Slider::LinearBarVertical);
+}
+
 juce::String AlphaSlider::getTextFromValue(double currentValue)
 {
     double gainInDecibels = juce::Decibels::gainToDecibels<double>(currentValue);

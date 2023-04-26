@@ -9,3 +9,8 @@
 */
 
 #include "RGBAHorizontalSlider.h"
+
+RGBAHorizontalSlider::RGBAHorizontalSlider() : thumbColor (juce::Colours::blue)
+{
+    setSliderStyle(juce::Slider::LinearHorizontal);
+}

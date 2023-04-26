@@ -28,7 +28,6 @@ RGBASynthAudioProcessorEditor::RGBASynthAudioProcessorEditor (RGBASynthAudioProc
     addAndMakeVisible(keyboardComponent);
 
     // Alpha ==============================================
-    targetLevelSlider.setSliderStyle(juce::Slider::LinearBarVertical);
     addAndMakeVisible(targetLevelSlider);
     targetLevelSlider.onValueChange = [this]
     {
@@ -38,7 +37,6 @@ RGBASynthAudioProcessorEditor::RGBASynthAudioProcessorEditor (RGBASynthAudioProc
     targetLevelAttatchment.reset(new SliderAttachment(editorApvts, "targetLevel", targetLevelSlider));
 
     // Red =================================================
-    swtLevelSlider.setSliderStyle(juce::Slider::LinearHorizontal);
     addAndMakeVisible(swtLevelSlider);
     swtLevelSlider.onValueChange = [this]
     {
@@ -48,7 +46,6 @@ RGBASynthAudioProcessorEditor::RGBASynthAudioProcessorEditor (RGBASynthAudioProc
     swtLevelAttatchment.reset(new SliderAttachment(editorApvts, "swtLevel", swtLevelSlider));
 
     // Green =================================================
-    sawLevelSlider.setSliderStyle(juce::Slider::LinearHorizontal);
     addAndMakeVisible(sawLevelSlider);
     sawLevelSlider.onValueChange = [this]
     {
@@ -58,7 +55,6 @@ RGBASynthAudioProcessorEditor::RGBASynthAudioProcessorEditor (RGBASynthAudioProc
     sawLevelAttatchment.reset(new SliderAttachment(editorApvts, "sawLevel", sawLevelSlider));
 
     // Blue =================================================
-    sqrLevelSlider.setSliderStyle(juce::Slider::LinearHorizontal);
     addAndMakeVisible(sqrLevelSlider);
     sqrLevelSlider.onValueChange = [this]
     {
@@ -68,12 +64,10 @@ RGBASynthAudioProcessorEditor::RGBASynthAudioProcessorEditor (RGBASynthAudioProc
     sqrLevelAttatchment.reset(new SliderAttachment(editorApvts, "sqrLevel", sqrLevelSlider));
 
     // Detune ================================================
-    detuneAmountSlider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
     addAndMakeVisible(detuneAmountSlider);
     detuneAmountAttatchment.reset(new SliderAttachment(editorApvts, "detuneAmount", detuneAmountSlider));
     
     //Phase
-    swtPhaseSlider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
     addAndMakeVisible(swtPhaseSlider);
     swtPhaseSlider.onValueChange = [this] {
         WaveGen::setSwtPhase(swtPhaseSlider.getValue());
@@ -81,7 +75,6 @@ RGBASynthAudioProcessorEditor::RGBASynthAudioProcessorEditor (RGBASynthAudioProc
     };
     swtPhaseAttatchment.reset(new SliderAttachment(editorApvts, "swtPhase", swtPhaseSlider));
 
-    sawPhaseSlider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
     addAndMakeVisible(sawPhaseSlider);
     sawPhaseSlider.onValueChange = [this] {
         WaveGen::setSawPhase(sawPhaseSlider.getValue());
@@ -89,7 +82,6 @@ RGBASynthAudioProcessorEditor::RGBASynthAudioProcessorEditor (RGBASynthAudioProc
     };
     sawPhaseAttatchment.reset(new SliderAttachment(editorApvts, "sawPhase", sawPhaseSlider));
 
-    sqrPhaseSlider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
     addAndMakeVisible(sqrPhaseSlider);
     sqrPhaseSlider.onValueChange = [this] {
         WaveGen::setSqrPhase(sqrPhaseSlider.getValue());
