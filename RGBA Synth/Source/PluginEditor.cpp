@@ -108,6 +108,11 @@ void RGBASynthAudioProcessorEditor::paint(juce::Graphics& g)
 
 
 	g.fillAll(backgroundColor);
+	const juce::Image colorWave = juce::ImageCache::getFromMemory(BinaryData::Color_Wave_1_png, BinaryData::Color_Wave_1_pngSize);
+	const juce::Rectangle<float> fullScreen = juce::Rectangle<float>(0, 0, getWidth(), getHeight());
+	g.setOpacity(.5);
+	g.drawImage(colorWave, fullScreen, juce::RectanglePlacement::onlyIncreaseInSize);
+	g.setOpacity(1);
 	g.setFont(50.f);
 
 	g.setColour(juce::Colours::red);

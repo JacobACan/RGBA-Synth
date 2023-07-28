@@ -35,11 +35,10 @@ public:
 
 	void drawLinearSliderBackground(juce::Graphics& g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const juce::Slider::SliderStyle style, juce::Slider& slider) override
 	{
-		constexpr int maxRange = 255;
-		int calculatedBackgroundColorValue = ((maxRange) / (maxSliderPos - minSliderPos)) * (sliderPos - minSliderPos);
+		constexpr float maxRange = 255;
+		const float totalSliderDistance = static_cast<float>( width )+ static_cast<float> (getSliderThumbRadius(slider));
+		const float calculatedBackgroundColorValue = (( maxRange) / (totalSliderDistance)) * (sliderPos - minSliderPos);
 		juce::Colour calculatedBackgroundColor = juce::Colours::black;
-
-		DBG("max - min : " << maxSliderPos - minSliderPos << " MAX : " << maxSliderPos << " MIN : " << minSliderPos << " SLIDER_POS : " << sliderPos << " W : " << width);
 
 		coloursEqual(this->thumbColor, juce::Colours::red)
 			? calculatedBackgroundColor = juce::Colour(calculatedBackgroundColorValue, 0, 0)
@@ -49,11 +48,9 @@ public:
 			? calculatedBackgroundColor = juce::Colour(0, 0, calculatedBackgroundColorValue)
 			: calculatedBackgroundColor = juce::Colour(calculatedBackgroundColorValue, calculatedBackgroundColorValue, calculatedBackgroundColorValue);
 
-		DBG("Calculated Background Value " << calculatedBackgroundColorValue);
-		DBG("Calculated Background Color " << calculatedBackgroundColor.getRed() << calculatedBackgroundColor.getGreen() << calculatedBackgroundColor.getBlue());
 		g.setColour(calculatedBackgroundColor);
 
-		g.fillRect(juce::Rectangle<float>(minSliderPos, static_cast<float>(height) / 2.f - (static_cast<float>(height) / 4.f), static_cast<float>(width), static_cast<float>(height) / 2));
+		g.fillRect(juce::Rectangle<float>(x, static_cast<float>(height) / 2.f - (static_cast<float>(height) / 4.f), static_cast<float>(width) + getSliderThumbRadius(slider), static_cast<float>(height) / 2));
 	};
 
 	void drawLinearSliderThumb(juce::Graphics& g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const juce::Slider::SliderStyle, juce::Slider&) override
@@ -64,7 +61,6 @@ public:
 
 	bool coloursEqual(juce::Colour c1, juce::Colour c2)
 	{
-		DBG("C1 Red" << c1.getRed() << " C2 Red : " << c2.getRed());
 		return c1.getRed() == c2.getRed() && c1.getGreen() == c2.getGreen() && c1.getBlue() == c2.getBlue();
 	}
 

@@ -20,6 +20,12 @@
       <FILE id="l2RGN5" name="WaveGen.h" compile="0" resource="0" file="Source/RGBA Processing/WaveGen.h"/>
     </GROUP>
     <GROUP id="{29D5494E-B5FF-D071-435D-E23EBCE6012D}" name="RGBA GUI">
+      <GROUP id="{017159C2-7294-21E4-C820-C38A49576869}" name="Images">
+        <GROUP id="{745BCD24-A59B-2BA2-A8E9-1B95EC7D18AC}" name="Background">
+          <FILE id="CzdzRn" name="Color_Wave_1.png" compile="0" resource="1"
+                file="D:/Jacob Content/Images/RGBA_Synth Ideas/Color_Wave_1.png"/>
+        </GROUP>
+      </GROUP>
       <GROUP id="{E3CD4482-3F07-03D5-F376-7FEEF895C0AE}" name="Sliders">
         <FILE id="xPJVoR" name="AlphaSlider.cpp" compile="1" resource="0" file="Source/RGBA GUI/Sliders/AlphaSlider.cpp"/>
         <FILE id="ALFh3t" name="AlphaSlider.h" compile="0" resource="0" file="Source/RGBA GUI/Sliders/AlphaSlider.h"/>
