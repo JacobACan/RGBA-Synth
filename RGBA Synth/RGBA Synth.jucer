@@ -21,8 +21,18 @@
     </GROUP>
     <GROUP id="{29D5494E-B5FF-D071-435D-E23EBCE6012D}" name="RGBA GUI">
       <GROUP id="{017159C2-7294-21E4-C820-C38A49576869}" name="Images">
+        <GROUP id="{79BB4AA3-5720-7524-DFD4-6FBD00931DB5}" name="Display">
+          <FILE id="LHfMt6" name="RGBA_Synth_Display.png" compile="0" resource="1"
+                file="Image Assets/Display/RGBA_Synth_Display.png"/>
+          <FILE id="IqEJBv" name="RGBA_Synth_Display_Border.png" compile="0"
+                resource="1" file="Image Assets/Display/RGBA_Synth_Display_Border.png"/>
+        </GROUP>
+        <GROUP id="{B4E95194-5244-35F0-D0FA-5DBF556D8CAD}" name="Keyboard">
+          <FILE id="raxJST" name="RGBA_Synth_Full_Keyboard.png" compile="0" resource="1"
+                file="Image Assets/Keyboard/RGBA_Synth_Full_Keyboard.png"/>
+        </GROUP>
         <GROUP id="{745BCD24-A59B-2BA2-A8E9-1B95EC7D18AC}" name="Background">
-          <FILE id="dCRX3K" name="RGBA_Synth.png" compile="0" resource="1" file="D:/Jacob Content/Images/Drawings/RGBA_Synth.png"/>
+          <FILE id="afeMrM" name="RGBA_Synth.png" compile="0" resource="1" file="Image Assets/Background/RGBA_Synth.png"/>
         </GROUP>
       </GROUP>
       <GROUP id="{E3CD4482-3F07-03D5-F376-7FEEF895C0AE}" name="Sliders">

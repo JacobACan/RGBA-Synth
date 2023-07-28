@@ -76,6 +76,10 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
 	juce::Path bluePath = juce::Path();
 	juce::Path resultPath = juce::Path();
 
+	juce::Image waveDisplayBackground = juce::ImageCache::getFromMemory(BinaryData::RGBA_Synth_Display_png, BinaryData::RGBA_Synth_Display_pngSize);
+	g.drawImage(waveDisplayBackground, bounds, juce::RectanglePlacement::stretchToFit);
+
+
 	for (float i = 0; i <= resolution; i++)
 	{
 		float xPos = i * resolutionFactor + offsetX;
@@ -140,5 +144,8 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
 	g.strokePath(resultPath, strokeType);
 
 	//g.drawRoundedRectangle(bounds, 10, 10);
+	juce::Image waveDisplayBorder = juce::ImageCache::getFromMemory(BinaryData::RGBA_Synth_Display_Border_png, BinaryData::RGBA_Synth_Display_Border_pngSize);
+	g.drawImage(waveDisplayBorder, bounds, juce::RectanglePlacement::stretchToFit);
+
 
 }
