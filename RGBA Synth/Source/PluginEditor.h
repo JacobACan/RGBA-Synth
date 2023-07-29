@@ -13,7 +13,7 @@
 #include "RGBA GUI/RGBAWaveDisplay.h"
 #include "RGBA Processing/WaveGen.h"
 #include "RGBA GUI/Sliders/AlphaSlider.h"
-#include "RGBA GUI/Sliders/RGBAHorizontalSlider.h"
+#include "RGBA GUI/Sliders/RGBAVerticalSlider.h"
 
 typedef juce::AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
 typedef juce::AudioProcessorValueTreeState::ButtonAttachment ButtonAttachment;
@@ -39,22 +39,22 @@ private:
 
     juce::Colour backgroundColor;
 
-    AlphaSlider targetLevelSlider;
+    RGBAVerticalSlider targetLevelSlider;
     std::unique_ptr<SliderAttachment> targetLevelAttatchment;
 
-    RGBAHorizontalSlider swtLevelSlider;
+    RGBAVerticalSlider swtLevelSlider;
     std::unique_ptr<SliderAttachment> swtLevelAttatchment;
-    RGBAHorizontalSlider swtPhaseSlider;
+    RGBAVerticalSlider swtPhaseSlider;
     std::unique_ptr<SliderAttachment> swtPhaseAttatchment;
 
-    RGBAHorizontalSlider sawLevelSlider;
+    RGBAVerticalSlider sawLevelSlider;
     std::unique_ptr<SliderAttachment> sawLevelAttatchment;
-    RGBAHorizontalSlider sawPhaseSlider;
+    RGBAVerticalSlider sawPhaseSlider;
     std::unique_ptr<SliderAttachment> sawPhaseAttatchment;
 
-    RGBAHorizontalSlider sqrLevelSlider;
+    RGBAVerticalSlider sqrLevelSlider;
     std::unique_ptr<SliderAttachment> sqrLevelAttatchment;
-    RGBAHorizontalSlider sqrPhaseSlider;
+    RGBAVerticalSlider sqrPhaseSlider;
     std::unique_ptr<SliderAttachment> sqrPhaseAttatchment;
 
     juce::Slider detuneAmountSlider;

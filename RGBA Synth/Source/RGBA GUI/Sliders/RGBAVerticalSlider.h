@@ -1,7 +1,7 @@
 /*
   ==============================================================================
 
-	RGBAHorizontalSlider.h
+	RGBAVerticalSlider.h
 	Created: 24 Apr 2023 12:17:24pm
 	Author:  13308
 
@@ -11,10 +11,10 @@
 #pragma once
 #include <JuceHeader.h>
 
-class RGBAHorizontalSlider : public juce::Slider {
+class RGBAVerticalSlider : public juce::Slider {
 public:
-	RGBAHorizontalSlider();
-	RGBAHorizontalSlider(juce::Colour thumbColor);
+	RGBAVerticalSlider();
+	RGBAVerticalSlider(juce::Colour thumbColor);
 private:
 	juce::Colour thumbColor;
 };

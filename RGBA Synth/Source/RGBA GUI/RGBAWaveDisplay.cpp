@@ -132,7 +132,7 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
 	juce::PathStrokeType strokeType(.8, juce::PathStrokeType::curved);
 	g.setOpacity(.8);
 
-	juce::ColourGradient redLinearGradient(juce::Colours::red, 0.f, 0.f, juce::Colours::orange, getWidth(), getHeight(), false);
+	juce::ColourGradient redLinearGradient(juce::Colours::red, 0.f, 0.f, juce::Colours::pink, getWidth(), 0.f, false);
 	g.setGradientFill(redLinearGradient);
 	g.strokePath(redPath, strokeType);
 
