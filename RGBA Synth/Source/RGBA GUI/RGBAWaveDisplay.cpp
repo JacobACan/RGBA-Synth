@@ -129,18 +129,23 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
 
 
 	}
-	juce::PathStrokeType strokeType(3, juce::PathStrokeType::curved);
+	juce::PathStrokeType strokeType(.8, juce::PathStrokeType::curved);
+	g.setOpacity(.8);
 
-	g.setColour(red);
+	juce::ColourGradient redLinearGradient(juce::Colours::red, 0.f, 0.f, juce::Colours::orange, getWidth(), getHeight(), false);
+	g.setGradientFill(redLinearGradient);
 	g.strokePath(redPath, strokeType);
 
-	g.setColour(green);
+	juce::ColourGradient greenLinearGradient(juce::Colours::green, 0.f, 0.f, juce::Colours::greenyellow, getWidth(), getHeight(), false);
+	g.setGradientFill(greenLinearGradient);
 	g.strokePath(greenPath, strokeType);
 
-	g.setColour(blue);
+	juce::ColourGradient blueLinearGradient(juce::Colours::blue, 0.f, 0.f, juce::Colours::blueviolet, getWidth(), getHeight(), false);
+	g.setGradientFill(blueLinearGradient);
 	g.strokePath(bluePath, strokeType);
 
-	g.setColour(juce::Colours::white);
+	juce::ColourGradient whiteLinearGradient(juce::Colours::white, 0.f, 0.f, juce::Colours::wheat, getWidth(), getHeight(), false);
+	g.setGradientFill(whiteLinearGradient);
 	g.strokePath(resultPath, strokeType);
 
 	//g.drawRoundedRectangle(bounds, 10, 10);
