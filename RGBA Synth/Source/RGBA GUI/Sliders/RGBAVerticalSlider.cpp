@@ -24,7 +24,6 @@ public:
 		{
 			g.setColour(juce::Colour(255, 255, 255));
 			g.drawRect(juce::Rectangle<float>(sliderPos, 0, width, height), 2.f);
-
 		}
 		else
 		{
@@ -43,7 +42,7 @@ public:
 		{
 			constexpr float maxrange = 255;
 			const float minimumSliderPos = (0 + getSliderThumbRadius(slider));
-			const float totalsliderdistance = (float) height;
+			const float totalsliderdistance = (float)height;
 			const float calculatedBackgroundColorValue = maxrange - ((maxrange) / (totalsliderdistance)) * (sliderPos - minimumSliderPos);
 			juce::Colour calculatedbackgroundcolor;
 
@@ -58,7 +57,7 @@ public:
 			juce::ColourGradient calcColourGradient(juce::Colours::black, 0, 0, calculatedbackgroundcolor, 0, sliderPos + 50, false);
 			g.setGradientFill(calcColourGradient);
 			constexpr int padding = 5;
-			const juce::Rectangle<float> sliderBackgroundColorBounds(0 + width/4 + padding, 0 + getSliderThumbRadius(slider), width/2 - padding , height - 2);
+			const juce::Rectangle<float> sliderBackgroundColorBounds(0 + width / 4 + padding, 0 + getSliderThumbRadius(slider), width / 2 - padding, height - 2);
 			g.fillRect(sliderBackgroundColorBounds);
 
 			const juce::Image sliderBackground = juce::ImageCache::getFromMemory(BinaryData::RGBA_Synth_Vertical_Slider_Background_png, BinaryData::RGBA_Synth_Vertical_Slider_Background_pngSize);
@@ -67,7 +66,7 @@ public:
 		}
 	};
 
-	void drawLinearSliderThumb(juce::Graphics& g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const juce::Slider::SliderStyle style, juce::Slider&) override
+	void drawLinearSliderThumb(juce::Graphics& g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const juce::Slider::SliderStyle style, juce::Slider& slider) override
 	{
 		if (style == juce::Slider::SliderStyle::LinearHorizontal)
 		{
@@ -75,8 +74,13 @@ public:
 		}
 		else if (style == juce::Slider::SliderStyle::LinearVertical)
 		{
-			juce::Image sliderKnob = juce::ImageCache::getFromMemory(BinaryData::RGBA_Synth_Red_Slider_Knob_png, BinaryData::RGBA_Synth_Red_Slider_Knob_pngSize);
-			juce::Rectangle<float> sliderBounds(0, sliderPos, width, width * (2 / 3));
+			const juce::Rectangle<float> sliderBounds(0, sliderPos - getSliderThumbRadius(slider), static_cast<float>(width), static_cast<float>(width) * (2.f / 3.f));
+
+			const juce::ColourGradient knobGradient(this->thumbColor, 0, 0, juce::Colours::black, width, height * 2, false);
+			g.setGradientFill(knobGradient);
+			g.fillRoundedRectangle(sliderBounds, 10);
+
+			const juce::Image sliderKnob = juce::ImageCache::getFromMemory(BinaryData::RGBA_Synth_Red_Slider_Knob_png, BinaryData::RGBA_Synth_Red_Slider_Knob_pngSize);
 			g.drawImage(sliderKnob, sliderBounds, juce::RectanglePlacement::fillDestination);
 		}
 
