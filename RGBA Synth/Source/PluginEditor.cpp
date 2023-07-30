@@ -17,7 +17,8 @@ RGBASynthAudioProcessorEditor::RGBASynthAudioProcessorEditor(RGBASynthAudioProce
 	keyboardComponent(p.keyboardState, juce::KeyboardComponentBase::verticalKeyboardFacingLeft),
 	swtLevelSlider(juce::Colours::red),
 	sawLevelSlider(juce::Colours::green),
-	sqrLevelSlider(juce::Colours::blue)
+	sqrLevelSlider(juce::Colours::blue),
+	detuneAmountSlider(juce::Colours::purple)
 
 {
 	setSize(958, 564);
@@ -67,11 +68,11 @@ RGBASynthAudioProcessorEditor::RGBASynthAudioProcessorEditor(RGBASynthAudioProce
 	sqrLevelAttatchment.reset(new SliderAttachment(editorApvts, "sqrLevel", sqrLevelSlider));
 
 	// Detune ================================================
-	//addAndMakeVisible(detuneAmountSlider);
+	addAndMakeVisible(detuneAmountSlider);
 	detuneAmountAttatchment.reset(new SliderAttachment(editorApvts, "detuneAmount", detuneAmountSlider));
 
 	//Phase
-	//addAndMakeVisible(swtPhaseSlider);
+	addAndMakeVisible(swtPhaseSlider);
 	swtPhaseSlider.onValueChange = [this] {
 		WaveGen::setSwtPhase(swtPhaseSlider.getValue());
 		waveDisplay.repaint();
@@ -133,7 +134,7 @@ void RGBASynthAudioProcessorEditor::resized()
 	int const sliderHeight = waveDisplayHeight;
 
 
-	//Sliders
+	//RGBA & Detune Sliders
 	juce::Rectangle<int> rgbSliderRect(indentLeft, titleHeight, sliderWidth, sliderHeight);
 	swtLevelSlider.setBounds(rgbSliderRect);
 
@@ -146,6 +147,13 @@ void RGBASynthAudioProcessorEditor::resized()
 
 	rgbSliderRect.setPosition(rightSideOfWaveDisplay + sliderWidth, titleHeight);
 	targetLevelSlider.setBounds(rgbSliderRect);
+
+	rgbSliderRect.setPosition(rightSideOfWaveDisplay + sliderWidth * 3, titleHeight);
+	detuneAmountSlider.setBounds(rgbSliderRect);
+
+	//Phase Radial Sliders
+	juce::Rectangle<int> radialSliderRect(indentLeft, titleHeight + sliderHeight, sliderWidth, sliderWidth);
+	swtPhaseSlider.setBounds(radialSliderRect);
 
 	//juce::Rectangle<int> phaseRect(keyboardWidth, rgbSliderHieght);
 

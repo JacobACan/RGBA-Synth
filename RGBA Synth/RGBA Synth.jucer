@@ -22,6 +22,8 @@
     <GROUP id="{29D5494E-B5FF-D071-435D-E23EBCE6012D}" name="RGBA GUI">
       <GROUP id="{017159C2-7294-21E4-C820-C38A49576869}" name="Images">
         <GROUP id="{A200B156-DA0F-043A-1572-7442197ACA31}" name="Sliders">
+          <FILE id="YmT4bv" name="RadialSliderAsset.png" compile="0" resource="1"
+                file="Image Assets/Sliders/RadialSliderAsset.png"/>
           <FILE id="Ql6QwE" name="RGBA_Synth_Red_Slider_Knob.png" compile="0"
                 resource="1" file="Image Assets/Sliders/RGBA_Synth_Red_Slider_Knob.png"/>
           <FILE id="POAAWG" name="RGBA_Synth_Vertical_Slider_Background.png"
@@ -42,6 +44,10 @@
         </GROUP>
       </GROUP>
       <GROUP id="{E3CD4482-3F07-03D5-F376-7FEEF895C0AE}" name="Sliders">
+        <FILE id="HImf6O" name="RGBARotarySlider.cpp" compile="1" resource="0"
+              file="Source/RGBA GUI/Sliders/RGBARotarySlider.cpp"/>
+        <FILE id="wkk1pp" name="RGBARotarySlider.h" compile="0" resource="0"
+              file="Source/RGBA GUI/Sliders/RGBARotarySlider.h"/>
         <FILE id="f5rKq7" name="RGBAVerticalSlider.cpp" compile="1" resource="0"
               file="Source/RGBA GUI/Sliders/RGBAVerticalSlider.cpp"/>
         <FILE id="RYSv1O" name="RGBAVerticalSlider.h" compile="0" resource="0"

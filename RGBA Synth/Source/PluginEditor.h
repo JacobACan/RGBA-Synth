@@ -13,6 +13,7 @@
 #include "RGBA GUI/RGBAWaveDisplay.h"
 #include "RGBA Processing/WaveGen.h"
 #include "RGBA GUI/Sliders/RGBAVerticalSlider.h"
+#include "RGBA GUI/Sliders/RGBARotarySlider.h"
 
 typedef juce::AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
 typedef juce::AudioProcessorValueTreeState::ButtonAttachment ButtonAttachment;
@@ -43,20 +44,20 @@ private:
 
 	RGBAVerticalSlider swtLevelSlider;
 	std::unique_ptr<SliderAttachment> swtLevelAttatchment;
-	RGBAVerticalSlider swtPhaseSlider;
+	RGBARotarySlider swtPhaseSlider;
 	std::unique_ptr<SliderAttachment> swtPhaseAttatchment;
 
 	RGBAVerticalSlider sawLevelSlider;
 	std::unique_ptr<SliderAttachment> sawLevelAttatchment;
-	RGBAVerticalSlider sawPhaseSlider;
+	RGBARotarySlider sawPhaseSlider;
 	std::unique_ptr<SliderAttachment> sawPhaseAttatchment;
 
 	RGBAVerticalSlider sqrLevelSlider;
 	std::unique_ptr<SliderAttachment> sqrLevelAttatchment;
-	RGBAVerticalSlider sqrPhaseSlider;
+	RGBARotarySlider sqrPhaseSlider;
 	std::unique_ptr<SliderAttachment> sqrPhaseAttatchment;
 
-	juce::Slider detuneAmountSlider;
+	RGBAVerticalSlider detuneAmountSlider;
 	std::unique_ptr<SliderAttachment> detuneAmountAttatchment;
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RGBASynthAudioProcessorEditor)
