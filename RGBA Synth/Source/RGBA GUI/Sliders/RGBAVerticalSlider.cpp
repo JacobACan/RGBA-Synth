@@ -96,7 +96,7 @@ private:
 };
 
 
-RGBAVerticalSlider::RGBAVerticalSlider() : thumbColor(juce::Colours::black)
+RGBAVerticalSlider::RGBAVerticalSlider() : thumbColor(juce::Colours::white)
 {
 	setSliderStyle(juce::Slider::LinearVertical);
 	setTextBoxStyle(juce::Slider::NoTextBox, true, getWidth(), getWidth() * 2 / 3);
