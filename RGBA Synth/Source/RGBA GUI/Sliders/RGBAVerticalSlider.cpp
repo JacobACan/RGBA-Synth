@@ -76,7 +76,7 @@ public:
 		{
 			const juce::Rectangle<float> sliderBounds(0, sliderPos - getSliderThumbRadius(slider), static_cast<float>(width), static_cast<float>(width) * (2.f / 3.f));
 
-			const juce::ColourGradient knobGradient(this->thumbColor, 0, 0, juce::Colours::black, width, height * 2, false);
+			const juce::ColourGradient knobGradient(this->thumbColor, 0, 0, juce::Colours::black, width, static_cast<float>(height) + static_cast<float>(height) / 2, false);
 			g.setGradientFill(knobGradient);
 			g.fillRoundedRectangle(sliderBounds, 10);
 

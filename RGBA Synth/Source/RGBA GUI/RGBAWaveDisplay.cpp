@@ -148,9 +148,6 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
 	g.setGradientFill(whiteLinearGradient);
 	g.strokePath(resultPath, strokeType);
 
-	//g.drawRoundedRectangle(bounds, 10, 10);
 	juce::Image waveDisplayBorder = juce::ImageCache::getFromMemory(BinaryData::RGBA_Synth_Display_Border_png, BinaryData::RGBA_Synth_Display_Border_pngSize);
 	g.drawImage(waveDisplayBorder, bounds, juce::RectanglePlacement::stretchToFit);
-
-
 }
