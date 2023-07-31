@@ -1,5 +1,6 @@
-# RGBA Synth Version (0.5.2)
-![RGBA_Synth](https://github.com/JacobACan/RGBA-Synth/assets/89418437/308c6a84-99d3-497b-b9ba-0b3791afb83d)
+# RGBA Synth Version (0.9)
+![image](https://github.com/JacobACan/RGBA-Synth/assets/89418437/7255c63f-98ce-4285-809c-037533e177e4)
+
 
 
 ## What is RGBA Synth
