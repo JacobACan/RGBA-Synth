@@ -10,11 +10,15 @@
 
 #pragma once
 #include <JuceHeader.h>
+#include "../RGBAColours.h"
 
 class RGBAVerticalSlider : public juce::Slider {
 public:
 	RGBAVerticalSlider();
-	RGBAVerticalSlider(juce::Colour thumbColor);
+	RGBAVerticalSlider(juce::Colour thumbColor, juce::String sliderName = "");
+	void paint(juce::Graphics& g) override;
+
 private:
 	juce::Colour thumbColor;
+	juce::String sliderName;
 };

@@ -91,16 +91,32 @@ private:
 };
 
 
-RGBAVerticalSlider::RGBAVerticalSlider() : thumbColor(juce::Colours::white)
+RGBAVerticalSlider::RGBAVerticalSlider() : thumbColor(juce::Colours::white), sliderName("")
 {
 	setSliderStyle(juce::Slider::LinearVertical);
 	setTextBoxStyle(juce::Slider::NoTextBox, true, getWidth(), getWidth() * 2 / 3);
 	setLookAndFeel(new RGBALinearSliderLookAndFeel(this->thumbColor));
 }
 
-RGBAVerticalSlider::RGBAVerticalSlider(juce::Colour thumbColor) : thumbColor(thumbColor)
+
+
+RGBAVerticalSlider::RGBAVerticalSlider(juce::Colour thumbColor, juce::String sliderName) : thumbColor(thumbColor), sliderName(sliderName)
 {
 	setSliderStyle(juce::Slider::LinearVertical);
 	setTextBoxStyle(juce::Slider::NoTextBox, true, getWidth(), getWidth() * 2 / 3);
 	setLookAndFeel(new RGBALinearSliderLookAndFeel(this->thumbColor));
+}
+
+void RGBAVerticalSlider::paint(juce::Graphics& g)
+{
+	Slider::paint(g);
+
+	constexpr int textHeight = 10;
+	juce::ColourGradient letterGradient(thumbColor, 0, 0, thumbColor.brighter(), getWidth(), getHeight(), false);
+
+	g.setGradientFill(letterGradient);
+	if (sliderName.length() > 0)
+	{
+		g.drawText(sliderName.substring(0, 1), 0, 0, getWidth(), textHeight, juce::Justification::centredTop);
+	}
 }

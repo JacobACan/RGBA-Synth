@@ -14,6 +14,9 @@
 #include "RGBA Processing/WaveGen.h"
 #include "RGBA GUI/Sliders/RGBAVerticalSlider.h"
 #include "RGBA GUI/Sliders/RGBARotarySlider.h"
+#include "RGBA GUI/RGBAColours.h"
+#include "RGBA GUI/RGBAColourGradient.h"
+#include "RGBA GUI/Fonts.h"
 
 typedef juce::AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
 typedef juce::AudioProcessorValueTreeState::ButtonAttachment ButtonAttachment;

@@ -15,18 +15,18 @@ RGBASynthAudioProcessorEditor::RGBASynthAudioProcessorEditor(RGBASynthAudioProce
 	editorApvts(apvts),
 	waveDisplay(apvts),
 	keyboardComponent(p.keyboardState, juce::KeyboardComponentBase::verticalKeyboardFacingLeft),
-	swtLevelSlider(juce::Colours::red),
-	sawLevelSlider(juce::Colours::green),
-	sqrLevelSlider(juce::Colours::blue),
+	swtLevelSlider(RGBAColours::red, "Red"),
+	sawLevelSlider(RGBAColours::green, "Green"),
+	sqrLevelSlider(RGBAColours::blue, "Blue"),
+	targetLevelSlider(juce::Colours::white, "Alpha"),
 	detuneAmountSlider(juce::Colours::lightpink),
-	swtPhaseSlider(juce::Colours::red),
-	sawPhaseSlider(juce::Colours::green),
-	sqrPhaseSlider(juce::Colours::blue)
+	swtPhaseSlider(RGBAColours::red),
+	sawPhaseSlider(RGBAColours::green),
+	sqrPhaseSlider(RGBAColours::blue)
 
 {
 	setSize(958, 564);
-	static const juce::Typeface::Ptr pressStart2P{ juce::Typeface::createSystemTypefaceFor(BinaryData::Park_Lane_NF_ttf, BinaryData::Park_Lane_NF_ttfSize) };
-	getLookAndFeel().setDefaultSansSerifTypeface(pressStart2P);
+	getLookAndFeel().setDefaultSansSerifTypeface(RGBAFonts::parkLane);
 
 
 
@@ -84,10 +84,7 @@ RGBASynthAudioProcessorEditor::~RGBASynthAudioProcessorEditor() {}
 void RGBASynthAudioProcessorEditor::paint(juce::Graphics& g)
 {
 	//TODO : Make a RGBA_colours and RGBA_Fonts Class for easier access and separation of concerns
-	juce::Colour RGBA_red(250, 105, 130);
-	juce::Colour RGBA_green(150, 240, 110);
-	juce::Colour RGBA_blue(110, 200, 250);
-	juce::Colour RGBA_tan(255, 239, 197);
+
 
 	/*juce::ColourGradient backgroundGradient1(RGBA_red, 0, 0, RGBA_green, getWidth() / 2, 0, false);
 	juce::Rectangle<float> half1(0, 0, getWidth() / 2, getHeight());
@@ -102,7 +99,7 @@ void RGBASynthAudioProcessorEditor::paint(juce::Graphics& g)
 	const int width = getWidth();
 	const int height = getHeight();
 
-	g.setGradientFill(juce::ColourGradient(RGBA_tan, 0, 0, RGBA_tan.darker(), 0, height, false));
+	g.setGradientFill(juce::ColourGradient(RGBAColours::tan, 0, 0, RGBAColours::tan.darker(), 0, height, false));
 	g.fillRect(0, 0, getWidth(), getHeight());
 
 	constexpr int fontHeight = 175;
@@ -111,9 +108,9 @@ void RGBASynthAudioProcessorEditor::paint(juce::Graphics& g)
 	const juce::Point<float> bottomRightText(width, height);
 	juce::Rectangle<float> textBounds(topLeftText, bottomRightText);
 
-	const juce::ColourGradient RGBA_redGreenGradient(RGBA_red, topLeftText, RGBA_green, bottomRightText, false);
-	const juce::ColourGradient RGBA_greenBlueGradient(RGBA_green, topLeftText, RGBA_blue, bottomRightText, false);
-	const juce::ColourGradient RGBA_blueRedGradient(RGBA_blue, topLeftText, RGBA_red, bottomRightText, false);
+	const juce::ColourGradient RGBA_redGreenGradient(RGBAColours::red, topLeftText, RGBAColours::green, bottomRightText, false);
+	const juce::ColourGradient RGBA_greenBlueGradient(RGBAColours::green, topLeftText, RGBAColours::blue, bottomRightText, false);
+	const juce::ColourGradient RGBA_blueRedGradient(RGBAColours::blue, topLeftText, RGBAColours::red, bottomRightText, false);
 	constexpr int layerSpread = 2;
 
 	g.setFont(juce::Font(fontHeight / 2));

@@ -20,7 +20,22 @@
       <FILE id="l2RGN5" name="WaveGen.h" compile="0" resource="0" file="Source/RGBA Processing/WaveGen.h"/>
     </GROUP>
     <GROUP id="{29D5494E-B5FF-D071-435D-E23EBCE6012D}" name="RGBA GUI">
-      <GROUP id="{017159C2-7294-21E4-C820-C38A49576869}" name="Images">
+      <GROUP id="{BFB9D406-CFE3-CC05-BD43-CDFE419B203E}" name="RGBAColours">
+        <FILE id="hryHGN" name="RGBAColourGradient.cpp" compile="1" resource="0"
+              file="Source/RGBA GUI/RGBAColourGradient.cpp"/>
+        <FILE id="tmaTUz" name="RGBAColourGradient.h" compile="0" resource="0"
+              file="Source/RGBA GUI/RGBAColourGradient.h"/>
+        <FILE id="ZT5o9q" name="RGBAColours.h" compile="1" resource="0" file="Source/RGBA GUI/RGBAColours.h"/>
+      </GROUP>
+      <GROUP id="{017159C2-7294-21E4-C820-C38A49576869}" name="Binary Assets">
+        <GROUP id="{F3640F8F-925F-EDC5-5AC9-8781BA59195A}" name="Typefaces">
+          <FILE id="E1WSwW" name="DYMAXION.TTF" compile="0" resource="1" file="Fonts/DYMAXION.TTF"/>
+          <FILE id="KisxQ5" name="Park Lane NF.ttf" compile="0" resource="1"
+                file="Fonts/Park Lane NF.ttf"/>
+          <FILE id="pHKDs4" name="PressStart2P-Regular.ttf" compile="0" resource="1"
+                file="Fonts/PressStart2P-Regular.ttf"/>
+          <FILE id="SEuriP" name="retro.ttf" compile="0" resource="1" file="Fonts/retro.ttf"/>
+        </GROUP>
         <GROUP id="{A200B156-DA0F-043A-1572-7442197ACA31}" name="Sliders">
           <FILE id="YmT4bv" name="RadialSliderAsset.png" compile="0" resource="1"
                 file="Image Assets/Sliders/RadialSliderAsset.png"/>
@@ -53,13 +68,8 @@
         <FILE id="RYSv1O" name="RGBAVerticalSlider.h" compile="0" resource="0"
               file="Source/RGBA GUI/Sliders/RGBAVerticalSlider.h"/>
       </GROUP>
-      <GROUP id="{12DB267A-96A5-81EB-D4C1-51BD5AFE2F65}" name="Fonts">
-        <FILE id="E1WSwW" name="DYMAXION.TTF" compile="0" resource="1" file="Fonts/DYMAXION.TTF"/>
-        <FILE id="KisxQ5" name="Park Lane NF.ttf" compile="0" resource="1"
-              file="Fonts/Park Lane NF.ttf"/>
-        <FILE id="pHKDs4" name="PressStart2P-Regular.ttf" compile="0" resource="1"
-              file="Fonts/PressStart2P-Regular.ttf"/>
-        <FILE id="SEuriP" name="retro.ttf" compile="0" resource="1" file="Fonts/retro.ttf"/>
+      <GROUP id="{12DB267A-96A5-81EB-D4C1-51BD5AFE2F65}" name="RGBA Fonts">
+        <FILE id="EytSAN" name="Fonts.h" compile="1" resource="0" file="Source/RGBA GUI/Fonts.h"/>
       </GROUP>
       <FILE id="yiHI0t" name="RGBAWaveDisplay.cpp" compile="1" resource="0"
             file="Source/RGBA GUI/RGBAWaveDisplay.cpp"/>
