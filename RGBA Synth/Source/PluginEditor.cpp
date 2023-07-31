@@ -18,7 +18,10 @@ RGBASynthAudioProcessorEditor::RGBASynthAudioProcessorEditor(RGBASynthAudioProce
 	swtLevelSlider(juce::Colours::red),
 	sawLevelSlider(juce::Colours::green),
 	sqrLevelSlider(juce::Colours::blue),
-	detuneAmountSlider(juce::Colours::purple)
+	detuneAmountSlider(juce::Colours::lightpink),
+	swtPhaseSlider(juce::Colours::red),
+	sawPhaseSlider(juce::Colours::green),
+	sqrPhaseSlider(juce::Colours::blue)
 
 {
 	setSize(958, 564);
@@ -79,14 +82,14 @@ RGBASynthAudioProcessorEditor::RGBASynthAudioProcessorEditor(RGBASynthAudioProce
 	};
 	swtPhaseAttatchment.reset(new SliderAttachment(editorApvts, "swtPhase", swtPhaseSlider));
 
-	//addAndMakeVisible(sawPhaseSlider);
+	addAndMakeVisible(sawPhaseSlider);
 	sawPhaseSlider.onValueChange = [this] {
 		WaveGen::setSawPhase(sawPhaseSlider.getValue());
 		waveDisplay.repaint();
 	};
 	sawPhaseAttatchment.reset(new SliderAttachment(editorApvts, "sawPhase", sawPhaseSlider));
 
-	//addAndMakeVisible(sqrPhaseSlider);
+	addAndMakeVisible(sqrPhaseSlider);
 	sqrPhaseSlider.onValueChange = [this] {
 		WaveGen::setSqrPhase(sqrPhaseSlider.getValue());
 		waveDisplay.repaint();
@@ -96,19 +99,11 @@ RGBASynthAudioProcessorEditor::RGBASynthAudioProcessorEditor(RGBASynthAudioProce
 
 }
 
-RGBASynthAudioProcessorEditor::~RGBASynthAudioProcessorEditor()
-{
-
-}
+RGBASynthAudioProcessorEditor::~RGBASynthAudioProcessorEditor(){}
 
 //==============================================================================
 void RGBASynthAudioProcessorEditor::paint(juce::Graphics& g)
 {
-
-	int lightThreshold = 210;
-
-
-
 	const juce::Image colorWave = juce::ImageCache::getFromMemory(BinaryData::RGBA_Synth_png, BinaryData::RGBA_Synth_pngSize);
 	const juce::Rectangle<float> fullScreen = juce::Rectangle<float>(0, 0, getWidth(), getHeight());
 	g.drawImage(colorWave, fullScreen, juce::RectanglePlacement::fillDestination);
@@ -155,24 +150,12 @@ void RGBASynthAudioProcessorEditor::resized()
 	juce::Rectangle<int> radialSliderRect(indentLeft, titleHeight + sliderHeight, sliderWidth, sliderWidth);
 	swtPhaseSlider.setBounds(radialSliderRect);
 
-	//juce::Rectangle<int> phaseRect(keyboardWidth, rgbSliderHieght);
+	radialSliderRect.setPosition(indentLeft + sliderWidth * 2, titleHeight + sliderHeight);
+	sawPhaseSlider.setBounds(radialSliderRect);
 
-	//phaseRect.setPosition(leftSideOfWaveDisplay - keyboardWidth, bottomOfWaveDisplay);
-	//swtPhaseSlider.setBounds(phaseRect);
+	radialSliderRect.setPosition(indentLeft + sliderWidth * 4, titleHeight + sliderHeight);
+	sqrPhaseSlider.setBounds(radialSliderRect);
 
-	//phaseRect.setPosition(leftSideOfWaveDisplay - keyboardWidth, bottomOfWaveDisplay + rgbSliderHieght);
-	//sawPhaseSlider.setBounds(phaseRect);
-
-	//phaseRect.setPosition(leftSideOfWaveDisplay - keyboardWidth, bottomOfWaveDisplay + 2 * rgbSliderHieght);
-	//sqrPhaseSlider.setBounds(phaseRect);
-
-	//phaseRect.setPosition(leftSideOfWaveDisplay - keyboardWidth, bottomOfWaveDisplay + 3 * rgbSliderHieght);
-	//detuneAmountSlider.setBounds(phaseRect);
-
-
-	//Keyboard Component
-	//keyboardComponent.setBounds(leftSideOfWaveDisplay - keyboardWidth, titleHeight, keyboardWidth, waveDisplayHeight);
-
-
+	//Wave Display
 	waveDisplay.setBounds(leftSideOfWaveDisplay, titleHeight, waveDisplayWidth, waveDisplayHeight);
 }

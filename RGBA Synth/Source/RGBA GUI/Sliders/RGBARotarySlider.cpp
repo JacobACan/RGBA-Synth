@@ -18,12 +18,13 @@ public:
 
 	void drawRotarySlider(juce::Graphics& g, int x, int y, int width, int height, float sliderPosProportional, float rotaryStartAngle, float rotaryEndAngle, juce::Slider& slider) override
 	{
-
+		DBG("Rotary prop : " << sliderPosProportional << " Start : " << rotaryStartAngle << " End : " << rotaryEndAngle);
 		const juce::Rectangle<float> sliderBounds(x, y, width, height);
 		const juce::ColourGradient sliderColorGradient(this->rotarySliderColour, x, y, juce::Colours::grey, width, height, false);
 		const juce::Image radialSlider(juce::ImageCache::getFromMemory(BinaryData::RadialSliderAsset_png, BinaryData::RadialSliderAsset_pngSize));
-
+		g.setGradientFill(sliderColorGradient);
 		g.fillEllipse(sliderBounds);
+		g.addTransform(juce::AffineTransform::rotation((rotaryEndAngle - rotaryStartAngle) * sliderPosProportional, static_cast<float>(width) / 2, static_cast<float>(height) / 2));
 		g.drawImage(radialSlider, sliderBounds, juce::RectanglePlacement::stretchToFit);
 	};
 

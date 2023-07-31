@@ -44,15 +44,10 @@ public:
 			const float minimumSliderPos = (0 + getSliderThumbRadius(slider));
 			const float totalsliderdistance = (float)height;
 			const float calculatedBackgroundColorValue = maxrange - ((maxrange) / (totalsliderdistance)) * (sliderPos - minimumSliderPos);
-			juce::Colour calculatedbackgroundcolor;
-
-			coloursEqual(this->thumbColor, juce::Colours::red)
-				? calculatedbackgroundcolor = juce::Colour(calculatedBackgroundColorValue, 0, 0)
-				: coloursEqual(this->thumbColor, juce::Colours::green)
-				? calculatedbackgroundcolor = juce::Colour(0, calculatedBackgroundColorValue, 0)
-				: coloursEqual(this->thumbColor, juce::Colours::blue)
-				? calculatedbackgroundcolor = juce::Colour(0, 0, calculatedBackgroundColorValue)
-				: calculatedbackgroundcolor = juce::Colour(calculatedBackgroundColorValue, calculatedBackgroundColorValue, calculatedBackgroundColorValue);
+			const int calculatedSliderColorRed = (thumbColor.getRed() / maxrange) * calculatedBackgroundColorValue;
+			const int calculatedSliderColorGreen = (thumbColor.getGreen() / maxrange) * calculatedBackgroundColorValue;
+			const int calculatedSliderColorBlue = (thumbColor.getBlue() / maxrange) * calculatedBackgroundColorValue;
+			juce::Colour calculatedbackgroundcolor = juce::Colour(calculatedSliderColorRed, calculatedSliderColorGreen, calculatedSliderColorBlue);
 
 			juce::ColourGradient calcColourGradient(juce::Colours::black, 0, 0, calculatedbackgroundcolor, 0, sliderPos + 50, false);
 			g.setGradientFill(calcColourGradient);
