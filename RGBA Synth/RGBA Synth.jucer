@@ -54,8 +54,12 @@
               file="Source/RGBA GUI/Sliders/RGBAVerticalSlider.h"/>
       </GROUP>
       <GROUP id="{12DB267A-96A5-81EB-D4C1-51BD5AFE2F65}" name="Fonts">
+        <FILE id="E1WSwW" name="DYMAXION.TTF" compile="0" resource="1" file="Fonts/DYMAXION.TTF"/>
+        <FILE id="KisxQ5" name="Park Lane NF.ttf" compile="0" resource="1"
+              file="Fonts/Park Lane NF.ttf"/>
         <FILE id="pHKDs4" name="PressStart2P-Regular.ttf" compile="0" resource="1"
               file="Fonts/PressStart2P-Regular.ttf"/>
+        <FILE id="SEuriP" name="retro.ttf" compile="0" resource="1" file="Fonts/retro.ttf"/>
       </GROUP>
       <FILE id="yiHI0t" name="RGBAWaveDisplay.cpp" compile="1" resource="0"
             file="Source/RGBA GUI/RGBAWaveDisplay.cpp"/>

@@ -12,13 +12,16 @@
 #include "RGBAWaveDisplay.h"
 
 RGBAWaveDisplay::RGBAWaveDisplay(juce::AudioProcessorValueTreeState& apvts)
-	: waveDisplayApvts(apvts)
+	: waveDisplayApvts(apvts),
+	maxWaveHeight(0)
 {
 	targetLevel = waveDisplayApvts.getRawParameterValue("targetLevel");
 
 	swtLevel = waveDisplayApvts.getRawParameterValue("swtLevel");
 	sawLevel = waveDisplayApvts.getRawParameterValue("sawLevel");
 	sqrLevel = waveDisplayApvts.getRawParameterValue("sqrLevel");
+
+	startTimer(100);
 }
 
 RGBAWaveDisplay::~RGBAWaveDisplay() {
@@ -150,4 +153,28 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
 
 	juce::Image waveDisplayBorder = juce::ImageCache::getFromMemory(BinaryData::RGBA_Synth_Display_Border_png, BinaryData::RGBA_Synth_Display_Border_pngSize);
 	g.drawImage(waveDisplayBorder, bounds, juce::RectanglePlacement::stretchToFit);
+}
+
+void RGBAWaveDisplay::updatePreviousValues()
+{
+	prevSawLevel = sawLevel->load();
+	prevSwtLevel = swtLevel->load();
+	prevSqrLevel = sqrLevel->load();
+}
+
+bool RGBAWaveDisplay::previousValuesDifferentFromCurrentValues()
+{
+	return swtLevel->load() != prevSwtLevel || sawLevel->load() != prevSawLevel || sqrLevel->load() != prevSqrLevel;
+}
+
+
+
+
+void RGBAWaveDisplay::timerCallback()
+{
+	if (previousValuesDifferentFromCurrentValues())
+		repaint();
+
+
+	updatePreviousValues();
 }

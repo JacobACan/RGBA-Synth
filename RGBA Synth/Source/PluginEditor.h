@@ -31,6 +31,7 @@ public:
 	void resized() override;
 
 private:
+
 	juce::AudioProcessorValueTreeState& editorApvts;
 
 	juce::MidiKeyboardComponent keyboardComponent;
@@ -59,6 +60,8 @@ private:
 
 	RGBAVerticalSlider detuneAmountSlider;
 	std::unique_ptr<SliderAttachment> detuneAmountAttatchment;
+
+
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RGBASynthAudioProcessorEditor)
 };

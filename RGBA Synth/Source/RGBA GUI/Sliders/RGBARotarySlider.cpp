@@ -18,7 +18,6 @@ public:
 
 	void drawRotarySlider(juce::Graphics& g, int x, int y, int width, int height, float sliderPosProportional, float rotaryStartAngle, float rotaryEndAngle, juce::Slider& slider) override
 	{
-		DBG("Rotary prop : " << sliderPosProportional << " Start : " << rotaryStartAngle << " End : " << rotaryEndAngle);
 		const juce::Rectangle<float> sliderBounds(x, y, width, height);
 		const juce::ColourGradient sliderColorGradient(this->rotarySliderColour, x, y, juce::Colours::grey, width, height, false);
 		const juce::Image radialSlider(juce::ImageCache::getFromMemory(BinaryData::RadialSliderAsset_png, BinaryData::RadialSliderAsset_pngSize));
@@ -35,13 +34,13 @@ private:
 
 RGBARotarySlider::RGBARotarySlider()
 {
-	setSliderStyle(juce::Slider::Rotary);
+	setSliderStyle(juce::Slider::RotaryVerticalDrag);
 	setLookAndFeel(new RGBARotaryLookAndFeel(juce::Colours::white));
 }
 
 
 RGBARotarySlider::RGBARotarySlider(juce::Colour thumbColor)
 {
-	setSliderStyle(juce::Slider::Rotary);
+	setSliderStyle(juce::Slider::RotaryVerticalDrag);
 	setLookAndFeel(new RGBARotaryLookAndFeel(thumbColor));
 }

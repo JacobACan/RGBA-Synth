@@ -25,8 +25,7 @@ RGBASynthAudioProcessorEditor::RGBASynthAudioProcessorEditor(RGBASynthAudioProce
 
 {
 	setSize(958, 564);
-	backgroundColor = juce::Colour::fromFloatRGBA(0, 0, 0, 0);
-	static const juce::Typeface::Ptr pressStart2P{ juce::Typeface::createSystemTypefaceFor(BinaryData::PressStart2PRegular_ttf, BinaryData::PressStart2PRegular_ttfSize) };
+	static const juce::Typeface::Ptr pressStart2P{ juce::Typeface::createSystemTypefaceFor(BinaryData::Park_Lane_NF_ttf, BinaryData::Park_Lane_NF_ttfSize) };
 	getLookAndFeel().setDefaultSansSerifTypeface(pressStart2P);
 
 
@@ -36,38 +35,18 @@ RGBASynthAudioProcessorEditor::RGBASynthAudioProcessorEditor(RGBASynthAudioProce
 
 	// Alpha ==============================================
 	addAndMakeVisible(targetLevelSlider);
-	targetLevelSlider.onValueChange = [this]
-	{
-		backgroundColor = juce::Colour::fromRGBA(swtLevelSlider.getValue() * 255, sawLevelSlider.getValue() * 255, sqrLevelSlider.getValue() * 255, targetLevelSlider.getValue() * 255);
-		repaint();
-	};
 	targetLevelAttatchment.reset(new SliderAttachment(editorApvts, "targetLevel", targetLevelSlider));
 
 	// Red =================================================
 	addAndMakeVisible(swtLevelSlider);
-	swtLevelSlider.onValueChange = [this]
-	{
-		backgroundColor = juce::Colour::fromRGBA(swtLevelSlider.getValue() * 255, sawLevelSlider.getValue() * 255, sqrLevelSlider.getValue() * 255, targetLevelSlider.getValue() * 255);
-		repaint();
-	};
 	swtLevelAttatchment.reset(new SliderAttachment(editorApvts, "swtLevel", swtLevelSlider));
 
 	// Green =================================================
 	addAndMakeVisible(sawLevelSlider);
-	sawLevelSlider.onValueChange = [this]
-	{
-		backgroundColor = juce::Colour::fromRGBA(swtLevelSlider.getValue() * 255, sawLevelSlider.getValue() * 255, sqrLevelSlider.getValue() * 255, targetLevelSlider.getValue() * 255);
-		repaint();
-	};
 	sawLevelAttatchment.reset(new SliderAttachment(editorApvts, "sawLevel", sawLevelSlider));
 
 	// Blue =================================================
 	addAndMakeVisible(sqrLevelSlider);
-	sqrLevelSlider.onValueChange = [this]
-	{
-		backgroundColor = juce::Colour::fromRGBA(swtLevelSlider.getValue() * 255, sawLevelSlider.getValue() * 255, sqrLevelSlider.getValue() * 255, targetLevelSlider.getValue() * 255);
-		repaint();
-	};
 	sqrLevelAttatchment.reset(new SliderAttachment(editorApvts, "sqrLevel", sqrLevelSlider));
 
 	// Detune ================================================
@@ -99,14 +78,55 @@ RGBASynthAudioProcessorEditor::RGBASynthAudioProcessorEditor(RGBASynthAudioProce
 
 }
 
-RGBASynthAudioProcessorEditor::~RGBASynthAudioProcessorEditor(){}
+RGBASynthAudioProcessorEditor::~RGBASynthAudioProcessorEditor() {}
 
 //==============================================================================
 void RGBASynthAudioProcessorEditor::paint(juce::Graphics& g)
 {
-	const juce::Image colorWave = juce::ImageCache::getFromMemory(BinaryData::RGBA_Synth_png, BinaryData::RGBA_Synth_pngSize);
-	const juce::Rectangle<float> fullScreen = juce::Rectangle<float>(0, 0, getWidth(), getHeight());
-	g.drawImage(colorWave, fullScreen, juce::RectanglePlacement::fillDestination);
+	//TODO : Make a RGBA_colours and RGBA_Fonts Class for easier access and separation of concerns
+	juce::Colour RGBA_red(250, 105, 130);
+	juce::Colour RGBA_green(150, 240, 110);
+	juce::Colour RGBA_blue(110, 200, 250);
+	juce::Colour RGBA_tan(255, 239, 197);
+
+	/*juce::ColourGradient backgroundGradient1(RGBA_red, 0, 0, RGBA_green, getWidth() / 2, 0, false);
+	juce::Rectangle<float> half1(0, 0, getWidth() / 2, getHeight());
+	g.setGradientFill(backgroundGradient1);
+	g.fillRect(half1);
+
+	juce::ColourGradient backgroundGradient2(RGBA_green, getWidth() / 2, 0, RGBA_blue, getWidth(), 0, false);
+	juce::Rectangle<float> half2(getWidth() / 2, 0, getWidth(), getHeight());
+	g.setGradientFill(backgroundGradient2);
+	g.fillRect(half2);*/
+
+	const int width = getWidth();
+	const int height = getHeight();
+
+	g.setGradientFill(juce::ColourGradient(RGBA_tan, 0, 0, RGBA_tan.darker(), 0, height, false));
+	g.fillRect(0, 0, getWidth(), getHeight());
+
+	constexpr int fontHeight = 175;
+
+	const juce::Point<float> topLeftText(0, fontHeight / 4);
+	const juce::Point<float> bottomRightText(width, height);
+	juce::Rectangle<float> textBounds(topLeftText, bottomRightText);
+
+	const juce::ColourGradient RGBA_redGreenGradient(RGBA_red, topLeftText, RGBA_green, bottomRightText, false);
+	const juce::ColourGradient RGBA_greenBlueGradient(RGBA_green, topLeftText, RGBA_blue, bottomRightText, false);
+	const juce::ColourGradient RGBA_blueRedGradient(RGBA_blue, topLeftText, RGBA_red, bottomRightText, false);
+	constexpr int layerSpread = 2;
+
+	g.setFont(juce::Font(fontHeight / 2));
+
+	g.setGradientFill(RGBA_blueRedGradient);
+	textBounds.setPosition(textBounds.getPosition().getX(), textBounds.getPosition().getY() - layerSpread * 4);
+	g.drawText("Rgba Synth", textBounds, juce::Justification::centredTop);
+	g.setGradientFill(RGBA_greenBlueGradient);
+	textBounds.setPosition(textBounds.getPosition().getX() - layerSpread, textBounds.getPosition().getY() - layerSpread);
+	g.drawText("Rgba Synth", textBounds, juce::Justification::centredTop);
+	g.setGradientFill(RGBA_redGreenGradient);
+	textBounds.setPosition(textBounds.getPosition().getX() - layerSpread, textBounds.getPosition().getY() - layerSpread);
+	g.drawText("Rgba Synth", textBounds, juce::Justification::centredTop);
 }
 
 void RGBASynthAudioProcessorEditor::resized()
