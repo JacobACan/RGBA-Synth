@@ -43,19 +43,23 @@ private:
 
 	juce::Colour backgroundColor;
 
+	juce::Label targetLevelLabel;
 	RGBAVerticalSlider targetLevelSlider;
 	std::unique_ptr<SliderAttachment> targetLevelAttatchment;
 
+	juce::Label swtLevelLabel;
 	RGBAVerticalSlider swtLevelSlider;
 	std::unique_ptr<SliderAttachment> swtLevelAttatchment;
 	RGBARotarySlider swtPhaseSlider;
 	std::unique_ptr<SliderAttachment> swtPhaseAttatchment;
 
+	juce::Label sawLevelLabel;
 	RGBAVerticalSlider sawLevelSlider;
 	std::unique_ptr<SliderAttachment> sawLevelAttatchment;
 	RGBARotarySlider sawPhaseSlider;
 	std::unique_ptr<SliderAttachment> sawPhaseAttatchment;
 
+	juce::Label sqrLevelLabel;
 	RGBAVerticalSlider sqrLevelSlider;
 	std::unique_ptr<SliderAttachment> sqrLevelAttatchment;
 	RGBARotarySlider sqrPhaseSlider;
@@ -63,7 +67,6 @@ private:
 
 	RGBAVerticalSlider detuneAmountSlider;
 	std::unique_ptr<SliderAttachment> detuneAmountAttatchment;
-
 
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RGBASynthAudioProcessorEditor)

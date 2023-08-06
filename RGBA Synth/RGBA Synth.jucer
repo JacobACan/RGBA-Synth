@@ -3,7 +3,7 @@
 <JUCERPROJECT id="KMBrie" name="RGBA Synth" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
               pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
-              companyName="TechnologyPlayground">
+              companyName="Visiound" companyWebsite="www.jacobcanedy.com">
   <MAINGROUP id="Zvyqkt" name="RGBA Synth">
     <GROUP id="{92F803E2-DBEC-7AEB-629B-D7B9E4073310}" name="RGBA Processing">
       <GROUP id="{EEF23D81-75F6-6E5C-E629-2C97E5D7A3C7}" name="Synth">

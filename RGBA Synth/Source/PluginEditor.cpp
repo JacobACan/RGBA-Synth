@@ -23,12 +23,9 @@ RGBASynthAudioProcessorEditor::RGBASynthAudioProcessorEditor(RGBASynthAudioProce
 	swtPhaseSlider(RGBAColours::red),
 	sawPhaseSlider(RGBAColours::green),
 	sqrPhaseSlider(RGBAColours::blue)
-
 {
 	setSize(958, 564);
 	getLookAndFeel().setDefaultSansSerifTypeface(RGBAFonts::parkLane);
-
-
 
 	addAndMakeVisible(waveDisplay);
 	//addAndMakeVisible(keyboardComponent);
@@ -36,18 +33,31 @@ RGBASynthAudioProcessorEditor::RGBASynthAudioProcessorEditor(RGBASynthAudioProce
 	// Alpha ==============================================
 	addAndMakeVisible(targetLevelSlider);
 	targetLevelAttatchment.reset(new SliderAttachment(editorApvts, "targetLevel", targetLevelSlider));
+	addAndMakeVisible(targetLevelLabel);
+	targetLevelLabel.setText("Alpha", juce::dontSendNotification);
+	targetLevelLabel.setLookAndFeel(new RGBALinearSliderLookAndFeel(RGBAColours::black));
+	targetLevelLabel.attachToComponent(&targetLevelSlider, false);
 
 	// Red =================================================
 	addAndMakeVisible(swtLevelSlider);
 	swtLevelAttatchment.reset(new SliderAttachment(editorApvts, "swtLevel", swtLevelSlider));
+	swtLevelLabel.setText("Red", juce::dontSendNotification);
+	swtLevelLabel.setLookAndFeel(new RGBALinearSliderLookAndFeel(swtLevelSlider.thumbColor));
+	swtLevelLabel.attachToComponent(&swtLevelSlider, false);
 
 	// Green =================================================
 	addAndMakeVisible(sawLevelSlider);
 	sawLevelAttatchment.reset(new SliderAttachment(editorApvts, "sawLevel", sawLevelSlider));
+	sawLevelLabel.setText("Green", juce::dontSendNotification);
+	sawLevelLabel.setLookAndFeel(new RGBALinearSliderLookAndFeel(sawLevelSlider.thumbColor));
+	sawLevelLabel.attachToComponent(&sawLevelSlider, false);
 
 	// Blue =================================================
 	addAndMakeVisible(sqrLevelSlider);
 	sqrLevelAttatchment.reset(new SliderAttachment(editorApvts, "sqrLevel", sqrLevelSlider));
+	sqrLevelLabel.setText("Blue", juce::dontSendNotification);
+	sqrLevelLabel.setLookAndFeel(new RGBALinearSliderLookAndFeel(sqrLevelSlider.thumbColor));
+	sqrLevelLabel.attachToComponent(&sqrLevelSlider, false);
 
 	// Detune ================================================
 	addAndMakeVisible(detuneAmountSlider);

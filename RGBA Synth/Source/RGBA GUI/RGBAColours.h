@@ -18,4 +18,5 @@ namespace RGBAColours
 	const juce::Colour green(150, 240, 110);
 	const juce::Colour blue(110, 200, 250);
 	const juce::Colour tan(255, 239, 197);
+	const juce::Colour black(15, 14, 14);
 }
