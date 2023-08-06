@@ -25,3 +25,5 @@ JUCE Build
 ## Updates
 ### 1-7-2023 (version 0.5.2)
 - Base framework for application created.
+### 8-6-2023 
+- GUI and Synth Added
