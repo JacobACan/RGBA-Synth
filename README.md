@@ -1,5 +1,6 @@
 # RGBA Synth Version (0.9)
-![image](https://github.com/JacobACan/RGBA-Synth/assets/89418437/7255c63f-98ce-4285-809c-037533e177e4)
+![image](https://github.com/JacobACan/RGBA-Synth/assets/89418437/faed74b5-cf7f-4419-a362-b6ed8236e779)
+
 
 
 
