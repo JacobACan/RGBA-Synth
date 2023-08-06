@@ -10,13 +10,13 @@ Creatively mapping color to sound through different algorithm presets.
 
 Demo : N/A
 
-More Products and Music : [JAC Music](https://jacobacan.github.io/) 
+More Products and Music : [JAC Music](www.jacobcanedy.com) 
 
 ## Installation
 Download : N/A
 
 JUCE Build
- - Download  JUCE Projucer
+ - Download JUCE Projucer
  - Open .projucer file with JUCE Projucer
 
 ## References
