@@ -11,6 +11,7 @@ More Products and Music : [JAC Music](www.jacobcanedy.com)
 
 ## Installation
 VST3 Download : N/A
+
 Standalone Download : N/A
 
 JUCE Build
@@ -27,5 +28,5 @@ This plugin is in beta, and we are eager to hear feedback on bugs and ideas for 
 ## Updates
 ### 1-7-2023 (version 0.5.2)
 - Base framework for application created.
-### 8-6-2023 
+### 8-6-2023 (version 0.9.0) Beta
 - GUI and Synth Added
