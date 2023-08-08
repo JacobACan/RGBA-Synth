@@ -7,7 +7,7 @@ RGBA Synth allows you to create a retro feeling synth sound by combining togethe
 
 Demo : N/A
 
-More Products and Music : [JAC Music](www.jacobcanedy.com) 
+More Products and Music : www.jacobcanedy.com
 
 ## Installation
 VST3 Download : N/A
