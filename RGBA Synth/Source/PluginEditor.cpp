@@ -110,7 +110,8 @@ void RGBASynthAudioProcessorEditor::paint(juce::Graphics& g)
 	const int height = getHeight();
 
 	g.setGradientFill(juce::ColourGradient(RGBAColours::tan, 0, 0, RGBAColours::tan.darker(), 0, height, false));
-	g.fillRect(0, 0, getWidth(), getHeight());
+	g.setOpacity(1);
+	g.fillRect(0, 0, width, height);
 
 	constexpr int fontHeight = 175;
 

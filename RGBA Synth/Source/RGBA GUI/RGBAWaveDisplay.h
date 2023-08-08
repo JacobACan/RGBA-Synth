@@ -35,8 +35,10 @@ private:
 	float prevSwtLevel;
 	float prevSawLevel;
 	float prevSqrLevel;
+	float prevTargetLevel;
 	void updatePreviousValues();
 	bool previousValuesDifferentFromCurrentValues();
 
 	float maxWaveHeight;
+	const int waveHeight;
 };

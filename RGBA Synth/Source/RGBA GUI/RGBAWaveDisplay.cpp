@@ -13,7 +13,8 @@
 
 RGBAWaveDisplay::RGBAWaveDisplay(juce::AudioProcessorValueTreeState& apvts)
 	: waveDisplayApvts(apvts),
-	maxWaveHeight(0)
+	maxWaveHeight(0),
+	waveHeight(2)
 {
 	targetLevel = waveDisplayApvts.getRawParameterValue("targetLevel");
 
@@ -21,7 +22,7 @@ RGBAWaveDisplay::RGBAWaveDisplay(juce::AudioProcessorValueTreeState& apvts)
 	sawLevel = waveDisplayApvts.getRawParameterValue("sawLevel");
 	sqrLevel = waveDisplayApvts.getRawParameterValue("sqrLevel");
 
-	startTimer(100);
+	startTimer(50);
 }
 
 RGBAWaveDisplay::~RGBAWaveDisplay() {
@@ -38,7 +39,7 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
 
 	maxWaveHeight = 1 + swtLevel->load() + sawLevel->load() + sqrLevel->load();
 
-	float resolution = 128;
+	float resolution = 64;
 	float widthToRadiansFactor = juce::MathConstants<float>::twoPi / getWidth();
 	float resolutionFactor = getWidth() / resolution;
 	float amplitudeToRadians = juce::MathConstants<float>::twoPi / getHeight();
@@ -93,7 +94,7 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
 		z += zInterval;
 
 
-		yPosAmplitudeSwt = (WaveGen::swt(xPosRadiads) * swtLevel->load() + offsetAmplitudeY);
+		yPosAmplitudeSwt = (WaveGen::swt(xPosRadiads) * swtLevel->load() * targetLevel->load() * waveHeight + offsetAmplitudeY);
 		float yPos = (yPosAmplitudeSwt / amplitudeToRadians);
 		g.setColour(red);
 		juce::Line<float> swtLine(prevXSwt + z, prevYSwt + z, xPos + z, yPos + z);
@@ -103,7 +104,7 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
 
 
 		z += zInterval;
-		yPosAmplitudeSaw = (WaveGen::saw(xPosRadiads) * sawLevel->load() + offsetAmplitudeY);
+		yPosAmplitudeSaw = (WaveGen::saw(xPosRadiads) * sawLevel->load() * targetLevel->load() * waveHeight + offsetAmplitudeY);
 		yPos = (yPosAmplitudeSaw / amplitudeToRadians);
 		juce::Line<float> sawLine(prevXSaw + z, prevYSaw + z, xPos + z, yPos + z);
 		greenPath.addLineSegment(sawLine, thickness);
@@ -111,7 +112,7 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
 		prevYSaw = yPos;
 
 		z += zInterval;
-		yPosAmplitudeSqr = (WaveGen::sqr(xPosRadiads) * sqrLevel->load() + offsetAmplitudeY);
+		yPosAmplitudeSqr = (WaveGen::sqr(xPosRadiads) * sqrLevel->load() * targetLevel->load() * waveHeight + offsetAmplitudeY);
 		yPos = (yPosAmplitudeSqr / amplitudeToRadians);
 		juce::Line<float> sqrLine(prevXSqr + z, prevYSqr + z, xPos + z, yPos + z);
 		bluePath.addLineSegment(sqrLine, thickness);
@@ -119,11 +120,11 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
 		prevYSqr = yPos;
 
 		z += zInterval;
-		yPosAmplitudeResult = (std::sin(xPosRadiads)
+		yPosAmplitudeResult = ((std::sin(xPosRadiads)
 			+ (WaveGen::sqr(xPosRadiads) * sqrLevel->load())
 			+ (WaveGen::saw(xPosRadiads) * sawLevel->load())
 			+ (WaveGen::swt(xPosRadiads) * swtLevel->load()))
-			/ maxWaveHeight + offsetAmplitudeY;
+			/ maxWaveHeight * targetLevel->load() * waveHeight + offsetAmplitudeY);
 		yPos = (yPosAmplitudeResult / amplitudeToRadians);
 		juce::Line<float> resultLine(prevXResult + z, prevYResult + z, xPos + z, yPos + z);
 		resultPath.addLineSegment(resultLine, thickness);
@@ -160,11 +161,12 @@ void RGBAWaveDisplay::updatePreviousValues()
 	prevSawLevel = sawLevel->load();
 	prevSwtLevel = swtLevel->load();
 	prevSqrLevel = sqrLevel->load();
+	prevTargetLevel = targetLevel->load();
 }
 
 bool RGBAWaveDisplay::previousValuesDifferentFromCurrentValues()
 {
-	return swtLevel->load() != prevSwtLevel || sawLevel->load() != prevSawLevel || sqrLevel->load() != prevSqrLevel;
+	return swtLevel->load() != prevSwtLevel || sawLevel->load() != prevSawLevel || sqrLevel->load() != prevSqrLevel || targetLevel->load() != prevTargetLevel;
 }
 
 
