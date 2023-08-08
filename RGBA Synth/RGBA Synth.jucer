@@ -55,6 +55,8 @@
                 file="Image Assets/Keyboard/RGBA_Synth_Full_Keyboard.png"/>
         </GROUP>
         <GROUP id="{745BCD24-A59B-2BA2-A8E9-1B95EC7D18AC}" name="Background">
+          <FILE id="GIJ0YS" name="bruce5122_video_game_scenery_2d_pixel_art_retro_like_a_pokemon__b2b5fb54-5d5d-44e3-bb19-25365e74d17b.png"
+                compile="0" resource="1" file="Image Assets/Background/bruce5122_video_game_scenery_2d_pixel_art_retro_like_a_pokemon__b2b5fb54-5d5d-44e3-bb19-25365e74d17b.png"/>
           <FILE id="afeMrM" name="RGBA_Synth.png" compile="0" resource="1" file="Image Assets/Background/RGBA_Synth.png"/>
         </GROUP>
       </GROUP>
