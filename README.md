@@ -11,8 +11,7 @@ More Products and Music : [JAC Music](www.jacobcanedy.com)
 
 ## Installation
 VST3 Download : N/A
-
-Standalone Download : N/A
+\nStandalone Download : N/A
 
 JUCE Build
  - Download JUCE Projucer
