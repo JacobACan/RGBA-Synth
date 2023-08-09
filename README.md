@@ -10,6 +10,7 @@ Demo : N/A
 More Products and Music : www.jacobcanedy.com
 
 ## Installation
+Navigate to the Download file directories for either the standalone or VST3 versions of the plugin and download the raw file to use in a DAW or Standalone. 
 VST3 Download : https://github.com/JacobACan/RGBA-Synth/blob/main/RGBA%20Synth%20Downloads/RGBA%20Synth.vst3   
 
 Standalone Download : https://github.com/JacobACan/RGBA-Synth/blob/main/RGBA%20Synth%20Downloads/RGBA%20Synth.exe   
