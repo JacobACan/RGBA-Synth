@@ -29,3 +29,4 @@ This plugin is in beta, and we are eager to hear feedback on bugs and ideas for 
 - Base framework for application created.
 ### 8-6-2023 (version 0.9.0) Beta
 - GUI and Synth Added
+- Downloads made publicly available
