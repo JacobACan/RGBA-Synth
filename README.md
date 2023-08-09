@@ -10,8 +10,8 @@ Demo : N/A
 More Products and Music : www.jacobcanedy.com
 
 ## Installation
-VST3 Download : N/A
-\nStandalone Download : N/A
+VST3 Download : https://github.com/JacobACan/RGBA-Synth/blob/main/RGBA%20Synth%20Downloads/RGBA%20Synth.vst3
+\nStandalone Download : https://github.com/JacobACan/RGBA-Synth/blob/main/RGBA%20Synth%20Downloads/RGBA%20Synth.exe
 
 JUCE Build
  - Download JUCE Projucer
