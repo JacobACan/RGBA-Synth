@@ -67,6 +67,7 @@ private:
 
 	RGBAVerticalSlider detuneAmountSlider;
 	std::unique_ptr<SliderAttachment> detuneAmountAttatchment;
+	juce::Label detuneAmountLabel;
 
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RGBASynthAudioProcessorEditor)

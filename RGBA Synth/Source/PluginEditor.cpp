@@ -19,7 +19,7 @@ RGBASynthAudioProcessorEditor::RGBASynthAudioProcessorEditor(RGBASynthAudioProce
 	sawLevelSlider(RGBAColours::green, "Green"),
 	sqrLevelSlider(RGBAColours::blue, "Blue"),
 	targetLevelSlider(juce::Colours::white, "Alpha"),
-	detuneAmountSlider(juce::Colours::lightpink),
+	detuneAmountSlider(juce::Colours::lightpink, "Detune"),
 	swtPhaseSlider(RGBAColours::red),
 	sawPhaseSlider(RGBAColours::green),
 	sqrPhaseSlider(RGBAColours::blue)
@@ -62,6 +62,9 @@ RGBASynthAudioProcessorEditor::RGBASynthAudioProcessorEditor(RGBASynthAudioProce
 	// Detune ================================================
 	addAndMakeVisible(detuneAmountSlider);
 	detuneAmountAttatchment.reset(new SliderAttachment(editorApvts, "detuneAmount", detuneAmountSlider));
+	detuneAmountLabel.setText("Detune", juce::dontSendNotification);
+	detuneAmountLabel.setLookAndFeel(new RGBALinearSliderLookAndFeel(detuneAmountSlider.thumbColor));
+	detuneAmountLabel.attachToComponent(&detuneAmountSlider, false);
 
 	//Phase
 	addAndMakeVisible(swtPhaseSlider);
@@ -93,7 +96,6 @@ RGBASynthAudioProcessorEditor::~RGBASynthAudioProcessorEditor() {}
 //==============================================================================
 void RGBASynthAudioProcessorEditor::paint(juce::Graphics& g)
 {
-	//TODO : Make a RGBA_colours and RGBA_Fonts Class for easier access and separation of concerns
 
 
 	/*juce::ColourGradient backgroundGradient1(RGBA_red, 0, 0, RGBA_green, getWidth() / 2, 0, false);

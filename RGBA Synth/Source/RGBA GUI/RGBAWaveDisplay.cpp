@@ -81,7 +81,10 @@ void RGBAWaveDisplay::paint(juce::Graphics& g)
 	juce::Path resultPath = juce::Path();
 
 	juce::Image waveDisplayBackground = juce::ImageCache::getFromMemory(BinaryData::RGBA_Synth_Display_png, BinaryData::RGBA_Synth_Display_pngSize);
-	g.drawImage(waveDisplayBackground, bounds, juce::RectanglePlacement::stretchToFit);
+	juce::ColourGradient rgbaGradient(juce::Colour::fromFloatRGBA(swtLevel->load(), sawLevel->load(), sqrLevel->load(), .3), bounds.getX(), bounds.getY(), juce::Colour::fromFloatRGBA(swtLevel->load() * .7, sawLevel->load() * .7, sqrLevel->load() * .7, .3), bounds.getHeight(), bounds.getWidth(), false);
+	g.setGradientFill(rgbaGradient);
+	g.fillRoundedRectangle(bounds, 20);
+	//g.drawImage(waveDisplayBackground, bounds, juce::RectanglePlacement::stretchToFit);
 
 
 	for (float i = 0; i <= resolution; i++)
