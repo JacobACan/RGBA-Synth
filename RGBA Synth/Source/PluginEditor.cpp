@@ -25,7 +25,7 @@ RGBASynthAudioProcessorEditor::RGBASynthAudioProcessorEditor(RGBASynthAudioProce
 	sqrPhaseSlider(RGBAColours::blue)
 {
 	setSize(958, 564);
-	getLookAndFeel().setDefaultSansSerifTypeface(RGBAFonts::parkLane);
+	getLookAndFeel().setDefaultSansSerifTypeface(RGBAFonts::retro);
 
 	addAndMakeVisible(waveDisplay);
 	//addAndMakeVisible(keyboardComponent);

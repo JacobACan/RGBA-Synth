@@ -92,7 +92,8 @@
   <EXPORTFORMATS>
     <VS2022 targetFolder="Builds/VisualStudio2022">
       <CONFIGURATIONS>
-        <CONFIGURATION isDebug="1" name="Debug" targetName="RGBA Synth" postbuildCommand="xcopy /E /Y &quot;C:\Jacob\AudioPlugins\personal\RGBA-Synth\RGBA Synth\Builds\VisualStudio2022\x64\Debug\VST3\RGBA Synth.vst3&quot; &quot;C:\Program Files\Common Files\VST3&quot;"/>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="RGBA Synth" postbuildCommand="xcopy /E /Y &quot;C:\Jacob\AudioPlugins\personal\RGBA-Synth\RGBA Synth\Builds\VisualStudio2022\x64\Debug\VST3\RGBA Synth.vst3\Contents\x86_64-win\RGBA Synth.vst3&quot; &quot;C:\Program Files\Common Files\VST3&quot;&#10;xcopy /E /Y &quot;C:\Jacob\AudioPlugins\personal\RGBA-Synth\RGBA Synth\Builds\VisualStudio2022\x64\Debug\VST3\RGBA Synth.vst3\Contents\x86_64-win\RGBA Synth.vst3&quot; &quot;C:\Jacob\AudioPlugins\personal\RGBA-Synth\RGBA Synth Downloads&quot;&#10;xcopy /E /Y &quot;C:\Jacob\AudioPlugins\personal\RGBA-Synth\RGBA Synth\Builds\VisualStudio2022\x64\Debug\Standalone Plugin\RGBA Synth.exe&quot; &quot;C:\Jacob\AudioPlugins\personal\RGBA-Synth\RGBA Synth Downloads&quot;"
+                       generateManifest="1"/>
         <CONFIGURATION isDebug="0" name="Release" targetName="RGBA Synth"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
