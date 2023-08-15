@@ -2,6 +2,9 @@
 # RGBA VST Synth  Version (0.9) Beta
 ![image](https://github.com/JacobACan/RGBA-Synth/assets/89418437/faed74b5-cf7f-4419-a362-b6ed8236e779)
 
+
+
+
 ## What is RGBA Synth
 RGBA Synth allows you to create a retro feeling synth sound by combining together sawtooth, square, saw, and sin waves. Through the use of a few sliders controlling each of their presence within the sound, RGBA Synth allows you to make a simple, yet unique sound. Each one of these sounds is mapped to a color in RGBA color space. 
 
