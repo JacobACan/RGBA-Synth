@@ -5,7 +5,7 @@
 ## What is RGBA Synth
 RGBA Synth allows you to create a retro feeling synth sound by combining together sawtooth, square, saw, and sin waves. Through the use of a few sliders controlling each of their presence within the sound, RGBA Synth allows you to make a simple, yet unique sound. Each one of these sounds is mapped to a color in RGBA color space. 
 
-Demo : N/A
+Demo : [Youtube](https://www.youtube.com/watch?v=-txnQ5YiqIs)
 
 More Products and Music : www.jacobcanedy.com
 
