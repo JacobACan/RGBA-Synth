@@ -7,8 +7,6 @@ RGBA Synth allows you to create a retro feeling synth sound by combining togethe
 
 Demo : [Youtube](https://www.youtube.com/watch?v=-txnQ5YiqIs)
 
-More Products and Music : www.jacobcanedy.com
-
 ## Installation
 Navigate to the Download file directories for either the standalone or VST3 versions of the plugin and download the raw file to use in a DAW or Standalone. 
 VST3 Download : https://github.com/JacobACan/RGBA-Synth/blob/main/RGBA%20Synth%20Downloads/RGBA%20Synth.vst3   
@@ -23,12 +21,13 @@ JUCE Build
 [JUCE Documentation](https://juce.com/learn/documentation)
 
 ## Maintenance Status
-This plugin is in beta, and we are eager to hear feedback on bugs and ideas for the synth going forward.
-- This being a passion project and an endeavor I do on the side, this project is SLOWLY MAINTAINED.
-- Though we are eager to hear feedback, I am currently a one man team and working full time on other projects other than this one.  Despite this I'd love to hear feed back and or any examples of its use in the wild 😁  
+- This plugin is in beta.
+- This being a passion project and an endeavor I do on the side, this project is No Longer Maintained.
+  
 ## Updates
 ### 1-7-2023 (version 0.5.2)
 - Base framework for application created.
 ### 8-6-2023 (version 0.9.0) Beta
 - GUI and Synth Added
 - Downloads made publicly available
+
